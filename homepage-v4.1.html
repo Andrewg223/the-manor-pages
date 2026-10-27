@@ -1,0 +1,3825 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Manor — Studio Home v4</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* ==========================================================================
+   THE MANOR HOME PAGE — V4
+   Brutalist, squared, high-contrast architectural grid.
+   Base: homepage-v3-gemini.html + workshop tag bar & FAQ from homepage-v3-claude.html
+   Spec: HOMEPAGE_REVISION_V4.md
+   ========================================================================== */
+:root {
+  --ink: #141312;
+  --ink-0: #0D0C0B;
+  --ink-2: #1E1C1B;
+  --line: #3A3634;
+  --bone: #ECE6DC;
+  --bone-2: #E7E0D4;
+  --bone-line: #CFC7BB;
+  --red: #D7261E;
+  --red-2: #B81C16;
+  --red-deep: #8E1410;
+  --red-deeper: #6D100D;
+  --ash: #9A938A;
+  --ink-muted: #4A453F;
+
+  --sans: "Archivo", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --rail: 40px;
+  --max: 1600px;
+  --gap: 20px;
+  --inset: 48px;
+
+  --cur-line: var(--line);
+  --cur-stripe: #2C2927;
+  --cur-panel: rgba(236, 230, 220, 0.03);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  border-radius: 0 !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ink);
+  color: var(--bone);
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font: 400 16px/1.55 var(--sans);
+  font-variation-settings: "wdth" 100;
+  -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 50;
+  background: var(--ink);
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+
+/* ==========================================================================
+   TYPOGRAPHY — ARCHIVO 125 DISPLAY + ARCHIVO 100 BODY + JETBRAINS MONO
+   ========================================================================== */
+.display, h1, h2, h3 {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.h1 {
+  font-size: clamp(56px, 8vw, 144px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+}
+
+.h1-mega {
+  font-size: clamp(56px, 8vw, 144px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+}
+
+.hero .h1 {
+  font-size: clamp(54px, 6.4vw, 110px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+}
+
+.h2 {
+  font-size: clamp(32px, 4.6vw, 64px);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  max-width: 21ch;
+}
+
+.eyebrow {
+  font: 700 12px/1.2 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ash);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  flex: none;
+}
+
+.coord {
+  font: 500 11px/1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.lede {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 600;
+  font-size: clamp(19px, 1.6vw, 24px);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: rgba(236, 230, 220, 0.9);
+  max-width: 42ch;
+}
+
+.ph {
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--ink);
+  border: 1px solid var(--line);
+  padding: 7px 10px;
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 3;
+}
+
+.ph-red {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+
+/* ==========================================================================
+   TAILWIND-STYLE ARCHITECTURAL GRID:
+   315DEG HATCHED RAILS + SECTION DIVIDERS
+   ========================================================================== */
+.sec {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--cur-line);
+  overflow-x: clip;
+}
+
+.sub-band {
+  position: relative;
+  width: 100%;
+  border-top: 1px solid var(--cur-line);
+  overflow-x: clip;
+}
+
+.frame {
+  max-width: calc(var(--max) + 2 * var(--rail));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr) var(--rail);
+}
+
+.frame::before,
+.frame::after {
+  content: "";
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--cur-stripe) 0,
+    var(--cur-stripe) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 10px 10px;
+  border-inline: 1px solid var(--cur-line);
+}
+
+.col {
+  min-width: 0;
+  position: relative;
+}
+
+.sec-pad {
+  padding-block: 72px;
+}
+
+@media (min-width: 768px) {
+  .sec-pad {
+    padding-block: 128px;
+  }
+}
+
+/* Full-bleed horizontal hairlines (kept for locked #coworking section per §2.1 & §4.11) */
+.tw-rule {
+  position: relative;
+}
+
+.tw-rule::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: var(--cur-line);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tw-rule--b::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: var(--cur-line);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tw-inset {
+  padding-inline: var(--inset);
+  padding-block: 18px;
+}
+
+.tw-inset-lg {
+  padding-inline: var(--inset);
+  padding-block: 28px;
+}
+
+/* §2.3 Standard section header block: 7fr H2 left + 5fr subheading right at >=1024px */
+.sec-head {
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 28px;
+  margin-bottom: 48px;
+}
+
+.sec-head-main {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .sec-head-main {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 48px;
+    align-items: end;
+  }
+}
+
+/* Tailwind-style framed panel wrapper (S3 panel tier) */
+.tw-panel {
+  padding: 16px;
+  background: var(--cur-panel);
+}
+
+.s3-panel {
+  background: rgba(13, 12, 11, 0.56);
+}
+
+.theme-oxblood .s3-panel {
+  background: rgba(20, 19, 18, 0.34);
+}
+
+/* MasterClass-style bottom CTA strip inside a section */
+.cta-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 22px var(--inset);
+  background: var(--cur-panel);
+  margin-top: 40px;
+}
+
+.cta-strip-copy {
+  font: 700 12px/1.4 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   SECTION THEMES & TEXTURES + §2.5 body.tex-inside EXPERIMENT
+   ========================================================================== */
+.theme-ink {
+  background-color: var(--ink);
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: #2E2A28;
+  --cur-panel: rgba(236, 230, 220, 0.03);
+}
+
+.theme-ink-dots {
+  background-color: var(--ink);
+  background-image: radial-gradient(rgba(236, 230, 220, 0.14) 1px, transparent 0);
+  background-size: 12px 12px;
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: #2E2A28;
+  --cur-panel: rgba(20, 19, 18, 0.78);
+}
+
+/* §4.4 Our work ground: --ink-0 plain (no texture) */
+.theme-ink-0-plain {
+  background-color: var(--ink-0);
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: #24211F;
+  --cur-panel: rgba(20, 19, 18, 0.65);
+}
+
+/* §4.7 Production ground: --ink-0 deepest black with sparse 24px dot grid */
+.theme-ink-0 {
+  background-color: var(--ink-0);
+  background-image: radial-gradient(rgba(236, 230, 220, 0.11) 1px, transparent 0);
+  background-size: 24px 24px;
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: #24211F;
+  --cur-panel: rgba(20, 19, 18, 0.65);
+}
+
+.theme-red {
+  background-color: var(--red);
+  color: var(--bone);
+  --cur-line: rgba(20, 19, 18, 0.42);
+  --cur-stripe: rgba(20, 19, 18, 0.24);
+  --cur-panel: rgba(20, 19, 18, 0.12);
+}
+
+.theme-red .eyebrow,
+.theme-red .coord {
+  color: var(--ink);
+}
+
+.theme-red .eyebrow::before {
+  background: var(--ink);
+}
+
+.theme-oxblood {
+  background-color: var(--red-deep);
+  background-image: radial-gradient(rgba(236, 230, 220, 0.13) 1px, transparent 0);
+  background-size: 14px 14px;
+  color: var(--bone);
+  --cur-line: rgba(236, 230, 220, 0.25);
+  --cur-stripe: rgba(20, 19, 18, 0.38);
+  --cur-panel: rgba(20, 19, 18, 0.34);
+}
+
+.theme-oxblood .eyebrow,
+.theme-oxblood .coord {
+  color: var(--bone);
+}
+
+.theme-oxblood .eyebrow::before {
+  background: var(--bone);
+}
+
+.theme-bone {
+  background-color: var(--bone);
+  color: var(--ink);
+  --cur-line: var(--bone-line);
+  --cur-stripe: #CEC5B7;
+  --cur-panel: rgba(20, 19, 18, 0.04);
+}
+
+.theme-bone .eyebrow,
+.theme-bone .coord {
+  color: var(--ink-muted);
+}
+
+.theme-bone .lede {
+  color: var(--ink);
+}
+
+.tex-stripes-light {
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--bone-line) 0,
+    var(--bone-line) 1px,
+    var(--bone-2) 0,
+    var(--bone-2) 50%
+  );
+  background-size: 10px 10px;
+}
+
+/* §2.5 Texture-inside-containers experiment (activated by <body class="tex-inside">) */
+body.tex-inside .theme-ink-dots,
+body.tex-inside .theme-oxblood,
+body.tex-inside .theme-ink-0 {
+  background-image: none;
+}
+
+body.tex-inside .tw-panel,
+body.tex-inside .prod .shot:not(.s1),
+body.tex-inside .bento .tile:not(.photo):not(.stripe) {
+  background-image: radial-gradient(rgba(236, 230, 220, 0.15) 1px, transparent 0);
+  background-size: 12px 12px;
+}
+
+body.tex-inside .theme-bone .tw-panel {
+  background-image: radial-gradient(rgba(20, 19, 18, 0.12) 1px, transparent 0);
+  background-size: 12px 12px;
+}
+
+/* ==========================================================================
+   BUTTONS & CONTROLS (100% SQUARED — BORDER-RADIUS: 0)
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 16px 24px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-red {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--red);
+}
+
+.btn-red:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+
+.theme-bone .btn-red:hover {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+
+.btn-ink {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+
+.btn-ink:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-bone {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+
+.btn-bone:hover {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--bone);
+}
+
+.btn-line {
+  background: transparent;
+  border-color: currentColor;
+  color: inherit;
+}
+
+.btn-line:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+
+.btn-red-outline {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--bone);
+}
+
+.btn-red-outline:hover {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--red);
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--cur-line);
+  background: var(--ink);
+  color: var(--bone);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font: 700 16px/1 var(--mono);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bone);
+}
+
+.icon-btn:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.eyebrow-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Red highlight block for hero "From zero." and co-working "Co-working" / "founders" */
+.hero .h1 em,
+.h2 em {
+  font-style: normal;
+  color: var(--bone);
+  background: var(--red);
+  padding: 3px 12px 1px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   0. ANNOUNCEMENT BAR
+   ========================================================================== */
+.announce {
+  background: var(--red);
+  color: var(--bone);
+  border-bottom: 1px solid var(--ink);
+  text-align: center;
+  font: 700 12px/1.35 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.announce-tag {
+  background: var(--ink);
+  color: var(--bone);
+  padding: 3px 7px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+/* ==========================================================================
+   1. NAVIGATION (§4.1 — 76PX HEIGHT, 22PX LOGO, 14PX ARCHIVO LINKS AT >=1440PX)
+   ========================================================================== */
+.nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 30;
+  background: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-bar {
+  border-bottom: 1px solid var(--line);
+  overflow-x: clip;
+}
+
+.nav-in {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 76px;
+  padding-inline: 24px;
+}
+
+.logo {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.logo i {
+  width: 16px;
+  height: 16px;
+  background: var(--red);
+  display: block;
+  flex: none;
+}
+
+.nav-links {
+  display: none;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.nav-links a {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(236, 230, 220, 0.78);
+  text-decoration: none;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.nav-links a:hover {
+  color: var(--bone);
+  background: var(--ink-2);
+  border-color: var(--line);
+}
+
+.nav .btn {
+  margin-left: auto;
+  padding: 12px 18px;
+  font-size: 13px;
+  white-space: nowrap;
+  flex: none;
+}
+
+.nav-stripe {
+  height: 8px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    315deg,
+    #2E2A28 0,
+    #2E2A28 1px,
+    var(--ink) 0,
+    var(--ink) 50%
+  );
+  background-size: 10px 10px;
+}
+
+@media (min-width: 1440px) {
+  .nav-links { display: flex; }
+  .nav .btn { margin-left: 14px; }
+}
+
+/* ==========================================================================
+   2. HERO (§4.2) + 2b. GROK SERVICE BOXES (§4.2b)
+   ========================================================================== */
+.hero-grid {
+  display: grid;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-top: 32px;
+  padding-bottom: 104px;
+}
+
+.hero-sub {
+  display: grid;
+  gap: 8px;
+  padding-block: 28px;
+}
+
+.hero-sub-rule {
+  width: 48px;
+  height: 3px;
+  background: var(--red);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.hero-sub-lead {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: clamp(24px, 1.9vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+}
+
+.hero-sub-follow {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(18px, 1.35vw, 20px);
+  line-height: 1.4;
+  color: var(--ash);
+}
+
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  padding-block: 24px;
+}
+
+.hero-cta-note {
+  font: 700 11px/1.3 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.hero-right {
+  position: relative;
+  isolation: isolate;
+  padding: 36px var(--inset) 104px;
+  display: grid;
+  place-items: center;
+  background-color: var(--ink);
+  background-image: repeating-linear-gradient(
+    315deg,
+    #282523 0,
+    #282523 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 10px 10px;
+  border-top: 1px solid var(--cur-line);
+}
+
+/* S1: Hero video ONLY — 2px bone border + 10px 10px 0 var(--red) */
+.hero-media {
+  position: relative;
+  width: min(100%, 380px);
+  aspect-ratio: 9 / 16;
+  border: 2px solid var(--bone);
+  background: var(--ink-2);
+  box-shadow: 10px 10px 0 var(--red);
+  overflow: hidden;
+}
+
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.08) saturate(0.92);
+}
+
+.play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, rgba(20, 19, 18, 0.08) 0%, rgba(20, 19, 18, 0.58) 100%);
+}
+
+.play span {
+  width: 66px;
+  height: 66px;
+  background: var(--red);
+  border: 2px solid var(--bone);
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.hero-media:hover .play span,
+.vcard:hover .play span,
+.work-frame:hover .play span {
+  background: var(--ink);
+  transform: scale(1.06);
+}
+
+@media (min-width: 960px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) clamp(340px, 28vw, 460px);
+  }
+  .hero-left {
+    padding-top: 56px;
+    padding-bottom: 112px;
+  }
+  .hero-right {
+    border-top: 0;
+    border-left: 1px solid var(--cur-line);
+    padding: 56px 40px 112px;
+  }
+}
+
+/* 2b. Service boxes — Grok layout: wider bone Workshops box + --red-2 boxes */
+.srv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.srv-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 28px 24px;
+  text-decoration: none;
+  color: var(--bone);
+  border-top: 1px solid rgba(20, 19, 18, 0.45);
+  background: var(--red-2);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  min-height: 210px;
+}
+
+.srv-box:first-child {
+  border-top: 0;
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.srv-title {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(18px, 1.42vw, 26px);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  max-width: 12ch;
+}
+
+.srv-box:first-child .srv-title {
+  font-size: clamp(26px, 2.4vw, 44px);
+  max-width: 11ch;
+}
+
+.srv-desc {
+  font: 600 16px/1.35 var(--sans);
+  max-width: 22ch;
+}
+
+.srv-arr {
+  font: 700 22px/1 var(--mono);
+}
+
+.srv-box:hover,
+.srv-box:first-child:hover {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+@media (min-width: 640px) and (max-width: 1279px) {
+  .srv-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .srv-box:first-child {
+    grid-column: span 2;
+  }
+  .srv-box:nth-child(even) {
+    border-right: 1px solid rgba(20, 19, 18, 0.45);
+  }
+}
+
+@media (min-width: 1280px) {
+  .srv-grid {
+    grid-template-columns: 1.45fr repeat(4, minmax(0, 1fr));
+  }
+  .srv-box {
+    border-top: 0;
+    border-left: 1px solid rgba(20, 19, 18, 0.45);
+    min-height: 256px;
+    padding: 30px 22px;
+  }
+  .srv-box:first-child {
+    border-left: 0;
+    padding: 30px 28px;
+  }
+}
+
+/* ==========================================================================
+   3. CLIENT LOGO STRIP (FRAMED COLUMN — 3 SMALL TABS + INFINITE MARQUEE)
+   ========================================================================== */
+.trust-strip {
+  padding-block: 30px;
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 18px;
+}
+
+.trust-tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.theme-ink-0-plain .trust-tab {
+  color: var(--bone);
+  background: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.trust-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 11px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bone);
+  border: 1px solid var(--ink);
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.trust-tab::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  flex: none;
+}
+
+.logo-marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.logo-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  width: max-content;
+  animation: logo-marquee-slide 56s linear infinite;
+}
+
+.logo-marquee:hover .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-pill {
+  height: 38px;
+  padding-inline: 24px;
+  border: 1px solid var(--bone-line);
+  background: var(--bone-2);
+  color: rgba(20, 19, 18, 0.58);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  filter: grayscale(1);
+}
+
+@keyframes logo-marquee-slide {
+  to { transform: translateX(calc(-50% - 16px)); }
+}
+
+/* ==========================================================================
+   4. OUR WORK (FRAMED COLUMN — 6 VIDEOS IN 2 ROWS ON PLAIN --ink-0)
+   ========================================================================== */
+.work-bottom {
+  padding-top: 40px;
+  padding-inline: var(--inset);
+}
+
+.work-row-wrap {
+  width: 100%;
+  padding-inline: var(--inset);
+}
+
+/* <640px: swipe row with scroll-snap, each card 85% wide so the next one peeks in */
+.work-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 85%;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 8px 8px 10px 0;
+}
+
+.work-grid::-webkit-scrollbar { display: none; }
+.work-grid > * { scroll-snap-align: start; min-width: 0; }
+
+@media (min-width: 640px) {
+  .work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-auto-columns: initial;
+    gap: 28px 20px;
+    overflow-x: visible;
+    padding: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .work-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.work-item {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+}
+
+/* S2 frame + S5 hover lift on showreel frames */
+.work-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red-deep);
+  background-color: var(--ink-2);
+  background-image: repeating-linear-gradient(
+    315deg,
+    #282523 0,
+    #282523 1px,
+    var(--ink) 0,
+    var(--ink) 50%
+  );
+  background-size: 10px 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.work-frame:hover,
+.work-frame:focus-visible,
+.work-frame:focus-within {
+  transform: translate(-6px, -6px);
+  box-shadow: 14px 14px 0 var(--red-deep);
+}
+
+.work-frame img.work-thumb,
+.work-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
+
+.work-frame iframe {
+  z-index: 4;
+}
+
+.work-caption {
+  display: grid;
+  gap: 4px;
+}
+
+.work-title {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--bone);
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+.work-meta {
+  font: 500 11px/1.3 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* ==========================================================================
+   5. WORKSHOPS (§4.5 — SPLIT HEADING, CLAUDE V3 TAG BAR, S5 HOVER LIFT)
+   ========================================================================== */
+.track-wrap {
+  position: relative;
+}
+
+.track-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 1280px) {
+  .track-controls {
+    display: none;
+  }
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 88%;
+  gap: var(--gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 8px 8px 8px 0;
+}
+
+.track::-webkit-scrollbar { display: none; }
+.track > * { scroll-snap-align: start; min-width: 0; }
+
+@media (min-width: 640px) {
+  .track {
+    grid-auto-columns: calc((100% - var(--gap)) / 2.15);
+  }
+}
+
+@media (min-width: 960px) {
+  .track {
+    grid-auto-columns: calc((100% - 2 * var(--gap)) / 3.2);
+  }
+}
+
+@media (min-width: 1280px) {
+  #wtrack {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-flow: initial;
+    grid-auto-columns: initial;
+    overflow-x: visible;
+  }
+}
+
+/* Workshop cards — MasterClass Executive solid colour slabs + nested Albers squares + S5 lift */
+.wcard {
+  border: 1px solid var(--line);
+  background: var(--ink-2);
+  color: var(--bone);
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+  position: relative;
+  container-type: inline-size;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.wcard:hover,
+.wcard:focus-within {
+  transform: translate(-6px, -6px);
+  box-shadow: 8px 8px 0 var(--hover-sh, var(--red-deep));
+}
+
+.wcard.slab-red:hover      { background: var(--red-2); }
+.wcard.slab-ink:hover,
+.wcard.slab-grid:hover     { background-color: var(--ink); }
+.wcard.slab-oxblood:hover  { background: var(--red-deeper); --hover-sh: var(--bone); }
+.wcard.slab-bone:hover     { background: var(--bone-2); }
+
+.wcard .btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Claude v3 tag bar (§4.5): padding 13px 18px + nowrap on spans */
+.wcard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 18px;
+  border-bottom: 1px solid currentColor;
+  font: 700 11px/1 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.wcard-top > span {
+  white-space: nowrap;
+}
+
+@container (max-width: 268px) {
+  .wcard-top {
+    padding: 13px 12px;
+    font-size: 9.5px;
+    letter-spacing: 0.05em;
+  }
+}
+
+.wcard-num {
+  background: var(--ink);
+  color: var(--bone);
+  padding: 4px 8px;
+}
+
+.albers-sq {
+  width: 84px;
+  height: 84px;
+  position: relative;
+  background: var(--sq-1, var(--red));
+  border: 1px solid rgba(236, 230, 220, 0.22);
+  flex: none;
+}
+
+.albers-sq::before {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  background: var(--sq-2, var(--ink));
+}
+
+.albers-sq::after {
+  content: "";
+  position: absolute;
+  inset: 40%;
+  background: var(--sq-3, var(--bone));
+}
+
+.wcard.slab-red {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--bone);
+  --sq-1: var(--ink);
+  --sq-2: var(--bone);
+  --sq-3: var(--red);
+}
+
+.wcard.slab-red .wcard-top {
+  background: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.wcard.slab-red .wcard-num {
+  background: var(--red);
+  color: var(--bone);
+}
+
+.wcard.slab-red p.desc {
+  color: rgba(236, 230, 220, 0.92);
+}
+
+.wcard.slab-red .meta {
+  border-top-color: rgba(20, 19, 18, 0.38);
+  color: var(--ink);
+}
+
+.wcard.slab-red .meta b {
+  color: var(--bone);
+}
+
+.wcard.slab-ink {
+  background: var(--ink-2);
+  color: var(--bone);
+  border-color: var(--line);
+  --sq-1: var(--red);
+  --sq-2: var(--red-deep);
+  --sq-3: var(--bone);
+}
+
+.wcard.slab-ink .wcard-top {
+  border-bottom-color: var(--line);
+  background: var(--ink);
+}
+
+.wcard.slab-ink .wcard-num {
+  background: var(--red);
+}
+
+.wcard.slab-oxblood {
+  background: var(--red-deep);
+  color: var(--bone);
+  border-color: rgba(236, 230, 220, 0.35);
+  --sq-1: var(--bone);
+  --sq-2: var(--red);
+  --sq-3: var(--ink);
+}
+
+.wcard.slab-oxblood .wcard-top {
+  background: var(--ink);
+  border-bottom-color: rgba(236, 230, 220, 0.25);
+}
+
+.wcard.slab-oxblood p.desc {
+  color: rgba(236, 230, 220, 0.86);
+}
+
+.wcard.slab-oxblood .meta {
+  border-top-color: rgba(236, 230, 220, 0.25);
+  color: rgba(236, 230, 220, 0.8);
+}
+
+.wcard.slab-grid {
+  background-color: var(--ink-2);
+  background-image: radial-gradient(rgba(236, 230, 220, 0.14) 1px, transparent 0);
+  background-size: 12px 12px;
+  color: var(--bone);
+  border-color: var(--line);
+  --sq-1: var(--bone);
+  --sq-2: #3A3634;
+  --sq-3: var(--red);
+}
+
+.wcard.slab-grid .wcard-top {
+  background: var(--ink);
+  border-bottom-color: var(--line);
+}
+
+.wcard.slab-bone {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+  --sq-1: var(--ink);
+  --sq-2: var(--red);
+  --sq-3: var(--bone);
+}
+
+.wcard.slab-bone .wcard-top {
+  background: var(--ink);
+  color: var(--bone);
+  border-bottom-color: var(--ink);
+}
+
+.wcard.slab-bone .wcard-num {
+  background: var(--red);
+  color: var(--bone);
+}
+
+.wcard.slab-bone p.desc {
+  color: var(--ink-muted);
+}
+
+.wcard.slab-bone .meta {
+  border-top-color: var(--bone-line);
+  color: var(--ink-muted);
+}
+
+.wcard.slab-bone .meta b {
+  color: var(--ink);
+}
+
+.wcard-body {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+.wcard h3 {
+  font-size: clamp(19px, 1.4vw, 25px);
+  line-height: 0.95;
+}
+
+.wcard p.desc {
+  color: var(--ash);
+  font-size: 15px;
+  line-height: 1.48;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font: 700 12px/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ash);
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  margin-top: auto;
+}
+
+.meta b {
+  color: var(--bone);
+  font-weight: 700;
+}
+
+.wcard .btn {
+  width: 100%;
+}
+
+/* ==========================================================================
+   6. VLOG SECTION (§4.6 — ONE S3 PANEL WRAPPING EPISODES, RENDERS & CTA STRIP)
+   ========================================================================== */
+.vlog-panel {
+  display: grid;
+  gap: 40px;
+}
+
+.vlog-panel .cta-strip {
+  margin-top: 0;
+}
+
+.vlog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+@media (min-width: 1024px) {
+  .vlog-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.vcard {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  max-width: 100%;
+  border: 1px solid rgba(236, 230, 220, 0.35);
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  gap: 10px;
+  background-color: var(--red-deeper);
+  background-image:
+    linear-gradient(180deg, rgba(20, 19, 18, 0.08) 0%, rgba(20, 19, 18, 0.88) 100%),
+    repeating-linear-gradient(315deg, rgba(236, 230, 220, 0.12) 0, rgba(236, 230, 220, 0.12) 1px, transparent 0, transparent 50%);
+  background-size: 100% 100%, 10px 10px;
+}
+
+@media (min-width: 1280px) {
+  .vcard {
+    padding: 22px;
+  }
+}
+
+.vcard:hover {
+  border-color: var(--bone);
+}
+
+.vcard-ghost {
+  position: absolute;
+  right: 14px;
+  top: 40px;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 72px;
+  line-height: 0.8;
+  color: rgba(236, 230, 220, 0.1);
+  pointer-events: none;
+  user-select: none;
+}
+
+.vcard .ep {
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--red);
+  padding: 5px 8px;
+  align-self: flex-start;
+  z-index: 2;
+}
+
+.vcard h3 {
+  font-size: clamp(15px, 1.3vw, 22px);
+  line-height: 0.96;
+  color: var(--bone);
+  z-index: 2;
+}
+
+.vcard .play {
+  inset: 0 0 26%;
+  background: none;
+}
+
+.vcard .play span {
+  width: 56px;
+  height: 56px;
+}
+
+.render-marquee {
+  overflow: hidden;
+  padding: 0 4px 4px 0;
+}
+
+.render-thumb {
+  position: relative;
+  height: 220px;
+  width: 294px;
+  flex: none;
+  margin: 0;
+  border: 1px solid rgba(236, 230, 220, 0.45);
+  background: var(--ink);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.render-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.render-thumb-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 19, 18, 0.88);
+  border-top: 1px solid var(--line);
+  padding: 8px 12px;
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* ==========================================================================
+   7. DONE-FOR-YOU VIDEO PRODUCTION (§4.7 — COPY PANEL AT BOTTOM RIGHT)
+   ========================================================================== */
+.prod-slab {
+  display: inline-block;
+  background: var(--red);
+  color: var(--bone);
+  padding: 10px 16px;
+  font: 700 12px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--bone);
+}
+
+.prod {
+  display: grid;
+  gap: var(--gap);
+}
+
+.shot {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  min-height: 240px;
+  background-image: repeating-linear-gradient(
+    315deg,
+    #24201E 0,
+    #24201E 1px,
+    var(--ink-2) 0,
+    var(--ink-2) 50%
+  );
+  background-size: 10px 10px;
+}
+
+/* S2 on lead production photo: 2px bone border + 8px 8px 0 var(--red-deep) */
+.shot.s1 {
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red-deep);
+  min-height: 360px;
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+.shot-placeholder-box {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.shot-placeholder-box span {
+  font: 700 11px/1.5 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  background: var(--ink-0);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+}
+
+.prod-copy {
+  border: 1px solid var(--line);
+  padding: 32px;
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  background: var(--ink);
+}
+
+.prod-copy p {
+  color: var(--bone);
+  font-size: 16px;
+}
+
+.prod-copy ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.prod-copy li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.prod-copy li span:first-child {
+  font: 700 12px/1.5 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ash);
+}
+
+.prod-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.prod-lead { order: 1; }
+.prod-copy { order: 2; }
+.prod-a, .prod-b, .prod-c, .prod-d { order: 3; }
+
+@media (min-width: 960px) {
+  .prod {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: 260px 260px minmax(260px, auto);
+    grid-template-areas: "lead lead a" "lead lead b" "c d copy";
+  }
+  .prod-lead { grid-area: lead; order: initial; }
+  .prod-a    { grid-area: a; order: initial; }
+  .prod-b    { grid-area: b; order: initial; }
+  .prod-c    { grid-area: c; order: initial; }
+  .prod-d    { grid-area: d; order: initial; }
+  .prod-copy { grid-area: copy; order: initial; }
+}
+
+/* ==========================================================================
+   8. CLIENTS & TESTIMONIALS (§4.8 — HEADER BLOCK + ITALIC SUB-TITLE)
+   ========================================================================== */
+.tw-sponsors-wrap {
+  padding-block: 0;
+}
+
+.tw-sponsors {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 20px;
+}
+
+.tw-sponsors__cols {
+  position: absolute;
+  inset: 0;
+  display: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 36px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tw-sponsors__cols > span {
+  border-inline: 1px solid var(--bone-line);
+  background-image: radial-gradient(rgba(20, 19, 18, 0.08) 1px, transparent 0);
+  background-size: 10px 10px;
+}
+
+.tw-sponsors__cols > span:first-child { border-left: 0; }
+.tw-sponsors__cols > span:last-child { border-right: 0; }
+
+.logo-cell {
+  position: relative;
+  z-index: 2;
+  min-height: 116px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bone-2);
+}
+
+.logo-cell::before,
+.logo-cell::after {
+  content: "";
+  position: absolute;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: var(--bone-line);
+  pointer-events: none;
+}
+
+.logo-cell::before { top: 0; }
+.logo-cell::after { bottom: 0; }
+
+.logo-cell .lc-name {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-cell .lc-name::after {
+  content: "+";
+  font: 700 13px/1 var(--mono);
+  color: var(--red);
+}
+
+@media (min-width: 768px) {
+  .tw-sponsors {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 36px;
+    row-gap: 36px;
+  }
+  .tw-sponsors__cols {
+    display: grid;
+  }
+}
+
+.testimonials-block {
+  margin-top: 40px;
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 40px;
+}
+
+.quote-grid {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.quote-mark {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(88px, 12vw, 156px);
+  line-height: 0.72;
+  color: var(--red);
+  user-select: none;
+}
+
+.quote blockquote {
+  font-family: var(--sans);
+  font-style: italic;
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.testi-videos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+}
+
+@media (min-width: 768px) {
+  .testi-videos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* S4 frame for testimonial videos: 1px border + 4px 4px 0 rgba(0,0,0,.35) */
+.testi-video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  background-color: var(--bone-2);
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--bone-line) 0,
+    var(--bone-line) 1px,
+    var(--bone-2) 0,
+    var(--bone-2) 50%
+  );
+  background-size: 10px 10px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.testi-video-ph {
+  font: 700 12px/1.4 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bone);
+  border: 1px solid var(--ink);
+  padding: 12px 18px;
+  z-index: 2;
+}
+
+.testi-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: none;
+  z-index: 3;
+}
+
+.testi-video-frame.is-loaded iframe {
+  display: block;
+}
+
+/* ==========================================================================
+   9. STUDIO HIRE (§4.9 — ON OXBLOOD GROUND, --red-deeper CHECK AVAILABILITY TILE)
+   ========================================================================== */
+.bento {
+  display: grid;
+  gap: var(--gap);
+}
+
+.tile {
+  position: relative;
+  border: 1px solid var(--ink);
+  padding: 30px;
+  display: grid;
+  gap: 10px;
+  align-content: end;
+  background: var(--ink);
+  color: var(--bone);
+  min-height: 210px;
+  overflow: hidden;
+}
+
+.tile p {
+  color: var(--ash);
+  font-size: 15px;
+}
+
+.tile .eyebrow {
+  color: var(--ash);
+}
+
+.tile .eyebrow::before {
+  background: var(--red);
+}
+
+.tile h3 {
+  font-size: 28px;
+  line-height: 0.95;
+  color: var(--bone);
+}
+
+.tile.photo {
+  min-height: 340px;
+  padding: 0;
+  border-color: var(--ink);
+}
+
+.tile.photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile.rates {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--red);
+}
+
+.tile.rates .big {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(34px, 3.8vw, 54px);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.tile.rates small {
+  display: block;
+  margin-top: 10px;
+  font: 700 12px/1.3 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.tile.stripe {
+  background-color: var(--bone-2);
+  border-color: var(--bone-line);
+  color: var(--ink);
+}
+
+.tile.stripe .eyebrow {
+  color: var(--ink-muted);
+}
+
+.tile.stripe p {
+  color: var(--ink-muted);
+}
+
+.tile.go {
+  background: var(--red-deeper);
+  border-color: var(--red-deeper);
+  align-content: center;
+}
+
+@media (min-width: 900px) {
+  .bento {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: 228px;
+  }
+  .tile.photo {
+    grid-column: span 3;
+    grid-row: span 2;
+    min-height: 0;
+  }
+  .t2 { grid-column: span 3; }
+  .t3 { grid-column: span 3; }
+  .t4 { grid-column: span 2; }
+  .t5 { grid-column: span 2; }
+  .t6 { grid-column: span 2; }
+}
+
+/* ==========================================================================
+   10. CO-WORKING (§4.11 — LOCKED TO V3)
+   ========================================================================== */
+#coworking .h2 {
+  line-height: 0.91;
+}
+
+#coworking .lede {
+  font-stretch: 100%;
+  font-variation-settings: "wdth" 100;
+  font-size: clamp(17px, 1.45vw, 20px);
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ash);
+  max-width: 56ch;
+}
+
+.split {
+  display: grid;
+  gap: 48px;
+  align-items: stretch;
+}
+
+/* S2: 2px bone border + 8px 8px 0 var(--red-deep) */
+.split-img {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red-deep);
+  min-height: 360px;
+  max-width: 100%;
+}
+
+.split-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.split-copy {
+  display: grid;
+  gap: 24px;
+  align-content: center;
+  min-width: 0;
+}
+
+.split-copy .h2 {
+  max-width: 17ch;
+}
+
+.checks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.checks li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.checks li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  margin-top: 7px;
+  flex: none;
+}
+
+@media (min-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .split-img img {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+/* ==========================================================================
+   11. EVENTS (§4.12 — LIGHTER PHOTO & OVERLAY, ARCHIVO TAGS, NO INTERNAL LINES)
+   ========================================================================== */
+.band {
+  position: relative;
+  min-height: 720px;
+  overflow: hidden;
+  background: var(--ink);
+  --cur-line: rgba(236, 230, 220, 0.28);
+  --cur-stripe: rgba(236, 230, 220, 0.16);
+}
+
+.band-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(3px) saturate(0.75) contrast(1.1);
+  transform: scale(1.04);
+}
+
+.band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(20, 19, 18, 0.84) 0%,
+    rgba(20, 19, 18, 0.66) 52%,
+    rgba(20, 19, 18, 0.28) 100%
+  );
+}
+
+.band .frame {
+  position: relative;
+  z-index: 2;
+  min-height: 720px;
+}
+
+.events-col {
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+
+.events-slab {
+  background: var(--red);
+  color: var(--bone);
+  padding: 10px 16px;
+  justify-self: start;
+  font: 700 12px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--bone);
+}
+
+.band .h2 {
+  font-size: clamp(38px, 6.6vw, 86px);
+  line-height: 0.88;
+  max-width: 15ch;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tags span {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--bone);
+  background: var(--ink);
+  color: var(--bone);
+  padding: 12px 16px;
+}
+
+/* ==========================================================================
+   12. MEET JAY AND ANDREW (§4.13 — BONE GROUND, TOP H2, S2 PORTRAITS, 56PX TO STRIP)
+   ========================================================================== */
+.about-top {
+  padding-top: 72px;
+  padding-bottom: 56px;
+}
+
+.about-strip {
+  border-top: 0;
+  padding-bottom: 72px;
+}
+
+@media (min-width: 768px) {
+  .about-top {
+    padding-top: 128px;
+  }
+  .about-strip {
+    padding-bottom: 128px;
+  }
+}
+
+.about-grid {
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 48px;
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.person {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+  align-content: start;
+}
+
+/* S2 on bone: 4:5 portrait with 2px ink border + 8px 8px 0 var(--ink) */
+.portrait {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+  background-color: var(--ink);
+  background-image: repeating-linear-gradient(
+    315deg,
+    #2E2A28 0,
+    #2E2A28 1px,
+    var(--ink) 0,
+    var(--ink) 50%
+  );
+  background-size: 10px 10px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+}
+
+.portrait-stamp {
+  font: 700 11px/1.4 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  border: 1px dashed var(--line);
+  padding: 8px 12px;
+  background: rgba(20, 19, 18, 0.88);
+}
+
+.portrait-name {
+  position: absolute;
+  left: 16px;
+  bottom: -16px;
+  z-index: 4;
+  background: var(--red);
+  color: var(--bone);
+  border: 2px solid var(--ink);
+  padding: 6px 14px 4px;
+  font-size: clamp(26px, 2.2vw, 36px);
+  line-height: 0.9;
+}
+
+.person-role {
+  color: var(--ink-muted);
+  font: 500 12px/1.55 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.about-text {
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+
+.about-bullets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--bone-line);
+}
+
+.about-bullets li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--bone-line);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.about-bullets li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  margin-top: 8px;
+  flex: none;
+}
+
+.about-bullets li strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.about-close {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+@media (min-width: 1024px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 4px;
+}
+
+.marquee-track {
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  animation: slide 60s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.shoot-ph {
+  margin: 0;
+  position: relative;
+  width: 240px;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--bone-line);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  flex: none;
+}
+
+.shoot-ph.wide {
+  width: 340px;
+  aspect-ratio: 3 / 2;
+}
+
+@keyframes slide {
+  to { transform: translateX(calc(-50% - var(--gap) / 2)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .marquee { overflow-x: auto; }
+  .logo-marquee-track {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+  .logo-pill[aria-hidden="true"],
+  .render-thumb[aria-hidden="true"],
+  .shoot-ph[aria-hidden="true"] { display: none; }
+  .wcard:hover, .wcard:focus-within,
+  .work-frame:hover, .work-frame:focus-visible, .work-frame:focus-within { transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ==========================================================================
+   13. FIND US (§4.10 — PICKS UP GLOBAL HEADER BLOCK, LINE RULE & TYPE TOKENS)
+   ========================================================================== */
+.loc {
+  display: grid;
+  gap: var(--gap);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  background: var(--ink-2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+th {
+  font: 700 11px/1.4 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--bone);
+  background: var(--red);
+  border-bottom-color: var(--ink);
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+td:first-child {
+  white-space: nowrap;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-right: 1px solid var(--line);
+}
+
+td:last-child {
+  color: var(--ash);
+}
+
+.map {
+  position: relative;
+  border: 1px solid var(--line);
+  min-height: 320px;
+  overflow: hidden;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 36px 36px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 36px 36px,
+    radial-gradient(rgba(215, 38, 30, 0.24) 1px, transparent 0) 18px 18px / 36px 36px,
+    var(--ink-2);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.pin {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  text-align: center;
+  padding: 26px 22px;
+  background: var(--ink);
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red);
+  max-width: 320px;
+}
+
+.pin i {
+  width: 14px;
+  height: 14px;
+  background: var(--red);
+  display: block;
+}
+
+.pin p {
+  font-size: 14px;
+  color: var(--ash);
+}
+
+.pin strong {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--bone);
+  display: block;
+  margin-bottom: 4px;
+}
+
+@media (min-width: 900px) {
+  .loc {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+}
+
+/* ==========================================================================
+   14. FAQ (§4.14 — CLAUDE V3'S VERSION ON BONE GROUND)
+   ========================================================================== */
+.faq-wrap {
+  padding-inline: var(--inset);
+}
+
+.faq {
+  display: grid;
+  gap: 12px;
+  max-width: 960px;
+}
+
+.faq details {
+  background: var(--bone-2);
+  border: 1px solid var(--bone-line);
+  padding-inline: 26px;
+}
+
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 0;
+  font-family: var(--sans);
+  font-stretch: 115%;
+  font-variation-settings: "wdth" 115;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--ink);
+  background: var(--bone-2);
+  flex: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Plus icon; the vertical bar hides when open, leaving a minus */
+.faq-icon::before,
+.faq-icon::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.faq-icon::before { width: 14px; height: 2px; }
+.faq-icon::after { width: 2px; height: 14px; }
+
+.faq details[open] .faq-icon {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bone);
+}
+
+.faq details[open] .faq-icon::after {
+  display: none;
+}
+
+.faq p {
+  padding: 0 0 26px;
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 65ch;
+}
+
+/* ==========================================================================
+   15. FINAL CALL TO ACTION (§4.15 — GEMINI V3'S VERSION)
+   ========================================================================== */
+.final {
+  text-align: left;
+  display: grid;
+}
+
+.final-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 24px;
+}
+
+.final-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 24px;
+  background: var(--red-2);
+  color: var(--bone);
+  border-top: 1px solid rgba(20, 19, 18, 0.45);
+}
+
+.final-tile:first-child {
+  border-top: 0;
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.final-tile-top {
+  display: grid;
+  gap: 10px;
+}
+
+.final-tile-title {
+  font-size: clamp(18px, 1.42vw, 26px);
+  line-height: 0.92;
+}
+
+.final-tile:first-child .final-tile-title {
+  font-size: clamp(26px, 2.3vw, 42px);
+}
+
+.final-tile-desc {
+  font: 600 15px/1.4 var(--sans);
+  max-width: 24ch;
+}
+
+.final-tile .btn {
+  align-self: flex-start;
+  padding: 14px 18px;
+  font-size: 13px;
+}
+
+.btn-ink-bordered {
+  background: var(--ink);
+  color: var(--bone);
+  border: 1px solid var(--ink);
+}
+
+.btn-ink-bordered:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+@media (min-width: 640px) and (max-width: 1279px) {
+  .final-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .final-tile:first-child {
+    grid-column: span 2;
+  }
+  .final-tile:nth-child(even) {
+    border-right: 1px solid rgba(20, 19, 18, 0.45);
+  }
+}
+
+@media (min-width: 1280px) {
+  .final-grid {
+    grid-template-columns: 1.45fr repeat(4, minmax(0, 1fr));
+  }
+  .final-tile {
+    border-top: 0;
+    border-left: 1px solid rgba(20, 19, 18, 0.45);
+    padding: 30px 22px;
+    min-height: 240px;
+  }
+  .final-tile:first-child {
+    border-left: 0;
+    padding: 30px 28px;
+  }
+}
+
+/* ==========================================================================
+   16. FOOTER + STICKY SERVICE BAR (§4.16 & §4.17)
+   ========================================================================== */
+footer.sec {
+  padding-bottom: 92px;
+}
+
+.foot {
+  display: grid;
+  gap: 32px;
+}
+
+.foot-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.foot h4 {
+  font: 700 11px/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--red);
+  margin-bottom: 14px;
+}
+
+.foot ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.foot a {
+  text-decoration: none;
+  font: 600 14px/1.4 var(--sans);
+  color: var(--bone);
+}
+
+.foot a:hover {
+  color: var(--red);
+}
+
+.foot-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  font: 500 12px/1.4 var(--mono);
+  color: var(--ash);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 768px) {
+  .foot-cols {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: var(--red-deep);
+  border-top: 2px solid var(--red);
+  transform: translateY(110%);
+  transition: transform 0.25s ease;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+
+.sticky.on {
+  transform: none;
+}
+
+.sticky-in {
+  max-width: var(--max);
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.sticky .btn {
+  padding: 12px 16px;
+  font-size: 12px;
+  flex: none;
+  white-space: nowrap;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 899px) {
+  .sticky-in {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .sticky-in::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE RAIL & INSET TUNING (DESKTOP / TABLET / MOBILE 375PX)
+   ========================================================================== */
+@media (max-width: 1023px) {
+  :root {
+    --rail: 20px;
+    --inset: 20px;
+    --gap: 12px;
+  }
+}
+
+@media (max-width: 639px) {
+  :root {
+    --rail: 0px;
+    --inset: 20px;
+    --gap: 12px;
+  }
+  .frame {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .frame::before,
+  .frame::after {
+    display: none;
+  }
+  .announce {
+    font-size: 11px;
+    padding: 8px 12px;
+    gap: 6px 8px;
+  }
+  .nav-in {
+    height: 56px;
+    padding-inline: 14px;
+    gap: 6px;
+  }
+  .logo {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    gap: 8px;
+  }
+  .logo i {
+    width: 12px;
+    height: 12px;
+  }
+  .nav .btn {
+    padding: 9px 10px;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+  }
+  .people {
+    grid-template-columns: 1fr;
+  }
+  td:first-child {
+    white-space: normal;
+  }
+}
+
+/* ===== BLUE TAP-HIGHLIGHT FIX ===== */
+* { -webkit-tap-highlight-color: transparent; }
+
+a, button, [role="button"], [tabindex], .clickable, summary {
+  -webkit-appearance: none;
+          appearance: none;
+}
+a:focus, button:focus, [role="button"]:focus, [tabindex]:focus, .clickable:focus, summary:focus {
+  outline: none;
+}
+
+a::selection,            a *::selection,
+button::selection,       button *::selection,
+[role="button"]::selection, [role="button"] *::selection,
+[tabindex]::selection,   [tabindex] *::selection,
+.clickable::selection,   .clickable *::selection,
+summary::selection,      summary *::selection {
+  background: transparent;
+}
+
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
+[tabindex]:focus-visible, .clickable:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+/* ===== END FIX ===== */
+</style>
+</head>
+<body>
+<!-- Texture experiment (§2.5): add class="tex-inside" to <body> to move dot grids from section grounds into inner panels. -->
+
+<!-- 0. ANNOUNCEMENT BAR -->
+<div class="announce">
+  <span class="announce-tag">Bedford</span>
+  <span>Workshops now booking. Co-working opens next month.</span>
+</div>
+
+<!-- 1. NAVIGATION -->
+<header class="nav">
+  <div class="nav-bar">
+    <div class="frame">
+      <div class="col nav-in">
+        <a class="logo" href="#top"><i></i>The Manor</a>
+        <nav class="nav-links" aria-label="Main">
+          <a href="#work">Work</a>
+          <a href="#workshops">Workshops</a>
+          <a href="#production">Production</a>
+          <a href="#studio">Studio</a>
+          <a href="#coworking">Co-working</a>
+          <a href="#events">Events</a>
+          <a href="#about">About</a>
+          <a href="#find-us">Find us</a>
+        </nav>
+        <a class="btn btn-red" href="#workshops">Book a workshop</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-stripe" aria-hidden="true"></div>
+</header>
+
+<main>
+
+  <!-- 2. HERO (INK + DOT GRID, NO INTERNAL HAIRLINES) -->
+  <section class="sec theme-ink-dots" id="hero-sec">
+    <div class="frame">
+      <div class="col hero-grid">
+        <div class="hero-left hero">
+          <div class="tw-inset-lg">
+            <h1 class="h1 h1-mega">Learn to make content. <em>From zero.</em></h1>
+          </div>
+          <div class="tw-inset hero-sub">
+            <span class="hero-sub-rule" aria-hidden="true"></span>
+            <p class="hero-sub-lead">No experience. No gear. No audience.</p>
+            <p class="hero-sub-follow">Leave with your first finished video.</p>
+          </div>
+          <div class="tw-inset hero-cta-row">
+            <a class="btn btn-red" href="#workshops">Book a workshop <span aria-hidden="true">→</span></a>
+            <span class="hero-cta-note">Groups of 10–15 · All gear provided</span>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-media">
+            <span class="ph ph-red">Launch video · add link</span>
+            <img src="img/19_47_44_2.jpg" alt="The podcast room: wooden table, two mics, framed prints on dark walls">
+            <div class="play" aria-hidden="true">
+              <span><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2b. HERO STRIP — FIVE BIG, BOLD SERVICE BOXES (GROK LAYOUT & COLOURS) -->
+    <div class="sub-band theme-red" aria-label="Services">
+      <div class="frame">
+        <div class="col srv-grid">
+          <a class="srv-box" href="#workshops">
+            <span class="srv-title">Workshops for beginners</span>
+            <span class="srv-desc">Make your first video in a day.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#studio">
+            <span class="srv-title">Studio hire</span>
+            <span class="srv-desc">Sound-isolated. Ready to record.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#production">
+            <span class="srv-title">Production</span>
+            <span class="srv-desc">We shoot it. You post it.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#coworking">
+            <span class="srv-title">Co-working</span>
+            <span class="srv-desc">Opening next month.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#events">
+            <span class="srv-title">Events</span>
+            <span class="srv-desc">One minute from the station.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CLIENT LOGO STRIP (FRAMED COLUMN ON BONE: INFINITE MARQUEE) -->
+  <section class="sec theme-bone" id="trust" aria-label="Trusted clients">
+    <div class="frame">
+      <div class="col trust-strip">
+        <div class="logo-marquee">
+          <div class="logo-marquee-track">
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill" aria-hidden="true">Client logo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. OUR WORK (FRAMED COLUMN SHOWREEL: 6 VIDEOS IN 2 ROWS ON PLAIN --ink-0) -->
+  <section class="sec theme-ink-0-plain" id="work">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Our work</p>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">See our work.</h2>
+            <div class="trust-tabs" aria-label="Client categories">
+              <span class="trust-tab">Influencers with 5M+ followers</span>
+              <span class="trust-tab">Global brands</span>
+              <span class="trust-tab">Leading politicians</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-row-wrap">
+          <div class="work-grid">
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 1">
+                <span class="ph">Video to come</span>
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Video title to come</h3>
+                <p class="work-meta">Client · format to come</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 2">
+                <span class="ph">Video to come</span>
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Video title to come</h3>
+                <p class="work-meta">Client · format to come</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 3">
+                <span class="ph">Video to come</span>
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Video title to come</h3>
+                <p class="work-meta">Client · format to come</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 4">
+                <span class="ph">Video to come</span>
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Video title to come</h3>
+                <p class="work-meta">Client · format to come</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 5">
+                <span class="ph">Video to come</span>
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Video title to come</h3>
+                <p class="work-meta">Client · format to come</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 6">
+                <span class="ph">Video to come</span>
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Video title to come</h3>
+                <p class="work-meta">Client · format to come</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="work-bottom">
+          <a class="btn btn-line" href="https://storytelling.group" target="_blank" rel="noopener">More on storytelling.group <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WORKSHOPS (INK GROUND + SPLIT HEADING + CLAUDE V3 TAG BAR + S5 HOVER LIFT) -->
+  <section class="sec theme-ink" id="workshops">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Workshops · groups of 10–15</p>
+            <span class="coord">05 programmes · Bedford</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Content and podcast workshops.</h2>
+            <p class="lede">For complete beginners. Learn by doing, in a real studio.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel s3-panel track-wrap">
+          <div class="track-controls" aria-label="Workshop card controls">
+            <button class="icon-btn" data-dir="-1" data-for="wtrack" aria-label="Previous workshops">←</button>
+            <button class="icon-btn" data-dir="1" data-for="wtrack" aria-label="Next workshops">→</button>
+          </div>
+          <div class="track" id="wtrack">
+            <article class="wcard slab-red">
+              <div class="wcard-top"><span>Beginner · 2 hours</span><span class="wcard-num">Start · £50</span></div>
+              <div class="wcard-body">
+                <div class="albers-sq" aria-hidden="true"></div>
+                <h3>Beginner Q&amp;A session</h3>
+                <p class="desc">Try the cameras, lights and mics, and ask anything about starting out. A low-cost first step.</p>
+                <div class="meta"><span>Price <b>£50</b></span><span>Next date <b>TBC</b></span></div>
+                <a class="btn btn-ink" href="#workshops">Book this workshop</a>
+              </div>
+            </article>
+
+            <article class="wcard slab-ink">
+              <div class="wcard-top"><span>Beginner · 1 day</span><span class="wcard-num">02</span></div>
+              <div class="wcard-body">
+                <div class="albers-sq" aria-hidden="true"></div>
+                <h3>Launch your first podcast</h3>
+                <p class="desc">Plan your show, record in the sound-isolated studio and finish an episode intro you can publish.</p>
+                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
+                <a class="btn btn-red" href="#workshops">Book this workshop</a>
+              </div>
+            </article>
+
+            <article class="wcard slab-oxblood">
+              <div class="wcard-top"><span>Beginner · 1 day</span><span class="wcard-num">03</span></div>
+              <div class="wcard-body">
+                <div class="albers-sq" aria-hidden="true"></div>
+                <h3>Launch your content career</h3>
+                <p class="desc">Go from first idea to first finished video. Built for career switchers starting from scratch.</p>
+                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
+                <a class="btn btn-bone" href="#workshops">Book this workshop</a>
+              </div>
+            </article>
+
+            <article class="wcard slab-grid">
+              <div class="wcard-top"><span>Beginner · 1 day</span><span class="wcard-num">04</span></div>
+              <div class="wcard-body">
+                <div class="albers-sq" aria-hidden="true"></div>
+                <h3>Learn to edit your own videos</h3>
+                <p class="desc">Cut, colour and caption your footage so you never depend on someone else to finish it.</p>
+                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
+                <a class="btn btn-red" href="#workshops">Book this workshop</a>
+              </div>
+            </article>
+
+            <article class="wcard slab-bone">
+              <div class="wcard-top"><span>Advanced</span><span class="wcard-num">Flagship</span></div>
+              <div class="wcard-body">
+                <div class="albers-sq" aria-hidden="true"></div>
+                <h3>Advanced content creation</h3>
+                <p class="desc">Strategy, scriptwriting, storytelling, AI workflows, recording, editing and publishing. You record a short video to take away.</p>
+                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
+                <a class="btn btn-ink" href="#workshops">Book this workshop</a>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="cta-strip">
+          <span class="cta-strip-copy">Not sure where to start? Try the 2-hour Beginner Q&amp;A session for £50.</span>
+          <a class="btn btn-red" href="#workshops">Reserve £50 Q&amp;A seat <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. VLOG — FROM CONCEPT TO REALITY (OXBLOOD GROUND, ONE S3 PANEL WRAPPING EPISODES, RENDERS & CTA) -->
+  <section class="sec theme-oxblood" id="vlog">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Vlog · the build</p>
+            <span class="coord">05 episodes · 06 renders</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">From concept to reality.</h2>
+            <p class="lede">Watch us build the studio.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel s3-panel vlog-panel">
+          <!-- 6a. Five static build episodes in one row on desktop -->
+          <div class="vlog-grid">
+            <a class="vcard" href="#vlog">
+              <span class="ph">Episode link to come</span>
+              <span class="vcard-ghost" aria-hidden="true">01</span>
+              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <span class="ep">The build · EP. 01</span>
+              <h3>Getting the keys</h3>
+            </a>
+            <a class="vcard" href="#vlog">
+              <span class="ph">Episode link to come</span>
+              <span class="vcard-ghost" aria-hidden="true">02</span>
+              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <span class="ep">The build · EP. 02</span>
+              <h3>Building the sound panels</h3>
+            </a>
+            <a class="vcard" href="#vlog">
+              <span class="ph">Episode link to come</span>
+              <span class="vcard-ghost" aria-hidden="true">03</span>
+              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <span class="ep">The build · EP. 03</span>
+              <h3>Making the tables</h3>
+            </a>
+            <a class="vcard" href="#vlog">
+              <span class="ph">Episode link to come</span>
+              <span class="vcard-ghost" aria-hidden="true">04</span>
+              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <span class="ep">The build · EP. 04</span>
+              <h3>Painting the walls</h3>
+            </a>
+            <a class="vcard" href="#vlog">
+              <span class="ph">Episode link to come</span>
+              <span class="vcard-ghost" aria-hidden="true">05</span>
+              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <span class="ep">The build · EP. 05</span>
+              <h3>Setting up the first workshop</h3>
+            </a>
+          </div>
+
+          <!-- 6b. Six concept renders in a continuous marquee 40px underneath -->
+          <div class="render-marquee marquee" aria-label="Studio concept renders">
+            <div class="marquee-track">
+              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_44_2.jpg" alt="Concept render of the sound-isolated podcast booth"><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_19.jpg" alt="Concept render of the production floor with green screen and editing desk"><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_31.jpg" alt="Concept render of the co-working and workshop room"><figcaption class="render-thumb-cap">Co-working room</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_18.jpg" alt="Concept render of the co-working space busy with members"><figcaption class="render-thumb-cap">Co-working in use</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_44_3.jpg" alt="Concept render of the corridor with window desks"><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_28.jpg" alt="Concept render of an evening talk and event night"><figcaption class="render-thumb-cap">Event night</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_44_2.jpg" alt=""><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_19.jpg" alt=""><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_31.jpg" alt=""><figcaption class="render-thumb-cap">Co-working room</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_18.jpg" alt=""><figcaption class="render-thumb-cap">Co-working in use</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_44_3.jpg" alt=""><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_28.jpg" alt=""><figcaption class="render-thumb-cap">Event night</figcaption></figure>
+            </div>
+          </div>
+
+          <!-- 6c. Subscribe on YouTube strip at the bottom of the panel -->
+          <div class="cta-strip">
+            <span class="cta-strip-copy">Follow every episode as the studio comes together in Bedford.</span>
+            <a class="btn btn-ink" href="https://www.youtube.com/" target="_blank" rel="noopener">Subscribe on YouTube <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DONE-FOR-YOU VIDEO PRODUCTION (ON --ink-0 + COPY PANEL AT BOTTOM RIGHT) -->
+  <section class="sec theme-ink-0" id="production">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <span class="prod-slab">Done for you · The Storytelling Group</span>
+            <span class="coord">Full-service agency</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Done-for-you video production.</h2>
+            <p class="lede">Real shoots with real clients. No stock footage.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel">
+          <div class="prod">
+            <div class="shot s1 prod-lead">
+              <span class="ph ph-red">Concept render</span>
+              <img src="img/19_47_45_19.jpg" alt="Production floor with a camera operator, an editing desk and a green screen">
+            </div>
+            <div class="prod-copy">
+              <p>Talking-head videos for personal brands, founders, coaches, authors, startups and businesses. We plan, light, shoot and edit. You focus on your message.</p>
+              <ul>
+                <li><span>Set-up</span><span>2–3 hours</span></li>
+                <li><span>Filming</span><span>Up to 8 hours</span></li>
+                <li><span>Output</span><span>Unlimited content</span></li>
+              </ul>
+              <div class="prod-btns">
+                <a class="btn btn-red" href="https://storytelling.group" target="_blank" rel="noopener">Get a quote <span aria-hidden="true">↗</span></a>
+                <a class="btn btn-red-outline" href="https://storytelling.group" target="_blank" rel="noopener">See our work <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+            <div class="shot prod-a">
+              <span class="ph">Shoot photo to come</span>
+              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+            </div>
+            <div class="shot prod-b">
+              <span class="ph">Shoot photo to come</span>
+              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+            </div>
+            <div class="shot prod-c">
+              <span class="ph">Shoot photo to come</span>
+              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+            </div>
+            <div class="shot prod-d">
+              <span class="ph">Shoot photo to come</span>
+              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CLIENTS & TESTIMONIALS (BONE GROUND: HEADER BLOCK + CRISS-CROSS LOGO GRID + TESTIMONIALS) -->
+  <section class="sec theme-bone" id="clients" aria-label="Clients and testimonials">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Clients</p>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Clients who trust us.</h2>
+            <p class="lede">Content for influencers with up to 5 million followers, leading politicians, national charities and multinational food brands.</p>
+          </div>
+        </div>
+
+        <div class="tw-sponsors-wrap">
+          <div class="tw-sponsors">
+            <div class="tw-sponsors__cols" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
+          </div>
+        </div>
+
+        <div class="testimonials-block">
+          <figure class="quote">
+            <div class="quote-grid">
+              <div class="quote-mark" aria-hidden="true">“</div>
+              <blockquote>In our clients’ words.</blockquote>
+            </div>
+          </figure>
+          <div class="testi-videos">
+            <div class="testi-video-frame">
+              <span class="testi-video-ph">Client video to come</span>
+              <iframe class="yt-lazy" title="Client testimonial 1" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="testi-video-frame">
+              <span class="testi-video-ph">Client video to come</span>
+              <iframe class="yt-lazy" title="Client testimonial 2" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="testi-video-frame">
+              <span class="testi-video-ph">Client video to come</span>
+              <iframe class="yt-lazy" title="Client testimonial 3" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="testi-video-frame">
+              <span class="testi-video-ph">Client video to come</span>
+              <iframe class="yt-lazy" title="Client testimonial 4" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. STUDIO HIRE (OXBLOOD GROUND — GROK BENTO IN GEMINI TYPE & FRAME) -->
+  <section class="sec theme-oxblood" id="studio">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Studio hire</p>
+            <span class="coord">Acoustic isolation · Bedford</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Hire the studio.</h2>
+            <p class="lede">For podcasters, creators, voice artists, coaches and businesses who need a professional space to record.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel">
+          <div class="bento">
+            <div class="tile photo">
+              <span class="ph ph-red">Concept render</span>
+              <img src="img/19_47_44_2.jpg" alt="The sound-isolated recording room">
+            </div>
+            <div class="tile t2">
+              <p class="eyebrow">Recording room</p>
+              <h3>Sound-isolated walls and ceiling.</h3>
+              <p>Video, podcasts, audiobooks and voiceover with no echo and no street noise.</p>
+            </div>
+            <div class="tile t3 rates">
+              <p class="big">Rates on request</p>
+              <small>Hourly and day hire to confirm</small>
+            </div>
+            <div class="tile t4 stripe tex-stripes-light">
+              <p class="eyebrow">Editing suite</p>
+              <p>A quiet room to cut your footage after the shoot.</p>
+            </div>
+            <div class="tile t5">
+              <p class="eyebrow">Kitchen</p>
+              <p>Tea, coffee and lunch on site for long sessions.</p>
+            </div>
+            <div class="tile t6 go">
+              <a class="btn btn-ink" href="#find-us" style="justify-self: start">Check availability</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CO-WORKING (LOCKED TO V3 — INK GROUND, INTERNAL LINES KEPT) -->
+  <section class="sec theme-ink" id="coworking">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="tw-rule tw-inset eyebrow-bar">
+          <p class="eyebrow">Co-working · opening next month</p>
+          <span class="coord">Waitlist open</span>
+        </div>
+        <div class="tw-rule tw-rule--b tw-inset-lg split">
+          <div class="split-img">
+            <span class="ph ph-red">Concept render</span>
+            <img src="img/19_47_45_18.jpg" alt="People working on laptops at long wooden tables">
+          </div>
+          <div class="split-copy">
+            <h2 class="h2"><em>Co-working</em> for a community of creators and <em>founders</em>.</h2>
+            <p class="lede">Work alongside people building things, with a studio next door. Opening next month, so join the waitlist.</p>
+            <ul class="checks">
+              <li>Desks by the window, one minute from the station</li>
+              <li>Recording room and editing suite next door</li>
+              <li>Workshops and meetups with the people around you</li>
+            </ul>
+            <div><a class="btn btn-red" href="#coworking">Join the waitlist</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. EVENTS (LIGHTER PHOTO BAND, ARCHIVO TAGS, NO INTERNAL LINES, 28PX GAP) -->
+  <section class="sec band" id="events">
+    <img class="band-bg" src="img/19_47_45_28.jpg" alt="">
+    <div class="frame">
+      <div class="col sec-pad events-col">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+          <span class="events-slab">Event hire · Bedford</span>
+          <span class="ph" style="position: static">Concept render</span>
+        </div>
+        <h2 class="h2">Host your event with us.</h2>
+        <p class="lede" style="color: var(--bone)">Workshops, meetups, team days and celebrations, one minute from Bedford train station.</p>
+        <div class="tags">
+          <span>Workshops</span>
+          <span>Meetups</span>
+          <span>Team days</span>
+          <span>Launches</span>
+          <span>Celebrations</span>
+        </div>
+        <div>
+          <a class="btn btn-red" href="#find-us">Check availability</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. MEET JAY AND ANDREW (BONE GROUND + TOP H2 + 4:5 S2 PORTRAITS + INFINITE SHOOT STRIP) -->
+  <section class="sec theme-bone" id="about">
+    <div class="frame">
+      <div class="col about-top">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">About</p>
+            <span class="coord">Founders · Bedford</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Meet Jay and Andrew.</h2>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <div class="people">
+            <div class="person">
+              <div class="portrait">
+                <span class="ph">Portrait · Jay</span>
+                <span class="portrait-stamp">Photo needed</span>
+                <h3 class="portrait-name">Jay</h3>
+              </div>
+              <p class="person-role">Co-founder · Role to confirm<br>@instagram</p>
+            </div>
+            <div class="person">
+              <div class="portrait">
+                <span class="ph">Portrait · Andrew</span>
+                <span class="portrait-stamp">Photo needed</span>
+                <h3 class="portrait-name">Andrew</h3>
+              </div>
+              <p class="person-role">Co-founder · Producer and director<br>@instagram</p>
+            </div>
+          </div>
+          <div class="about-text">
+            <ul class="about-bullets">
+              <li><span>20+ years making podcasts, documentaries and social content between us</span></li>
+              <li><span>Leading media brands, including <strong>The Telegraph</strong></span></li>
+              <li><span>Influencers with up to <strong>5 million followers</strong></span></li>
+              <li><span>Politicians in the UK and abroad, including <strong>UK Parliament</strong></span></li>
+              <li><span>Multinational food brands</span></li>
+              <li><span>National and international charities</span></li>
+            </ul>
+            <p class="about-close">Now we teach what we do every day.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full-width shoot photo strip (56px below bullets, 128px bottom padding after strip, 12 per set / 24 total) -->
+    <div class="sub-band theme-bone about-strip">
+      <div class="marquee" aria-label="Photos from client shoots">
+        <div class="marquee-track">
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. FIND US (INK GROUND — PICKS UP GLOBAL HEADER BLOCK, LINE RULE & TYPE TOKENS) -->
+  <section class="sec theme-ink" id="find-us">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Space &amp; location</p>
+            <span class="coord">2B Ashburnham Rd · Bedford</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Find us.</h2>
+            <p class="lede">One minute from Bedford train station.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel">
+          <div class="loc">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Space</th><th>Used for</th></tr></thead>
+                <tbody>
+                  <tr><td>Large room</td><td>Workshops, co-working and events, with its own hallway</td></tr>
+                  <tr><td>Recording room</td><td>Fully sound-isolated. Video, podcasts, audiobooks, voiceover</td></tr>
+                  <tr><td>Small room</td><td>Editing suite, meeting room</td></tr>
+                  <tr><td>Kitchen</td><td>Tea, coffee and lunch on site</td></tr>
+                  <tr><td>Bathroom</td><td>On site</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="map">
+              <div class="pin">
+                <i></i>
+                <p><strong>2B Ashburnham Road, Bedford</strong>One minute from Bedford station</p>
+                <a class="btn btn-red" href="https://www.google.com/maps/search/?api=1&query=2B+Ashburnham+Road+Bedford" target="_blank" rel="noopener">Open in Maps <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. FAQ (BONE GROUND — CLAUDE V3'S VERSION) -->
+  <section class="sec theme-bone" id="faq">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">FAQ</p>
+            <span class="coord">10 questions answered</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Frequently asked questions.</h2>
+          </div>
+        </div>
+
+        <div class="faq-wrap">
+          <div class="faq">
+            <details><summary>Do I need any experience to join a workshop?<span class="faq-icon" aria-hidden="true"></span></summary><p>No. Some basic photography, camera or video knowledge makes it easier, but it isn't required.</p></details>
+            <details><summary>Do I need to bring my own camera or mic?<span class="faq-icon" aria-hidden="true"></span></summary><p>No, everything is provided. You're welcome to bring your own. If you're deciding which mic or camera to buy, we'll help you plan your setup.</p></details>
+            <details><summary>What will I leave with at the end of the day?<span class="faq-icon" aria-hidden="true"></span></summary><p>Your own finished short video: a promo, a podcast intro or any short piece you want to publish.</p></details>
+            <details><summary>How many people are in each workshop?<span class="faq-icon" aria-hidden="true"></span></summary><p>10 to 15 people.</p></details>
+            <details><summary>Can I really switch careers through content creation?<span class="faq-icon" aria-hidden="true"></span></summary><p>The workshops give you real, hands-on skills and a first finished piece of work. That's a practical first step. Where you take it next is up to you.</p></details>
+            <details><summary>What editing software do you use?<span class="faq-icon" aria-hidden="true"></span></summary><p>Answer to come.</p></details>
+            <details><summary>Can I hire the studio by the hour?<span class="faq-icon" aria-hidden="true"></span></summary><p>Answer to come.</p></details>
+            <details><summary>Do you offer done-for-you production?<span class="faq-icon" aria-hidden="true"></span></summary><p>Yes. We plan, shoot and edit for you. See storytelling.group for our work.</p></details>
+            <details><summary>When does co-working open, and how do I join?<span class="faq-icon" aria-hidden="true"></span></summary><p>Next month. Join the waitlist to get first access.</p></details>
+            <details><summary>Is there parking near the studio?<span class="faq-icon" aria-hidden="true"></span></summary><p>We're one minute from Bedford train station. Parking details to come.</p></details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. FINAL CALL TO ACTION (FULL RED GROUND + 5 SERVICE CTA TILES) -->
+  <section class="sec theme-red" id="end">
+    <div class="frame">
+      <div class="col sec-pad final">
+        <div class="tw-inset eyebrow-bar">
+          <p class="eyebrow">Next workshop is now booking</p>
+          <span class="coord">Bedford · Groups of 10–15</span>
+        </div>
+        <div class="tw-inset-lg">
+          <h2 class="h1-mega">Ready to start?</h2>
+        </div>
+        <div class="final-grid">
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Workshops</h3>
+              <p class="final-tile-desc">Make your first video in a day. Groups of 10–15.</p>
+            </div>
+            <a class="btn btn-red" href="#workshops">Book a workshop <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Production</h3>
+              <p class="final-tile-desc">We plan, shoot and edit. You post it.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="https://storytelling.group" target="_blank" rel="noopener">Get a quote <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Studio hire</h3>
+              <p class="final-tile-desc">Sound-isolated room, ready to record.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="#studio">Check availability</a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Co-working</h3>
+              <p class="final-tile-desc">Opening next month. Desks next to the studio.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="#coworking">Join the waitlist</a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Events</h3>
+              <p class="final-tile-desc">Workshops, meetups, launches and team days.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="#events">Enquire</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 16. FOOTER (INK GROUND) -->
+<footer class="sec theme-ink">
+  <div class="frame">
+    <div class="col sec-pad tw-inset foot">
+      <div class="foot-cols">
+        <div><h4>Learn</h4><ul><li><a href="#workshops">Workshops</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+        <div><h4>Hire</h4><ul><li><a href="#studio">Studio hire</a></li><li><a href="#events">Events</a></li><li><a href="#coworking">Co-working</a></li></ul></div>
+        <div><h4>Work with us</h4><ul><li><a href="#production">Production</a></li><li><a href="https://storytelling.group" target="_blank" rel="noopener">storytelling.group ↗</a></li></ul></div>
+        <div><h4>Follow</h4><ul><li><a href="https://www.youtube.com/" target="_blank" rel="noopener">YouTube ↗</a></li><li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram ↗</a></li></ul></div>
+      </div>
+      <div class="foot-bottom">
+        <span>The Manor — 2B Ashburnham Road</span>
+        <span><a href="#top">Privacy</a> · <a href="#top">Terms</a></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY SERVICE BAR (OXBLOOD GROUND, FIVE RED BUTTONS) -->
+<div class="sticky" id="sticky" aria-hidden="true">
+  <div class="sticky-in">
+    <a class="btn btn-red" href="#workshops" tabindex="-1">Book a workshop</a>
+    <a class="btn btn-red" href="https://storytelling.group" target="_blank" rel="noopener" tabindex="-1">Get a quote</a>
+    <a class="btn btn-red" href="#studio" tabindex="-1">Hire the studio</a>
+    <a class="btn btn-red" href="#coworking" tabindex="-1">Join co-working</a>
+    <a class="btn btn-red" href="#events" tabindex="-1">Host an event</a>
+  </div>
+</div>
+
+<script>
+// Carousel arrows for workshop track (#wtrack at <1280px)
+document.querySelectorAll('.icon-btn[data-for]').forEach(b => {
+  const t = document.getElementById(b.dataset.for);
+  if (!t) return;
+  b.addEventListener('click', () => {
+    const c = t.firstElementChild;
+    const gap = parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 12;
+    t.scrollBy({ left: (c.offsetWidth + gap) * +b.dataset.dir, behavior: 'smooth' });
+  });
+});
+
+function arrowState(t) {
+  document.querySelectorAll('.icon-btn[data-for="' + t.id + '"]').forEach(b => {
+    b.disabled = b.dataset.dir < 0 ? t.scrollLeft < 4 : t.scrollLeft + t.clientWidth >= t.scrollWidth - 4;
+  });
+}
+
+document.querySelectorAll('.track').forEach(t => {
+  arrowState(t);
+  t.addEventListener('scroll', () => arrowState(t), { passive: true });
+  window.addEventListener('resize', () => arrowState(t), { passive: true });
+});
+
+// Click-to-play YouTube facade for showreel (#work, §4.4)
+document.querySelectorAll('.work-frame[data-video-id]').forEach(frame => {
+  const id = (frame.dataset.videoId || '').trim();
+  if (id && id !== 'VIDEO_ID') {
+    const ph = frame.querySelector('.ph');
+    if (ph) ph.remove();
+    const img = document.createElement('img');
+    img.className = 'work-thumb';
+    img.src = 'https://i.ytimg.com/vi/' + encodeURIComponent(id) + '/hqdefault.jpg';
+    img.alt = '';
+    img.loading = 'lazy';
+    frame.prepend(img);
+  }
+  const playVideo = () => {
+    const vid = (frame.dataset.videoId || '').trim();
+    if (!vid || vid === 'VIDEO_ID' || frame.querySelector('iframe')) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0&playsinline=1';
+    iframe.title = frame.getAttribute('aria-label') || 'Showreel video';
+    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    iframe.allowFullscreen = true;
+    frame.replaceChildren(iframe);
+  };
+  frame.addEventListener('click', playVideo);
+  frame.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      playVideo();
+    }
+  });
+});
+
+// Lazy-load YouTube testimonial iframes on scroll into view (§4.8)
+const ytObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const iframe = entry.target;
+    const vid = (iframe.dataset.videoId || '').trim();
+    const rawSrc = iframe.dataset.src || '';
+    if (vid && vid !== 'VIDEO_ID') {
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&mute=1&cc_load_policy=1&playsinline=1&loop=1&playlist=' + encodeURIComponent(vid) + '&rel=0';
+      iframe.closest('.testi-video-frame').classList.add('is-loaded');
+    } else if (rawSrc && !rawSrc.includes('VIDEO_ID')) {
+      iframe.src = rawSrc;
+      iframe.closest('.testi-video-frame').classList.add('is-loaded');
+    }
+    ytObserver.unobserve(iframe);
+  });
+}, { rootMargin: '120px' });
+
+document.querySelectorAll('iframe.yt-lazy').forEach(el => ytObserver.observe(el));
+
+// Sticky service bar after hero (§4.17)
+const hero = document.getElementById('hero-sec'),
+      bar = document.getElementById('sticky'),
+      end = document.getElementById('end');
+let pastHero = false, atEnd = false;
+const sync = () => {
+  const on = pastHero && !atEnd;
+  bar.classList.toggle('on', on);
+  bar.setAttribute('aria-hidden', !on);
+  bar.querySelectorAll('a').forEach(a => { a.tabIndex = on ? 0 : -1; });
+};
+new IntersectionObserver(([e]) => {
+  pastHero = !e.isIntersecting && e.boundingClientRect.top < 0;
+  sync();
+}).observe(hero);
+new IntersectionObserver(([e]) => {
+  atEnd = e.isIntersecting;
+  sync();
+}).observe(end);
+</script>
+</body>
+</html>
