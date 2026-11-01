@@ -3184,8 +3184,15 @@ footer.sec {
 
 /* 3. Workshop (#workshops): single title (no duplicate h3 inside card), much bigger & clearer date, location (Bedford), and group size */
 .wcard.wcard-single .wcard-top {
-  font-size: 12px;
-  padding: 12px 24px;
+  font-size: 11px;
+  padding: 12px 20px;
+}
+@media (max-width: 639px) {
+  .wcard.wcard-single .wcard-top {
+    font-size: 10px;
+    padding: 10px 14px;
+    letter-spacing: 0.1em;
+  }
 }
 .wcard.wcard-single .wcard-copy p.desc {
   font-size: clamp(16px, 1.25vw, 19px);
