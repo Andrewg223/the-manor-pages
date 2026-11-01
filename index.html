@@ -3,33 +3,171 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Manor — Studio Home v4</title>
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>
+// When rendered inside Notion's S3 HTML embed block, resolve relative img/ and video/ assets from GitHub Pages
+if (typeof location !== 'undefined' && (location.hostname.indexOf('amazonaws.com') !== -1 || location.hostname.indexOf('notion') !== -1)) {
+  var _base = document.createElement('base');
+  _base.href = 'https://andrewg223.github.io/the-manor-pages/';
+  document.head.appendChild(_base);
+}
+</script>
+<title>The Manor — Studio Home v4.4</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
 /* ==========================================================================
-   THE MANOR HOME PAGE — V4
-   Brutalist, squared, high-contrast architectural grid.
-   Base: homepage-v3-gemini.html + workshop tag bar & FAQ from homepage-v3-claude.html
-   Spec: HOMEPAGE_REVISION_V4.md
+   HOW TO EDIT THIS FILE (THE MANOR HOME PAGE — V4.4)
+   --------------------------------------------------------------------------
+   1. CHANGE GLOBAL COLORS IN ONE PLACE: Edit the 3 MASTER GLOBAL COLORS
+      (--ink, --bone, --red) in STEP 1 of :root right below. Every similar
+      shade, surface, border, diagonal stripe, dot grid, gradient overlay,
+      hard shadow, and SVG play icon across the entire website is connected
+      to those 3 colors and updates automatically.
+   2. OVERRIDE ONE SPECIFIC SHADE (OPTIONAL): Every derived shade (--ink-0,
+      --ink-2, --line, --bone-2, --bone-line, --red-2, --red-deep,
+      --red-deeper, --ash, --ink-muted) is listed in STEP 2 right under the
+      Master Colors. Replace any color-mix(...) with a #HEX code to set that
+      single shade independently.
+   3. JUMP TO ONE SECTION: Press Cmd/Ctrl+F and search any section name from
+      the CONTENTS list below.
    ========================================================================== */
-:root {
-  --ink: #141312;
-  --ink-0: #0D0C0B;
-  --ink-2: #1E1C1B;
-  --line: #3A3634;
-  --bone: #ECE6DC;
-  --bone-2: #E7E0D4;
-  --bone-line: #CFC7BB;
-  --red: #D7261E;
-  --red-2: #B81C16;
-  --red-deep: #8E1410;
-  --red-deeper: #6D100D;
-  --ash: #9A938A;
-  --ink-muted: #4A453F;
 
+/* ==========================================================================
+   CONTENTS — Cmd/Ctrl+F a name below to jump to its CSS block
+   --------------------------------------------------------------------------
+   GLOBAL COLOR PALETTE (:root)
+   TYPOGRAPHY — ARCHIVO 125 DISPLAY + ARCHIVO 100 BODY + JETBRAINS MONO
+   TAILWIND-STYLE ARCHITECTURAL GRID
+   SECTION THEMES & TEXTURES
+   BUTTONS & CONTROLS
+   0. ANNOUNCEMENT BAR
+   1. NAVIGATION
+   2. HERO + 2b. GROK SERVICE BOXES
+   3. TRUST MARQUEE
+   4. OUR WORK
+   5. WORKSHOPS
+   6. INSIDE A WORKSHOP
+   7. PRODUCTION
+   8. CLIENTS & TESTIMONIALS
+   9. STUDIO HIRE
+   10. PODCASTING
+   11. CO-WORKING
+   12. FOUNDERS
+   13. BEDFORD LOCATION
+   14. FAQ
+   15. FINAL CTA
+   16. FOOTER + STICKY BAR + MODAL
+   17. RESPONSIVE BREAKPOINTS
+   BLUE TAP-HIGHLIGHT FIX
+   ========================================================================== */
+
+/* ==========================================================================
+   WHAT YOU SEE -> WHAT IT'S CALLED (and its controlling token)
+   --------------------------------------------------------------------------
+   Dark section ground ................... .theme-ink          -> --ink
+   Deepest black section ground .......... .theme-ink-0        -> --ink-0
+   Light section ground .................. .theme-bone         -> --bone
+   Signal red section ground ............. .theme-red          -> --red
+   Oxblood section ground ................ .theme-oxblood      -> --red-deep
+   Primary CTA button .................... .btn-red            -> --red
+   Dark / Light buttons .................. .btn-ink / .btn-bone-> --ink / --bone
+   Headline red highlight block .......... .hero .h1 em, .h2 em-> --red
+   Eyebrow label + square marker ......... .eyebrow            -> --ash + --red
+   Hero 4-service boxes & final CTA tiles  .srv-box/.final-tile-> --red-2
+   Workshop cards (red/oxblood/ink/bone) . .wcard.slab-*       -> --red / --red-deep / --ink-2 / --bone
+   Bento studio grid tiles ............... .bento .tile        -> --red-deep / --red-deeper
+   Hard offset shadows (S1 / S2 / S4) .... .hero-media / .s2   -> --red / --red-deep / --shadow-s4
+   ========================================================================== */
+
+:root {
+  /* ========================================================================
+     STEP 1 — MASTER GLOBAL COLORS (Change these 3 hex codes to re-theme all)
+     Every similar color across the entire website is connected to these 3.
+     ======================================================================== */
+  --ink:  #141312; /* MASTER DARK   — main dark ground, dark cards, dark text on light sections */
+  --bone: #ECE6DC; /* MASTER LIGHT  — main light ground, primary text on dark sections, play icons */
+  --red:  #D7261E; /* MASTER ACCENT — primary CTAs, headline highlight blocks, markers, red sections */
+
+  /* ========================================================================
+     STEP 2 — CONNECTED PALETTE SHADES (Auto-derived from Step 1 Master Colors)
+     Automatically shifts when you edit --ink, --bone, or --red above.
+     To override a single shade manually, replace its color-mix(...) with #HEX.
+     ======================================================================== */
+  /* Dark family shades (connected to --ink & --bone) */
+  --ink-0:             color-mix(in srgb, var(--ink) 63.2%, #000000);      /* deepest black (#0D0C0B): Our Work & Production grounds */
+  --ink-2:             color-mix(in srgb, var(--ink) 95.5%, var(--bone));  /* elevated dark surface (#1E1C1B): dark cards, media frames, nav hover */
+  --line:              color-mix(in srgb, var(--ink) 83%, var(--bone));    /* dark hairlines (#3A3634): every 1px border & divider on dark */
+  --stripe-ink:        color-mix(in srgb, var(--ink) 89%, var(--bone));    /* diagonal hatch stripes on dark rails, nav bar & portraits (var(--stripe-ink)) */
+  --stripe-ink-subtle: color-mix(in srgb, var(--ink) 91%, var(--bone));    /* subtle diagonal hatch stripes inside hero & showreel frames (var(--stripe-ink-subtle)) */
+  --stripe-ink-0:      color-mix(in srgb, var(--ink) 93%, var(--bone));    /* diagonal hatch stripes on deepest-black rails & placeholders (var(--stripe-ink-0)) */
+
+  /* Light family shades (connected to --bone & --ink) */
+  --bone-2:            color-mix(in srgb, var(--bone) 97%, var(--ink));    /* secondary light surface (#E7E0D4): light cards & hatch fill on bone */
+  --bone-line:         color-mix(in srgb, var(--bone) 85.2%, var(--ink));  /* light hairlines (#CFC7BB): every 1px border & divider on light */
+  --stripe-bone:       color-mix(in srgb, var(--bone) 84%, var(--ink));    /* diagonal hatch stripes on light section side rails (var(--stripe-bone)) */
+
+  /* Accent family shades (connected to --red) */
+  --red-2:             color-mix(in srgb-linear, var(--red) 68.5%, #000000); /* darker accent (#B81C16): hero 4-service boxes & final 2x2 CTA tiles */
+  --red-deep:          color-mix(in srgb-linear, var(--red) 39.6%, #000000); /* oxblood (#8E1410): Studio Hire & Footer ground, S2 offset shadows */
+  --red-deeper:        color-mix(in srgb-linear, var(--red) 22.3%, #000000); /* deepest oxblood (#6D100D): darkest bento tiles & oxblood card hover */
+
+  /* Muted / secondary text shades (connected to --bone & --ink) */
+  --ash:               color-mix(in srgb, var(--bone) 60.8%, var(--ink));  /* secondary text on dark (#9A938A): eyebrows, coords, muted copy on dark */
+  --ink-muted:         color-mix(in srgb, var(--ink) 76.3%, var(--bone));  /* secondary text on light (#4A453F): eyebrows, coords, muted copy on bone */
+
+  /* ========================================================================
+     STEP 3 — CONNECTED TRANSLUCENT TINTS, OVERLAYS, DOTS & SHADOWS
+     Replaces every hardcoded rgba(...) in the stylesheet so all overlays,
+     dot grids, translucent borders, and shadows track Step 1 & Step 2.
+     ======================================================================== */
+  /* Light (--bone) translucent tints on dark sections */
+  --bone-a92: color-mix(in srgb, var(--bone) 92%, transparent); /* red workshop card description text */
+  --bone-a90: color-mix(in srgb, var(--bone) 90%, transparent); /* section lede subheadings on dark */
+  --bone-a86: color-mix(in srgb, var(--bone) 86%, transparent); /* oxblood workshop card description text */
+  --bone-a80: color-mix(in srgb, var(--bone) 80%, transparent); /* oxblood workshop card footer meta text */
+  --bone-a78: color-mix(in srgb, var(--bone) 78%, transparent); /* top navigation bar links (default state) */
+  --bone-a45: color-mix(in srgb, var(--bone) 45%, transparent); /* 3D room render thumbnail border */
+  --bone-a35: color-mix(in srgb, var(--bone) 35%, transparent); /* oxblood workshop card & vertical card border */
+  --bone-a28: color-mix(in srgb, var(--bone) 28%, transparent); /* co-working photo banner hairline */
+  --bone-a25: color-mix(in srgb, var(--bone) 25%, transparent); /* oxblood section & card inner dividers */
+  --bone-a22: color-mix(in srgb, var(--bone) 22%, transparent); /* Albers nested square subtle border */
+  --bone-a16: color-mix(in srgb, var(--bone) 16%, transparent); /* co-working photo banner rail hatch stripe */
+  --bone-a15: color-mix(in srgb, var(--bone) 15%, transparent); /* container-only dot grid on dark */
+  --bone-a14: color-mix(in srgb, var(--bone) 14%, transparent); /* 12px dot grid on ink sections & grid workshop cards */
+  --bone-a13: color-mix(in srgb, var(--bone) 13%, transparent); /* 14px dot grid on oxblood sections */
+  --bone-a12: color-mix(in srgb, var(--bone) 12%, transparent); /* diagonal hatch overlay on vertical showcase cards */
+  --bone-a11: color-mix(in srgb, var(--bone) 11%, transparent); /* 24px sparse dot grid on deepest-black production section */
+  --bone-a10: color-mix(in srgb, var(--bone) 10%, transparent); /* giant ghost background numbers on vertical showcase cards */
+  --bone-a03: color-mix(in srgb, var(--bone) 3%, transparent);  /* subtle framed panel tint on ink sections */
+
+  /* Dark (--ink & --ink-0) translucent tints, overlays & panel fills */
+  --ink-a88:   color-mix(in srgb, var(--ink) 88%, transparent);   /* dark badge fills (render caption, portrait stamp) & card gradient bottom */
+  --ink-a84:   color-mix(in srgb, var(--ink) 84%, transparent);   /* co-working banner left-to-right dark gradient start */
+  --ink-a78:   color-mix(in srgb, var(--ink) 78%, transparent);   /* framed panel background on dotted ink sections */
+  --ink-a66:   color-mix(in srgb, var(--ink) 66%, transparent);   /* co-working banner left-to-right dark gradient middle */
+  --ink-a65:   color-mix(in srgb, var(--ink) 65%, transparent);   /* framed panel background on deepest-black sections */
+  --ink-a58:   color-mix(in srgb, var(--ink) 58%, transparent);   /* video play overlay gradient bottom & client logo pill text on bone */
+  --ink-a45:   color-mix(in srgb, var(--ink) 45%, transparent);   /* cell borders inside hero service boxes & final 2x2 CTA tiles */
+  --ink-a42:   color-mix(in srgb, var(--ink) 42%, transparent);   /* section dividers & rail borders on red sections */
+  --ink-a38:   color-mix(in srgb, var(--ink) 38%, transparent);   /* rail hatch stripes on oxblood & meta divider on red workshop card */
+  --ink-a34:   color-mix(in srgb, var(--ink) 34%, transparent);   /* framed panel background on oxblood sections */
+  --ink-a28:   color-mix(in srgb, var(--ink) 28%, transparent);   /* co-working banner left-to-right dark gradient end */
+  --ink-a24:   color-mix(in srgb, var(--ink) 24%, transparent);   /* rail hatch stripes on red sections */
+  --ink-a12:   color-mix(in srgb, var(--ink) 12%, transparent);   /* framed panel background on red sections & container dot grid on bone */
+  --ink-a08:   color-mix(in srgb, var(--ink) 8%, transparent);    /* video/card gradient top & sponsor grid dot pattern on bone */
+  --ink-a04:   color-mix(in srgb, var(--ink) 4%, transparent);    /* subtle framed panel tint on bone sections */
+  --ink-0-a56: color-mix(in srgb, var(--ink-0) 56%, transparent); /* S3 framed panel dark fill */
+
+  /* Accent (--red) translucent tint & S4 hard offset shadow */
+  --red-a24:   color-mix(in srgb, var(--red) 24%, transparent);   /* radial accent dot grid on Bedford location map */
+  --shadow-s4: 4px 4px 0 color-mix(in srgb, var(--ink-0) 35%, transparent); /* S4 hard offset shadow on secondary frames & thumbnails */
+
+  /* ========================================================================
+     STEP 4 — TYPOGRAPHY, LAYOUT & ACTIVE SECTION DEFAULTS
+     ======================================================================== */
   --sans: "Archivo", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -39,8 +177,8 @@
   --inset: 48px;
 
   --cur-line: var(--line);
-  --cur-stripe: #2C2927;
-  --cur-panel: rgba(236, 230, 220, 0.03);
+  --cur-stripe: var(--stripe-ink);
+  --cur-panel: var(--bone-a03);
 }
 
 *, *::before, *::after {
@@ -152,7 +290,7 @@ h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
   font-size: clamp(19px, 1.6vw, 24px);
   line-height: 1.35;
   letter-spacing: -0.01em;
-  color: rgba(236, 230, 220, 0.9);
+  color: var(--bone-a90);
   max-width: 42ch;
 }
 
@@ -297,11 +435,11 @@ h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
 }
 
 .s3-panel {
-  background: rgba(13, 12, 11, 0.56);
+  background: var(--ink-0-a56);
 }
 
 .theme-oxblood .s3-panel {
-  background: rgba(20, 19, 18, 0.34);
+  background: var(--ink-a34);
 }
 
 /* MasterClass-style bottom CTA strip inside a section */
@@ -329,18 +467,18 @@ h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
   background-color: var(--ink);
   color: var(--bone);
   --cur-line: var(--line);
-  --cur-stripe: #2E2A28;
-  --cur-panel: rgba(236, 230, 220, 0.03);
+  --cur-stripe: var(--stripe-ink);
+  --cur-panel: var(--bone-a03);
 }
 
 .theme-ink-dots {
   background-color: var(--ink);
-  background-image: radial-gradient(rgba(236, 230, 220, 0.14) 1px, transparent 0);
+  background-image: radial-gradient(var(--bone-a14) 1px, transparent 0);
   background-size: 12px 12px;
   color: var(--bone);
   --cur-line: var(--line);
-  --cur-stripe: #2E2A28;
-  --cur-panel: rgba(20, 19, 18, 0.78);
+  --cur-stripe: var(--stripe-ink);
+  --cur-panel: var(--ink-a78);
 }
 
 /* §4.4 Our work ground: --ink-0 plain (no texture) */
@@ -348,27 +486,27 @@ h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
   background-color: var(--ink-0);
   color: var(--bone);
   --cur-line: var(--line);
-  --cur-stripe: #24211F;
-  --cur-panel: rgba(20, 19, 18, 0.65);
+  --cur-stripe: var(--stripe-ink-0);
+  --cur-panel: var(--ink-a65);
 }
 
 /* §4.7 Production ground: --ink-0 deepest black with sparse 24px dot grid */
 .theme-ink-0 {
   background-color: var(--ink-0);
-  background-image: radial-gradient(rgba(236, 230, 220, 0.11) 1px, transparent 0);
+  background-image: radial-gradient(var(--bone-a11) 1px, transparent 0);
   background-size: 24px 24px;
   color: var(--bone);
   --cur-line: var(--line);
-  --cur-stripe: #24211F;
-  --cur-panel: rgba(20, 19, 18, 0.65);
+  --cur-stripe: var(--stripe-ink-0);
+  --cur-panel: var(--ink-a65);
 }
 
 .theme-red {
   background-color: var(--red);
   color: var(--bone);
-  --cur-line: rgba(20, 19, 18, 0.42);
-  --cur-stripe: rgba(20, 19, 18, 0.24);
-  --cur-panel: rgba(20, 19, 18, 0.12);
+  --cur-line: var(--ink-a42);
+  --cur-stripe: var(--ink-a24);
+  --cur-panel: var(--ink-a12);
 }
 
 .theme-red .eyebrow,
@@ -382,12 +520,12 @@ h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
 
 .theme-oxblood {
   background-color: var(--red-deep);
-  background-image: radial-gradient(rgba(236, 230, 220, 0.13) 1px, transparent 0);
+  background-image: radial-gradient(var(--bone-a13) 1px, transparent 0);
   background-size: 14px 14px;
   color: var(--bone);
-  --cur-line: rgba(236, 230, 220, 0.25);
-  --cur-stripe: rgba(20, 19, 18, 0.38);
-  --cur-panel: rgba(20, 19, 18, 0.34);
+  --cur-line: var(--bone-a25);
+  --cur-stripe: var(--ink-a38);
+  --cur-panel: var(--ink-a34);
 }
 
 .theme-oxblood .eyebrow,
@@ -403,8 +541,8 @@ h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
   background-color: var(--bone);
   color: var(--ink);
   --cur-line: var(--bone-line);
-  --cur-stripe: #CEC5B7;
-  --cur-panel: rgba(20, 19, 18, 0.04);
+  --cur-stripe: var(--stripe-bone);
+  --cur-panel: var(--ink-a04);
 }
 
 .theme-bone .eyebrow,
@@ -437,12 +575,12 @@ body.tex-inside .theme-ink-0 {
 body.tex-inside .tw-panel,
 body.tex-inside .prod .shot:not(.s1),
 body.tex-inside .bento .tile:not(.photo):not(.stripe) {
-  background-image: radial-gradient(rgba(236, 230, 220, 0.15) 1px, transparent 0);
+  background-image: radial-gradient(var(--bone-a15) 1px, transparent 0);
   background-size: 12px 12px;
 }
 
 body.tex-inside .theme-bone .tw-panel {
-  background-image: radial-gradient(rgba(20, 19, 18, 0.12) 1px, transparent 0);
+  background-image: radial-gradient(var(--ink-a12) 1px, transparent 0);
   background-size: 12px 12px;
 }
 
@@ -668,7 +806,7 @@ body.tex-inside .theme-bone .tw-panel {
   line-height: 1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: rgba(236, 230, 220, 0.78);
+  color: var(--bone-a78);
   text-decoration: none;
   padding: 8px 10px;
   border: 1px solid transparent;
@@ -694,8 +832,8 @@ body.tex-inside .theme-bone .tw-panel {
   width: 100%;
   background-image: repeating-linear-gradient(
     315deg,
-    #2E2A28 0,
-    #2E2A28 1px,
+    var(--stripe-ink) 0,
+    var(--stripe-ink) 1px,
     var(--ink) 0,
     var(--ink) 50%
   );
@@ -780,8 +918,8 @@ body.tex-inside .theme-bone .tw-panel {
   background-color: var(--ink);
   background-image: repeating-linear-gradient(
     315deg,
-    #282523 0,
-    #282523 1px,
+    var(--stripe-ink-subtle) 0,
+    var(--stripe-ink-subtle) 1px,
     transparent 0,
     transparent 50%
   );
@@ -812,7 +950,7 @@ body.tex-inside .theme-bone .tw-panel {
   inset: 0;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, rgba(20, 19, 18, 0.08) 0%, rgba(20, 19, 18, 0.58) 100%);
+  background: linear-gradient(180deg, var(--ink-a08) 0%, var(--ink-a58) 100%);
 }
 
 .play span {
@@ -862,7 +1000,7 @@ body.tex-inside .theme-bone .tw-panel {
   padding: 28px 24px;
   text-decoration: none;
   color: var(--bone);
-  border-top: 1px solid rgba(20, 19, 18, 0.45);
+  border-top: 1px solid var(--ink-a45);
   background: var(--red-2);
   transition: background-color 0.15s ease, color 0.15s ease;
   min-height: 210px;
@@ -914,7 +1052,7 @@ body.tex-inside .theme-bone .tw-panel {
     grid-column: span 2;
   }
   .srv-box:nth-child(even) {
-    border-right: 1px solid rgba(20, 19, 18, 0.45);
+    border-right: 1px solid var(--ink-a45);
   }
 }
 
@@ -924,7 +1062,7 @@ body.tex-inside .theme-bone .tw-panel {
   }
   .srv-box {
     border-top: 0;
-    border-left: 1px solid rgba(20, 19, 18, 0.45);
+    border-left: 1px solid var(--ink-a45);
     min-height: 256px;
     padding: 30px 22px;
   }
@@ -1002,7 +1140,7 @@ body.tex-inside .theme-bone .tw-panel {
   padding-inline: 24px;
   border: 1px solid var(--bone-line);
   background: var(--bone-2);
-  color: rgba(20, 19, 18, 0.58);
+  color: var(--ink-a58);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1083,8 +1221,8 @@ body.tex-inside .theme-bone .tw-panel {
   background-color: var(--ink-2);
   background-image: repeating-linear-gradient(
     315deg,
-    #282523 0,
-    #282523 1px,
+    var(--stripe-ink-subtle) 0,
+    var(--stripe-ink-subtle) 1px,
     var(--ink) 0,
     var(--ink) 50%
   );
@@ -1260,7 +1398,7 @@ body.tex-inside .theme-bone .tw-panel {
   height: 84px;
   position: relative;
   background: var(--sq-1, var(--red));
-  border: 1px solid rgba(236, 230, 220, 0.22);
+  border: 1px solid var(--bone-a22);
   flex: none;
 }
 
@@ -1298,11 +1436,11 @@ body.tex-inside .theme-bone .tw-panel {
 }
 
 .wcard.slab-red p.desc {
-  color: rgba(236, 230, 220, 0.92);
+  color: var(--bone-a92);
 }
 
 .wcard.slab-red .meta {
-  border-top-color: rgba(20, 19, 18, 0.38);
+  border-top-color: var(--ink-a38);
   color: var(--ink);
 }
 
@@ -1331,7 +1469,7 @@ body.tex-inside .theme-bone .tw-panel {
 .wcard.slab-oxblood {
   background: var(--red-deep);
   color: var(--bone);
-  border-color: rgba(236, 230, 220, 0.35);
+  border-color: var(--bone-a35);
   --sq-1: var(--bone);
   --sq-2: var(--red);
   --sq-3: var(--ink);
@@ -1339,26 +1477,26 @@ body.tex-inside .theme-bone .tw-panel {
 
 .wcard.slab-oxblood .wcard-top {
   background: var(--ink);
-  border-bottom-color: rgba(236, 230, 220, 0.25);
+  border-bottom-color: var(--bone-a25);
 }
 
 .wcard.slab-oxblood p.desc {
-  color: rgba(236, 230, 220, 0.86);
+  color: var(--bone-a86);
 }
 
 .wcard.slab-oxblood .meta {
-  border-top-color: rgba(236, 230, 220, 0.25);
-  color: rgba(236, 230, 220, 0.8);
+  border-top-color: var(--bone-a25);
+  color: var(--bone-a80);
 }
 
 .wcard.slab-grid {
   background-color: var(--ink-2);
-  background-image: radial-gradient(rgba(236, 230, 220, 0.14) 1px, transparent 0);
+  background-image: radial-gradient(var(--bone-a14) 1px, transparent 0);
   background-size: 12px 12px;
   color: var(--bone);
   border-color: var(--line);
   --sq-1: var(--bone);
-  --sq-2: #3A3634;
+  --sq-2: var(--line);
   --sq-3: var(--red);
 }
 
@@ -1469,7 +1607,7 @@ body.tex-inside .theme-bone .tw-panel {
   position: relative;
   aspect-ratio: 9 / 16;
   max-width: 100%;
-  border: 1px solid rgba(236, 230, 220, 0.35);
+  border: 1px solid var(--bone-a35);
   overflow: hidden;
   text-decoration: none;
   display: flex;
@@ -1479,8 +1617,8 @@ body.tex-inside .theme-bone .tw-panel {
   gap: 10px;
   background-color: var(--red-deeper);
   background-image:
-    linear-gradient(180deg, rgba(20, 19, 18, 0.08) 0%, rgba(20, 19, 18, 0.88) 100%),
-    repeating-linear-gradient(315deg, rgba(236, 230, 220, 0.12) 0, rgba(236, 230, 220, 0.12) 1px, transparent 0, transparent 50%);
+    linear-gradient(180deg, var(--ink-a08) 0%, var(--ink-a88) 100%),
+    repeating-linear-gradient(315deg, var(--bone-a12) 0, var(--bone-a12) 1px, transparent 0, transparent 50%);
   background-size: 100% 100%, 10px 10px;
 }
 
@@ -1504,7 +1642,7 @@ body.tex-inside .theme-bone .tw-panel {
   font-weight: 900;
   font-size: 72px;
   line-height: 0.8;
-  color: rgba(236, 230, 220, 0.1);
+  color: var(--bone-a10);
   pointer-events: none;
   user-select: none;
 }
@@ -1548,9 +1686,9 @@ body.tex-inside .theme-bone .tw-panel {
   width: 294px;
   flex: none;
   margin: 0;
-  border: 1px solid rgba(236, 230, 220, 0.45);
+  border: 1px solid var(--bone-a45);
   background: var(--ink);
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-s4);
   overflow: hidden;
 }
 
@@ -1565,7 +1703,7 @@ body.tex-inside .theme-bone .tw-panel {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(20, 19, 18, 0.88);
+  background: var(--ink-a88);
   border-top: 1px solid var(--line);
   padding: 8px 12px;
   font: 700 11px/1.2 var(--mono);
@@ -1597,12 +1735,12 @@ body.tex-inside .theme-bone .tw-panel {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-s4);
   min-height: 240px;
   background-image: repeating-linear-gradient(
     315deg,
-    #24201E 0,
-    #24201E 1px,
+    var(--stripe-ink-0) 0,
+    var(--stripe-ink-0) 1px,
     var(--ink-2) 0,
     var(--ink-2) 50%
   );
@@ -1733,7 +1871,7 @@ body.tex-inside .theme-bone .tw-panel {
 
 .tw-sponsors__cols > span {
   border-inline: 1px solid var(--bone-line);
-  background-image: radial-gradient(rgba(20, 19, 18, 0.08) 1px, transparent 0);
+  background-image: radial-gradient(var(--ink-a08) 1px, transparent 0);
   background-size: 10px 10px;
 }
 
@@ -1852,7 +1990,7 @@ body.tex-inside .theme-bone .tw-panel {
   position: relative;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--ink);
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-s4);
   background-color: var(--bone-2);
   background-image: repeating-linear-gradient(
     315deg,
@@ -2104,8 +2242,8 @@ body.tex-inside .theme-bone .tw-panel {
   min-height: 720px;
   overflow: hidden;
   background: var(--ink);
-  --cur-line: rgba(236, 230, 220, 0.28);
-  --cur-stripe: rgba(236, 230, 220, 0.16);
+  --cur-line: var(--bone-a28);
+  --cur-stripe: var(--bone-a16);
 }
 
 .band-bg {
@@ -2124,9 +2262,9 @@ body.tex-inside .theme-bone .tw-panel {
   inset: 0;
   background: linear-gradient(
     90deg,
-    rgba(20, 19, 18, 0.84) 0%,
-    rgba(20, 19, 18, 0.66) 52%,
-    rgba(20, 19, 18, 0.28) 100%
+    var(--ink-a84) 0%,
+    var(--ink-a66) 52%,
+    var(--ink-a28) 100%
   );
 }
 
@@ -2231,8 +2369,8 @@ body.tex-inside .theme-bone .tw-panel {
   background-color: var(--ink);
   background-image: repeating-linear-gradient(
     315deg,
-    #2E2A28 0,
-    #2E2A28 1px,
+    var(--stripe-ink) 0,
+    var(--stripe-ink) 1px,
     var(--ink) 0,
     var(--ink) 50%
   );
@@ -2249,7 +2387,7 @@ body.tex-inside .theme-bone .tw-panel {
   color: var(--ash);
   border: 1px dashed var(--line);
   padding: 8px 12px;
-  background: rgba(20, 19, 18, 0.88);
+  background: var(--ink-a88);
 }
 
 .portrait-name {
@@ -2347,7 +2485,7 @@ body.tex-inside .theme-bone .tw-panel {
   width: 240px;
   aspect-ratio: 3 / 4;
   border: 1px solid var(--bone-line);
-  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: var(--shadow-s4);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -2444,7 +2582,7 @@ td:last-child {
   background:
     linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 36px 36px,
     linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 36px 36px,
-    radial-gradient(rgba(215, 38, 30, 0.24) 1px, transparent 0) 18px 18px / 36px 36px,
+    radial-gradient(var(--red-a24) 1px, transparent 0) 18px 18px / 36px 36px,
     var(--ink-2);
   display: grid;
   place-items: center;
@@ -2598,7 +2736,7 @@ td:last-child {
   padding: 28px 24px;
   background: var(--red-2);
   color: var(--bone);
-  border-top: 1px solid rgba(20, 19, 18, 0.45);
+  border-top: 1px solid var(--ink-a45);
 }
 
 .final-tile:first-child {
@@ -2652,7 +2790,7 @@ td:last-child {
     grid-column: span 2;
   }
   .final-tile:nth-child(even) {
-    border-right: 1px solid rgba(20, 19, 18, 0.45);
+    border-right: 1px solid var(--ink-a45);
   }
 }
 
@@ -2662,7 +2800,7 @@ td:last-child {
   }
   .final-tile {
     border-top: 0;
-    border-left: 1px solid rgba(20, 19, 18, 0.45);
+    border-left: 1px solid var(--ink-a45);
     padding: 30px 22px;
     min-height: 240px;
   }
@@ -2838,6 +2976,379 @@ footer.sec {
   }
 }
 
+
+/* ==========================================================================
+   V4.3 / LANDING PAGE V2 SURGICAL ADDITIONS
+   ========================================================================== */
+@media (max-width: 639px) {
+  .hero .h1 {
+    font-size: clamp(32px, 8.6vw, 48px);
+  }
+  .hero .h1 em {
+    padding: 3px 8px 1px;
+  }
+}
+
+.split-copy .h2 {
+  max-width: 20ch;
+}
+
+#coworking .h2 {
+  font-size: clamp(32px, 3.8vw, 56px);
+}
+
+#coworking .h2 em {
+  white-space: nowrap;
+}
+
+.hero-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-unmute {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  font: 700 11px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--ink-a88);
+  border: 1px solid var(--bone);
+  padding: 9px 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.hero-unmute::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  flex: none;
+}
+
+.hero-unmute[aria-pressed="true"]::before {
+  background: var(--bone);
+}
+
+.hero-unmute:hover {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--bone);
+}
+
+/* Client logo strip real logos */
+.logo-pill {
+  height: 60px;
+  padding: 10px 24px;
+  border: 1px solid var(--bone-line);
+  background: var(--bone-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  filter: none;
+}
+
+.logo-pill img {
+  height: 38px;
+  width: auto;
+  max-width: 156px;
+  object-fit: contain;
+  display: block;
+}
+
+.logo-pill img.logo-multiply {
+  mix-blend-mode: multiply;
+}
+
+.logo-pill img.logo-contrast {
+  filter: contrast(1.45) brightness(0.62);
+}
+
+/* Single Beginner Workshop layout: vertical card on mobile, long horizontal slab on desktop */
+#wtrack.track-single {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: initial;
+  grid-auto-columns: initial;
+  overflow-x: visible;
+  padding: 0;
+}
+
+.wcard.wcard-single {
+  min-height: 0;
+}
+
+@media (min-width: 960px) {
+  .wcard.wcard-single .wcard-body {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1.55fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 36px;
+    padding: 36px 40px;
+  }
+  .wcard.wcard-single h3 {
+    font-size: clamp(26px, 2.3vw, 38px);
+    line-height: 0.92;
+    margin-bottom: 10px;
+  }
+  .wcard.wcard-single p.desc {
+    font-size: 16px;
+    max-width: 54ch;
+  }
+  .wcard.wcard-single .meta {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    border-left: 1px solid var(--ink-a38);
+    padding-left: 28px;
+    display: grid;
+    gap: 12px;
+    justify-content: start;
+  }
+  .wcard.wcard-single .btn {
+    width: auto;
+    white-space: nowrap;
+    padding: 18px 28px;
+  }
+}
+
+/* Enlarged concept renders in #vlog so people can see spatial detail */
+.render-thumb {
+  height: 300px;
+  width: 420px;
+}
+
+@media (min-width: 768px) {
+  .render-thumb {
+    height: 400px;
+    width: 560px;
+  }
+}
+
+/* Real founder portraits & shoot strip photos */
+.portrait > img.portrait-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.shoot-ph {
+  overflow: hidden;
+  padding: 0;
+  background: var(--ink);
+}
+
+.shoot-ph > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+footer.sec {
+  padding-bottom: 0;
+}
+
+
+/* ==========================================================================
+   V4.4 SURGICAL REVISIONS
+   ========================================================================== */
+/* 1. Hero: 16:9 launch video (lpiWGuNvJfQ) so full-width lower-third graphics are never cropped */
+@media (min-width: 960px) {
+  .hero-grid {
+    grid-template-columns: 1.15fr 1fr;
+  }
+}
+.hero-media {
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+}
+
+/* 2. Client logo strip (#trust): remove border and background container around each logo */
+.logo-pill {
+  height: 54px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+}
+
+/* 3. Workshop (#workshops): single title (no duplicate h3 inside card), much bigger & clearer date, location (Bedford), and group size */
+.wcard.wcard-single .wcard-top {
+  font-size: 12px;
+  padding: 12px 24px;
+}
+.wcard.wcard-single .wcard-copy p.desc {
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.55;
+  color: var(--bone);
+  max-width: 52ch;
+}
+.wcard.wcard-single .meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ink-a38);
+}
+.wcard.wcard-single .meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wcard.wcard-single .meta-label {
+  font: 700 11px/1.1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone);
+  opacity: 0.86;
+}
+.wcard.wcard-single .meta-val {
+  font: 900 clamp(20px, 1.85vw, 28px)/1.05 var(--display);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.wcard.wcard-single .meta-sub {
+  font: 600 12px/1.25 var(--sans);
+  color: var(--bone);
+  opacity: 0.92;
+}
+@media (max-width: 639px) {
+  .wcard.wcard-single .meta {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .wcard.wcard-single .meta-val {
+    font-size: 24px;
+  }
+}
+@media (min-width: 960px) {
+  .wcard.wcard-single .wcard-body {
+    grid-template-columns: auto minmax(0, 1.15fr) minmax(0, 1.35fr) auto;
+    gap: 32px;
+    padding: 36px 40px;
+  }
+  .wcard.wcard-single .meta {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    border-left: 1px solid var(--ink-a38);
+    padding-left: 28px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+}
+
+/* 4. Done-for-you video production (#production): shoot photo strip moved here below .prod */
+.prod-strip {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--ink-line);
+}
+
+/* 5. Hire the studio (#studio): 6 concept renders moved from #vlog into #studio below .bento */
+.studio-renders-panel {
+  margin-top: 28px;
+}
+.studio-renders-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--oxblood-line);
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* 6. Events (#events): reframe background photo so Jay's head is fully visible + blur a tiny bit more */
+.band-bg {
+  object-position: 68% 30%;
+  filter: blur(5px) saturate(0.75) contrast(1.1);
+  transform: scale(1.06);
+}
+@media (max-width: 767px) {
+  .band-bg {
+    object-position: 73% 30%;
+  }
+}
+
+/* 7. Meet Jay and Andrew (#about): restore standard bottom padding now that shoot strip moved up to #production */
+#about .about-top {
+  padding-bottom: var(--pad-y);
+}
+
+/* 8. New section: Local Voice Collective podcast (#podcast) — Featured 'ADHD genius' short + long episode + 2 shorts alongside */
+.lvc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+@media (min-width: 960px) {
+  .lvc-grid {
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    gap: 36px;
+  }
+}
+.lvc-right {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+.lvc-shorts-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+@media (max-width: 520px) {
+  .lvc-shorts-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.work-frame.work-frame-short {
+  aspect-ratio: 9 / 16;
+}
+.work-frame.work-frame-featured {
+  aspect-ratio: 9 / 16;
+  box-shadow: 8px 8px 0 var(--red);
+}
+.lvc-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  background: var(--red);
+  color: var(--bone);
+  border: 1px solid var(--bone);
+  pointer-events: none;
+}
+.lvc-badge.lvc-badge-ink {
+  background: var(--ink-a88);
+}
+
 /* ===== BLUE TAP-HIGHLIGHT FIX ===== */
 * { -webkit-tap-highlight-color: transparent; }
 
@@ -2872,7 +3383,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
 <!-- 0. ANNOUNCEMENT BAR -->
 <div class="announce">
   <span class="announce-tag">Bedford</span>
-  <span>Workshops now booking. Co-working opens next month.</span>
+  <span>Next beginner workshop · Saturday 7 November 2026 · Now booking</span>
 </div>
 
 <!-- 1. NAVIGATION -->
@@ -2889,9 +3400,10 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
           <a href="#coworking">Co-working</a>
           <a href="#events">Events</a>
           <a href="#about">About</a>
+          <a href="#podcast">Podcast</a>
           <a href="#find-us">Find us</a>
         </nav>
-        <a class="btn btn-red" href="#workshops">Book a workshop</a>
+        <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop</a>
       </div>
     </div>
   </div>
@@ -2906,7 +3418,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
       <div class="col hero-grid">
         <div class="hero-left hero">
           <div class="tw-inset-lg">
-            <h1 class="h1 h1-mega">Learn to make content. <em>From zero.</em></h1>
+            <h1 class="h1 h1-mega">Content Workshops. <em>FOR BEGINNERS</em></h1>
           </div>
           <div class="tw-inset hero-sub">
             <span class="hero-sub-rule" aria-hidden="true"></span>
@@ -2914,17 +3426,14 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
             <p class="hero-sub-follow">Leave with your first finished video.</p>
           </div>
           <div class="tw-inset hero-cta-row">
-            <a class="btn btn-red" href="#workshops">Book a workshop <span aria-hidden="true">→</span></a>
+            <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop <span aria-hidden="true">→</span></a>
             <span class="hero-cta-note">Groups of 10–15 · All gear provided</span>
           </div>
         </div>
         <div class="hero-right">
           <div class="hero-media">
-            <span class="ph ph-red">Launch video · add link</span>
-            <img src="img/19_47_44_2.jpg" alt="The podcast room: wooden table, two mics, framed prints on dark walls">
-            <div class="play" aria-hidden="true">
-              <span><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span>
-            </div>
+            <video id="hero-video" src="video/hero.mp4" poster="img/hero-poster.jpg" data-youtube-id="lpiWGuNvJfQ" autoplay muted loop playsinline preload="metadata"></video>
+            <button type="button" class="hero-unmute" id="hero-unmute" aria-label="Unmute video" aria-pressed="false">Unmute</button>
           </div>
         </div>
       </div>
@@ -2950,8 +3459,8 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
             <span class="srv-arr" aria-hidden="true">→</span>
           </a>
           <a class="srv-box" href="#coworking">
-            <span class="srv-title">Co-working</span>
-            <span class="srv-desc">Opening next month.</span>
+            <span class="srv-title">Founders Club</span>
+            <span class="srv-desc">Members only.</span>
             <span class="srv-arr" aria-hidden="true">→</span>
           </a>
           <a class="srv-box" href="#events">
@@ -2970,45 +3479,37 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
       <div class="col trust-strip">
         <div class="logo-marquee">
           <div class="logo-marquee-track">
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
-            <span class="logo-pill" aria-hidden="true">Client logo</span>
+            <span class="logo-pill"><img src="img/logo-01-uk-parliament.svg" alt="UK Parliament" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-02-berthas-legacy.png" alt="Bertha's Legacy" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-03-nacoa.png" alt="Nacoa" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-04-gu-desserts.png" alt="Gü Desserts" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-05-the-coconut-collaborative.png" alt="The Coconut Collaborative" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-06-tonys-chocolonely.png" alt="Tony's Chocolonely" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-07-double-dutch.png" alt="Double Dutch" class="logo-contrast" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-08-perfect-ted.png" alt="PerfectTed" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-09-bio-and-me.png" alt="Bio&Me" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-10-pip-and-nut.png" alt="Pip & Nut" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-11-edyn-care.png" alt="Edyn Care" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-12-god-life-ministries.png" alt="God Life Ministries" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-01-uk-parliament.svg" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-02-berthas-legacy.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-03-nacoa.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-04-gu-desserts.png" alt="" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-05-the-coconut-collaborative.png" alt="" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-06-tonys-chocolonely.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-07-double-dutch.png" alt="" class="logo-contrast" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-08-perfect-ted.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-09-bio-and-me.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-10-pip-and-nut.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-11-edyn-care.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-12-god-life-ministries.png" alt="" loading="lazy"></span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 4. OUR WORK (FRAMED COLUMN SHOWREEL: 6 VIDEOS IN 2 ROWS ON PLAIN --ink-0) -->
+  <!-- 4. OUR WORK (FRAMED COLUMN SHOWREEL: 9 VIDEOS IN 3 ROWS ON PLAIN --ink-0) -->
   <section class="sec theme-ink-0-plain" id="work">
     <div class="frame">
       <div class="col sec-pad">
@@ -3029,68 +3530,101 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
         <div class="work-row-wrap">
           <div class="work-grid">
             <article class="work-item">
-              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 1">
-                <span class="ph">Video to come</span>
-                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <div class="work-frame" role="button" tabindex="0" data-video-id="MHmYhFeLZTQ" data-start="0" aria-label="Play Storytelling Group — Showreel">
+                <img class="work-thumb" src="img/yt-01-MHmYhFeLZTQ.jpg" alt="Storytelling Group — Showreel" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
               </div>
               <div class="work-caption">
-                <h3 class="work-title">Video title to come</h3>
-                <p class="work-meta">Client · format to come</p>
+                <h3 class="work-title">Storytelling Group — Showreel</h3>
+                <p class="work-meta">Brand & social production · Showreel</p>
               </div>
             </article>
 
             <article class="work-item">
-              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 2">
-                <span class="ph">Video to come</span>
-                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <div class="work-frame" role="button" tabindex="0" data-video-id="WWjOoJ3SsfM" data-start="1500" aria-label="Play Scaling Success with James Averdieck">
+                <img class="work-thumb" src="img/yt-02-WWjOoJ3SsfM.jpg" alt="Scaling Success with James Averdieck" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
               </div>
               <div class="work-caption">
-                <h3 class="work-title">Video title to come</h3>
-                <p class="work-meta">Client · format to come</p>
+                <h3 class="work-title">Scaling Success with James Averdieck</h3>
+                <p class="work-meta">Video podcast · Multi-cam studio</p>
               </div>
             </article>
 
             <article class="work-item">
-              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 3">
-                <span class="ph">Video to come</span>
-                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <div class="work-frame" role="button" tabindex="0" data-video-id="HaDQJWRr7tA" data-start="3780" aria-label="Play Nacoa UK — Live Panel Production">
+                <img class="work-thumb" src="img/yt-03-HaDQJWRr7tA.jpg" alt="Nacoa UK — Live Panel Production" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
               </div>
               <div class="work-caption">
-                <h3 class="work-title">Video title to come</h3>
-                <p class="work-meta">Client · format to come</p>
+                <h3 class="work-title">Nacoa UK — Live Panel Production</h3>
+                <p class="work-meta">Live event capture · Multi-cam</p>
               </div>
             </article>
 
             <article class="work-item">
-              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 4">
-                <span class="ph">Video to come</span>
-                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <div class="work-frame" role="button" tabindex="0" data-video-id="agyV7Qf-Dnc" data-start="0" aria-label="Play Storytelling Group — Studio Production">
+                <img class="work-thumb" src="img/yt-04-agyV7Qf-Dnc.jpg" alt="Storytelling Group — Studio Production" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
               </div>
               <div class="work-caption">
-                <h3 class="work-title">Video title to come</h3>
-                <p class="work-meta">Client · format to come</p>
+                <h3 class="work-title">Storytelling Group — Studio Production</h3>
+                <p class="work-meta">Commercial shoot · Full production</p>
               </div>
             </article>
 
             <article class="work-item">
-              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 5">
-                <span class="ph">Video to come</span>
-                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <div class="work-frame" role="button" tabindex="0" data-video-id="rfS9G961Glo" data-start="0" aria-label="Play Bertha's Legacy — Podcast Series">
+                <img class="work-thumb" src="img/yt-05-rfS9G961Glo.jpg" alt="Bertha's Legacy — Podcast Series" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
               </div>
               <div class="work-caption">
-                <h3 class="work-title">Video title to come</h3>
-                <p class="work-meta">Client · format to come</p>
+                <h3 class="work-title">Bertha's Legacy — Podcast Series</h3>
+                <p class="work-meta">Podcast production · Studio set</p>
               </div>
             </article>
 
             <article class="work-item">
-              <div class="work-frame" role="button" tabindex="0" data-video-id="" aria-label="Play showreel video 6">
-                <span class="ph">Video to come</span>
-                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
+              <div class="work-frame" role="button" tabindex="0" data-video-id="gNdqQD4Cd7s" data-start="480" aria-label="Play Chanita & Josh — Studio Episode">
+                <img class="work-thumb" src="img/yt-06-gNdqQD4Cd7s.jpg" alt="Chanita & Josh — Studio Episode" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
               </div>
               <div class="work-caption">
-                <h3 class="work-title">Video title to come</h3>
-                <p class="work-meta">Client · format to come</p>
+                <h3 class="work-title">Chanita & Josh — Studio Episode</h3>
+                <p class="work-meta">Conversation series · Multi-cam</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="WXpCIGz2YfE" data-start="285" aria-label="Play Camilla Tominey — The Daily Telegraph & GB News">
+                <img class="work-thumb" src="img/yt-07-WXpCIGz2YfE.jpg" alt="Camilla Tominey — The Daily Telegraph & GB News" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Camilla Tominey — The Daily Telegraph & GB News</h3>
+                <p class="work-meta">Executive editor & broadcaster · Studio interview</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="NT4dQIsSnAw" data-start="242" aria-label="Play Calum Best — Entrepreneur & 1M+ Creator">
+                <img class="work-thumb" src="img/yt-08-NT4dQIsSnAw.jpg" alt="Calum Best — Entrepreneur & 1M+ Creator" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Calum Best — Entrepreneur & 1M+ Creator</h3>
+                <p class="work-meta">Personal brand · Studio interview</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="ubzqY4wDkPc" data-start="75" aria-label="Play Maya Parker — Jungian-Oriented Psychotherapist">
+                <img class="work-thumb" src="img/yt-09-ubzqY4wDkPc.jpg" alt="Maya Parker — Jungian-Oriented Psychotherapist" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Maya Parker — Jungian-Oriented Psychotherapist</h3>
+                <p class="work-meta">Expert interview · Studio production</p>
               </div>
             </article>
           </div>
@@ -3103,169 +3637,50 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
     </div>
   </section>
 
-  <!-- 5. WORKSHOPS (INK GROUND + SPLIT HEADING + CLAUDE V3 TAG BAR + S5 HOVER LIFT) -->
+  <!-- 5. WORKSHOPS (INK GROUND — SINGLE BEGINNER WORKSHOP ON 7 NOVEMBER: TITLE ONCE ONLY, BIG META, BOOK NOW) -->
   <section class="sec theme-ink" id="workshops">
     <div class="frame">
       <div class="col sec-pad">
         <div class="sec-head">
           <div class="eyebrow-bar">
-            <p class="eyebrow">Workshops · groups of 10–15</p>
-            <span class="coord">05 programmes · Bedford</span>
+            <p class="eyebrow">Workshops · Bedford</p>
+            <span class="coord">Saturday 7 November 2026 · 10–15 people</span>
           </div>
           <div class="sec-head-main">
-            <h2 class="h2">Content and podcast workshops.</h2>
-            <p class="lede">For complete beginners. Learn by doing, in a real studio.</p>
+            <h2 class="h2">Content Workshop for Beginners.</h2>
+            <p class="lede">For complete beginners. Learn by doing, in a real studio in Bedford.</p>
           </div>
         </div>
 
         <div class="tw-panel s3-panel track-wrap">
-          <div class="track-controls" aria-label="Workshop card controls">
-            <button class="icon-btn" data-dir="-1" data-for="wtrack" aria-label="Previous workshops">←</button>
-            <button class="icon-btn" data-dir="1" data-for="wtrack" aria-label="Next workshops">→</button>
-          </div>
-          <div class="track" id="wtrack">
-            <article class="wcard slab-red">
-              <div class="wcard-top"><span>Beginner · 2 hours</span><span class="wcard-num">Start · £50</span></div>
+          <div class="track track-single" id="wtrack">
+            <article class="wcard slab-red wcard-single">
+              <div class="wcard-top"><span>Beginner · 1-day hands-on studio intensive · Bedford</span><span class="wcard-num">Sat 7 Nov 2026</span></div>
               <div class="wcard-body">
                 <div class="albers-sq" aria-hidden="true"></div>
-                <h3>Beginner Q&amp;A session</h3>
-                <p class="desc">Try the cameras, lights and mics, and ask anything about starting out. A low-cost first step.</p>
-                <div class="meta"><span>Price <b>£50</b></span><span>Next date <b>TBC</b></span></div>
-                <a class="btn btn-ink" href="#workshops">Book this workshop</a>
+                <div class="wcard-copy">
+                  <p class="desc">Go from first idea to first finished video in a single day. Plan, light, shoot and edit talking-head videos, podcasts, shorts and explainers in our professional Bedford studio — all cameras, mics and lighting provided.</p>
+                </div>
+                <div class="meta" aria-label="Workshop details">
+                  <div class="meta-item">
+                    <span class="meta-label">Next date</span>
+                    <strong class="meta-val">Sat 7 Nov 2026</strong>
+                    <span class="meta-sub">Full-day intensive</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Location</span>
+                    <strong class="meta-val">Bedford</strong>
+                    <span class="meta-sub">2B Ashburnham Rd · 1 min from station</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Group size</span>
+                    <strong class="meta-val">10–15 people</strong>
+                    <span class="meta-sub">All studio gear provided</span>
+                  </div>
+                </div>
+                <a class="btn btn-ink" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book now <span aria-hidden="true">↗</span></a>
               </div>
             </article>
-
-            <article class="wcard slab-ink">
-              <div class="wcard-top"><span>Beginner · 1 day</span><span class="wcard-num">02</span></div>
-              <div class="wcard-body">
-                <div class="albers-sq" aria-hidden="true"></div>
-                <h3>Launch your first podcast</h3>
-                <p class="desc">Plan your show, record in the sound-isolated studio and finish an episode intro you can publish.</p>
-                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
-                <a class="btn btn-red" href="#workshops">Book this workshop</a>
-              </div>
-            </article>
-
-            <article class="wcard slab-oxblood">
-              <div class="wcard-top"><span>Beginner · 1 day</span><span class="wcard-num">03</span></div>
-              <div class="wcard-body">
-                <div class="albers-sq" aria-hidden="true"></div>
-                <h3>Launch your content career</h3>
-                <p class="desc">Go from first idea to first finished video. Built for career switchers starting from scratch.</p>
-                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
-                <a class="btn btn-bone" href="#workshops">Book this workshop</a>
-              </div>
-            </article>
-
-            <article class="wcard slab-grid">
-              <div class="wcard-top"><span>Beginner · 1 day</span><span class="wcard-num">04</span></div>
-              <div class="wcard-body">
-                <div class="albers-sq" aria-hidden="true"></div>
-                <h3>Learn to edit your own videos</h3>
-                <p class="desc">Cut, colour and caption your footage so you never depend on someone else to finish it.</p>
-                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
-                <a class="btn btn-red" href="#workshops">Book this workshop</a>
-              </div>
-            </article>
-
-            <article class="wcard slab-bone">
-              <div class="wcard-top"><span>Advanced</span><span class="wcard-num">Flagship</span></div>
-              <div class="wcard-body">
-                <div class="albers-sq" aria-hidden="true"></div>
-                <h3>Advanced content creation</h3>
-                <p class="desc">Strategy, scriptwriting, storytelling, AI workflows, recording, editing and publishing. You record a short video to take away.</p>
-                <div class="meta"><span>Price <b>TBC</b></span><span>Next date <b>TBC</b></span></div>
-                <a class="btn btn-ink" href="#workshops">Book this workshop</a>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div class="cta-strip">
-          <span class="cta-strip-copy">Not sure where to start? Try the 2-hour Beginner Q&amp;A session for £50.</span>
-          <a class="btn btn-red" href="#workshops">Reserve £50 Q&amp;A seat <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 6. VLOG — FROM CONCEPT TO REALITY (OXBLOOD GROUND, ONE S3 PANEL WRAPPING EPISODES, RENDERS & CTA) -->
-  <section class="sec theme-oxblood" id="vlog">
-    <div class="frame">
-      <div class="col sec-pad">
-        <div class="sec-head">
-          <div class="eyebrow-bar">
-            <p class="eyebrow">Vlog · the build</p>
-            <span class="coord">05 episodes · 06 renders</span>
-          </div>
-          <div class="sec-head-main">
-            <h2 class="h2">From concept to reality.</h2>
-            <p class="lede">Watch us build the studio.</p>
-          </div>
-        </div>
-
-        <div class="tw-panel s3-panel vlog-panel">
-          <!-- 6a. Five static build episodes in one row on desktop -->
-          <div class="vlog-grid">
-            <a class="vcard" href="#vlog">
-              <span class="ph">Episode link to come</span>
-              <span class="vcard-ghost" aria-hidden="true">01</span>
-              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
-              <span class="ep">The build · EP. 01</span>
-              <h3>Getting the keys</h3>
-            </a>
-            <a class="vcard" href="#vlog">
-              <span class="ph">Episode link to come</span>
-              <span class="vcard-ghost" aria-hidden="true">02</span>
-              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
-              <span class="ep">The build · EP. 02</span>
-              <h3>Building the sound panels</h3>
-            </a>
-            <a class="vcard" href="#vlog">
-              <span class="ph">Episode link to come</span>
-              <span class="vcard-ghost" aria-hidden="true">03</span>
-              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
-              <span class="ep">The build · EP. 03</span>
-              <h3>Making the tables</h3>
-            </a>
-            <a class="vcard" href="#vlog">
-              <span class="ph">Episode link to come</span>
-              <span class="vcard-ghost" aria-hidden="true">04</span>
-              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
-              <span class="ep">The build · EP. 04</span>
-              <h3>Painting the walls</h3>
-            </a>
-            <a class="vcard" href="#vlog">
-              <span class="ph">Episode link to come</span>
-              <span class="vcard-ghost" aria-hidden="true">05</span>
-              <div class="play" aria-hidden="true"><span><svg width="18" height="18" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#ECE6DC"/></svg></span></div>
-              <span class="ep">The build · EP. 05</span>
-              <h3>Setting up the first workshop</h3>
-            </a>
-          </div>
-
-          <!-- 6b. Six concept renders in a continuous marquee 40px underneath -->
-          <div class="render-marquee marquee" aria-label="Studio concept renders">
-            <div class="marquee-track">
-              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_44_2.jpg" alt="Concept render of the sound-isolated podcast booth"><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_19.jpg" alt="Concept render of the production floor with green screen and editing desk"><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_31.jpg" alt="Concept render of the co-working and workshop room"><figcaption class="render-thumb-cap">Co-working room</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_18.jpg" alt="Concept render of the co-working space busy with members"><figcaption class="render-thumb-cap">Co-working in use</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_44_3.jpg" alt="Concept render of the corridor with window desks"><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">The plan</span><img src="img/19_47_45_28.jpg" alt="Concept render of an evening talk and event night"><figcaption class="render-thumb-cap">Event night</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_44_2.jpg" alt=""><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_19.jpg" alt=""><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_31.jpg" alt=""><figcaption class="render-thumb-cap">Co-working room</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_18.jpg" alt=""><figcaption class="render-thumb-cap">Co-working in use</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_44_3.jpg" alt=""><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">The plan</span><img src="img/19_47_45_28.jpg" alt=""><figcaption class="render-thumb-cap">Event night</figcaption></figure>
-            </div>
-          </div>
-
-          <!-- 6c. Subscribe on YouTube strip at the bottom of the panel -->
-          <div class="cta-strip">
-            <span class="cta-strip-copy">Follow every episode as the studio comes together in Bedford.</span>
-            <a class="btn btn-ink" href="https://www.youtube.com/" target="_blank" rel="noopener">Subscribe on YouTube <span aria-hidden="true">↗</span></a>
           </div>
         </div>
       </div>
@@ -3290,8 +3705,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
         <div class="tw-panel">
           <div class="prod">
             <div class="shot s1 prod-lead">
-              <span class="ph ph-red">Concept render</span>
-              <img src="img/19_47_45_19.jpg" alt="Production floor with a camera operator, an editing desk and a green screen">
+              <img src="img/prod-lead.jpg" alt="Multi-camera panel shoot with Andrew, four guests and cinema lighting" style="object-position: 50% 55%" loading="lazy">
             </div>
             <div class="prod-copy">
               <p>Talking-head videos for personal brands, founders, coaches, authors, startups and businesses. We plan, light, shoot and edit. You focus on your message.</p>
@@ -3301,86 +3715,51 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
                 <li><span>Output</span><span>Unlimited content</span></li>
               </ul>
               <div class="prod-btns">
-                <a class="btn btn-red" href="https://storytelling.group" target="_blank" rel="noopener">Get a quote <span aria-hidden="true">↗</span></a>
-                <a class="btn btn-red-outline" href="https://storytelling.group" target="_blank" rel="noopener">See our work <span aria-hidden="true">↗</span></a>
+                <a class="btn btn-red" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
               </div>
             </div>
             <div class="shot prod-a">
-              <span class="ph">Shoot photo to come</span>
-              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+              <img src="img/prod-a.jpg" alt="Operating a Sony cinema camera on set with parabolic softbox lighting" style="object-position: 50% 0%" loading="lazy">
             </div>
             <div class="shot prod-b">
-              <span class="ph">Shoot photo to come</span>
-              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+              <img src="img/prod-b.jpg" alt="Two-person studio podcast conversation with broadcast microphones" style="object-position: 50% 20%" loading="lazy">
             </div>
             <div class="shot prod-c">
-              <span class="ph">Shoot photo to come</span>
-              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+              <img src="img/prod-c.jpg" alt="Filming a live keynote speaker at a podium with cinema camera rig" style="object-position: 50% 30%" loading="lazy">
             </div>
             <div class="shot prod-d">
-              <span class="ph">Shoot photo to come</span>
-              <div class="shot-placeholder-box"><span>Shoot photo to come</span></div>
+              <img src="img/prod-d.jpg" alt="Live audio mixing and multi-camera monitoring during a podcast shoot" style="object-position: 50% 45%" loading="lazy">
             </div>
           </div>
+          <div class="prod-strip">
+            <div class="marquee" aria-label="Photos from client shoots">
+        <div class="marquee-track">
+          <figure class="shoot-ph"><img src="img/shoot-01.jpg" alt="Behind the scenes of a studio interview shoot with boom mic and softbox" style="object-position: 32% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-02.jpg" alt="Cinema camera monitor in foreground filming a panel discussion" style="object-position: 50% 40%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-03.jpg" alt="Podcast guest speaking into a studio microphone" style="object-position: 55% 30%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-04.jpg" alt="Three-camera podcast production setup with twin parabolic softboxes" style="object-position: 50% 50%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-05.jpg" alt="Andrew on set at the live audio and video switching station" style="object-position: 46% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-06.jpg" alt="Andrew and guest smiling between studio softboxes on set" style="object-position: 50% 35%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-07.jpg" alt="Green-screen studio filming with two cinema cameras and lighting" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-08.jpg" alt="Two podcast guests in conversation during a studio shoot" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-09.jpg" alt="Wide studio room setup with subject seated under key light" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-10.jpg" alt="Two podcast hosts laughing into broadcast microphones" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-11.jpg" alt="Overhead lantern and twin softboxes illuminating an interview set" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-12.jpg" alt="Filming a live audience event and panel discussion" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-01.jpg" alt="" style="object-position: 32% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-02.jpg" alt="" style="object-position: 50% 40%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-03.jpg" alt="" style="object-position: 55% 30%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-04.jpg" alt="" style="object-position: 50% 50%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-05.jpg" alt="" style="object-position: 46% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-06.jpg" alt="" style="object-position: 50% 35%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-07.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-08.jpg" alt="" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-09.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-10.jpg" alt="" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-11.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-12.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- 8. CLIENTS & TESTIMONIALS (BONE GROUND: HEADER BLOCK + CRISS-CROSS LOGO GRID + TESTIMONIALS) -->
-  <section class="sec theme-bone" id="clients" aria-label="Clients and testimonials">
-    <div class="frame">
-      <div class="col sec-pad">
-        <div class="sec-head">
-          <div class="eyebrow-bar">
-            <p class="eyebrow">Clients</p>
-          </div>
-          <div class="sec-head-main">
-            <h2 class="h2">Clients who trust us.</h2>
-            <p class="lede">Content for influencers with up to 5 million followers, leading politicians, national charities and multinational food brands.</p>
-          </div>
-        </div>
-
-        <div class="tw-sponsors-wrap">
-          <div class="tw-sponsors">
-            <div class="tw-sponsors__cols" aria-hidden="true">
-              <span></span><span></span><span></span><span></span>
-            </div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-            <div class="logo-cell"><span class="lc-name">Client logo</span></div>
-          </div>
-        </div>
-
-        <div class="testimonials-block">
-          <figure class="quote">
-            <div class="quote-grid">
-              <div class="quote-mark" aria-hidden="true">“</div>
-              <blockquote>In our clients’ words.</blockquote>
-            </div>
-          </figure>
-          <div class="testi-videos">
-            <div class="testi-video-frame">
-              <span class="testi-video-ph">Client video to come</span>
-              <iframe class="yt-lazy" title="Client testimonial 1" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="testi-video-frame">
-              <span class="testi-video-ph">Client video to come</span>
-              <iframe class="yt-lazy" title="Client testimonial 2" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="testi-video-frame">
-              <span class="testi-video-ph">Client video to come</span>
-              <iframe class="yt-lazy" title="Client testimonial 3" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="testi-video-frame">
-              <span class="testi-video-ph">Client video to come</span>
-              <iframe class="yt-lazy" title="Client testimonial 4" data-video-id="" data-src="https://www.youtube-nocookie.com/embed/VIDEO_ID?autoplay=1&amp;mute=1&amp;cc_load_policy=1&amp;playsinline=1&amp;loop=1&amp;playlist=VIDEO_ID&amp;rel=0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>
-            </div>
           </div>
         </div>
       </div>
@@ -3422,11 +3801,34 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
               <p>A quiet room to cut your footage after the shoot.</p>
             </div>
             <div class="tile t5">
-              <p class="eyebrow">Kitchen</p>
-              <p>Tea, coffee and lunch on site for long sessions.</p>
+              <p class="eyebrow">Cameras and lights</p>
+              <p>Pro cameras, lighting and teleprompter on site.</p>
             </div>
             <div class="tile t6 go">
-              <a class="btn btn-ink" href="#find-us" style="justify-self: start">Check availability</a>
+              <a class="btn btn-ink" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener" style="justify-self: start">Get in touch <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tw-panel s3-panel vlog-panel studio-renders-panel">
+          <div class="studio-renders-head">
+            <span>The Manor · 06 studio &amp; space concept renders</span>
+            <span>2B Ashburnham Road · Bedford</span>
+          </div>
+          <div class="render-marquee marquee" aria-label="Studio concept renders">
+            <div class="marquee-track">
+              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_2.jpg" alt="Concept render of the sound-isolated podcast booth"><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_19.jpg" alt="Concept render of the production floor with green screen and editing desk"><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_31.jpg" alt="Concept render of the Founders Club and workshop room"><figcaption class="render-thumb-cap">Founders Club &amp; workshop room</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_18.jpg" alt="Concept render of the Founders Club space busy with members"><figcaption class="render-thumb-cap">Founders Club in use</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_3.jpg" alt="Concept render of the corridor with window desks"><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
+              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_28.jpg" alt="Concept render of an evening talk and event night"><figcaption class="render-thumb-cap">Event night</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_2.jpg" alt=""><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_19.jpg" alt=""><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_31.jpg" alt=""><figcaption class="render-thumb-cap">Founders Club &amp; workshop room</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_18.jpg" alt=""><figcaption class="render-thumb-cap">Founders Club in use</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_3.jpg" alt=""><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
+              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_28.jpg" alt=""><figcaption class="render-thumb-cap">Event night</figcaption></figure>
             </div>
           </div>
         </div>
@@ -3434,28 +3836,32 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
     </div>
   </section>
 
-  <!-- 10. CO-WORKING (LOCKED TO V3 — INK GROUND, INTERNAL LINES KEPT) -->
+  <!-- 10. FOUNDERS CLUB (LOCKED TO V3 LAYOUT — INK GROUND, INTERNAL LINES KEPT, REsFRAMED AS MEMBERS ONLY) -->
   <section class="sec theme-ink" id="coworking">
     <div class="frame">
       <div class="col sec-pad">
         <div class="tw-rule tw-inset eyebrow-bar">
-          <p class="eyebrow">Co-working · opening next month</p>
-          <span class="coord">Waitlist open</span>
+          <p class="eyebrow">Founders Club · Members only</p>
+          <span class="coord">Around 20 founders · Bedford</span>
         </div>
         <div class="tw-rule tw-rule--b tw-inset-lg split">
           <div class="split-img">
             <span class="ph ph-red">Concept render</span>
-            <img src="img/19_47_45_18.jpg" alt="People working on laptops at long wooden tables">
+            <img src="img/19_47_45_18.jpg" alt="Founders working alongside each other at long wooden tables">
           </div>
           <div class="split-copy">
-            <h2 class="h2"><em>Co-working</em> for a community of creators and <em>founders</em>.</h2>
-            <p class="lede">Work alongside people building things, with a studio next door. Opening next month, so join the waitlist.</p>
+            <h2 class="h2">Co-working <em>for creators.</em></h2>
+            <p class="lede">Imagine working every day alongside around 20 founders who are all actively making content. Ideas move faster, feedback is instant, and nobody builds alone. That's the power of the room.</p>
             <ul class="checks">
-              <li>Desks by the window, one minute from the station</li>
-              <li>Recording room and editing suite next door</li>
-              <li>Workshops and meetups with the people around you</li>
+              <li>A members-only space, not open to the public</li>
+              <li>A small community of founders who are actively creating</li>
+              <li>Honest feedback on your ideas, scripts and cuts from people doing the same work</li>
+              <li>Collaborations, guest spots and shared shoots with other members</li>
+              <li>A recording studio and editing suite next door</li>
+              <li>Members-only workshops and meetups</li>
+              <li>One minute from Bedford station</li>
             </ul>
-            <div><a class="btn btn-red" href="#coworking">Join the waitlist</a></div>
+            <div><a class="btn btn-red" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a></div>
           </div>
         </div>
       </div>
@@ -3480,9 +3886,6 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
           <span>Launches</span>
           <span>Celebrations</span>
         </div>
-        <div>
-          <a class="btn btn-red" href="#find-us">Check availability</a>
-        </div>
       </div>
     </div>
   </section>
@@ -3505,19 +3908,17 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
           <div class="people">
             <div class="person">
               <div class="portrait">
-                <span class="ph">Portrait · Jay</span>
-                <span class="portrait-stamp">Photo needed</span>
+                <img class="portrait-img" src="img/portrait-jay.jpg" alt="Jay on set beside a cinema camera rig" style="object-position: 50% 35%" loading="lazy">
                 <h3 class="portrait-name">Jay</h3>
               </div>
-              <p class="person-role">Co-founder · Role to confirm<br>@instagram</p>
+              <p class="person-role">Co-founder · Producer &amp; educator</p>
             </div>
             <div class="person">
               <div class="portrait">
-                <span class="ph">Portrait · Andrew</span>
-                <span class="portrait-stamp">Photo needed</span>
+                <img class="portrait-img" src="img/portrait-andrew.jpg" alt="Andrew speaking into a studio microphone" style="object-position: 50% 35%" loading="lazy">
                 <h3 class="portrait-name">Andrew</h3>
               </div>
-              <p class="person-role">Co-founder · Producer and director<br>@instagram</p>
+              <p class="person-role">Co-founder · Producer and director<br><a href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">@andrewgabrielofficial</a></p>
             </div>
           </div>
           <div class="about-text">
@@ -3533,36 +3934,78 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
           </div>
         </div>
       </div>
-    </div>
+    </div>  </section>
 
-    <!-- Full-width shoot photo strip (56px below bullets, 128px bottom padding after strip, 12 per set / 24 total) -->
-    <div class="sub-band theme-bone about-strip">
-      <div class="marquee" aria-label="Photos from client shoots">
-        <div class="marquee-track">
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph wide tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
-          <figure class="shoot-ph tex-stripes-light" aria-hidden="true"><span class="ph">Shoot photo to come</span></figure>
+
+  <!-- 12b. LOCAL VOICE COLLECTIVE PODCAST (OXBLOOD GROUND — ANDREW & JAY ON ADHD: FEATURED 'ADHD GENIUS' SHORT + LONG EPISODE + 2 SHORTS) -->
+  <section class="sec theme-oxblood" id="podcast">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Podcast · Local Voice Collective</p>
+            <span class="coord">Andrew &amp; Jay · On ADHD &amp; creativity</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Local Voice Collective.</h2>
+            <p class="lede">Andrew and Jay talk openly about ADHD, creative focus, and the day-to-day reality of working as a professional artist.</p>
+          </div>
+        </div>
+
+        <div class="lvc-grid">
+          <!-- Featured main piece: "ADHD genius" short (ffX0TD-brpg) -->
+          <article class="work-item lvc-featured">
+            <div class="work-frame work-frame-featured" role="button" tabindex="0" data-video-id="ffX0TD-brpg" data-start="0" aria-label="Play Featured Short: ADHD Genius — A More Than Normal Life of a Professional Artist">
+              <span class="lvc-badge">Featured short · ADHD Genius</span>
+              <img class="work-thumb" src="img/lvc-short-1-ffX0TD-brpg.jpg" alt="ADHD Genius — Jay and Andrew on Local Voice Collective" loading="lazy">
+              <div class="play" aria-hidden="true"><span><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+            </div>
+            <div class="work-caption">
+              <h3 class="work-title">ADHD Genius — A More Than Normal Life of a Professional Artist</h3>
+              <p class="work-meta">Featured short · Andrew &amp; Jay · Local Voice Collective</p>
+            </div>
+          </article>
+
+          <!-- Alongside main piece: Full landscape episode (nubtWSrKcws) + 2 companion shorts (nKOp1JvEFL8, XOkLIsMORPk) -->
+          <div class="lvc-right">
+            <article class="work-item lvc-long">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="nubtWSrKcws" data-start="0" aria-label="Play Full Episode: ADHD Advocate: Day in a Life of a Professional Artist">
+                <span class="lvc-badge lvc-badge-ink">Full episode</span>
+                <img class="work-thumb" src="img/lvc-long-nubtWSrKcws.jpg" alt="ADHD Advocate: Day in a Life of a Professional Artist — Full Episode" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">ADHD Advocate: Day in a Life of a Professional Artist</h3>
+                <p class="work-meta">Full landscape episode · Local Voice Collective</p>
+              </div>
+            </article>
+
+            <div class="lvc-shorts-pair">
+              <article class="work-item">
+                <div class="work-frame work-frame-short" role="button" tabindex="0" data-video-id="nKOp1JvEFL8" data-start="0" aria-label="Play Short: ADHD: Day-in-a-Life of a Professional Artist">
+                  <span class="lvc-badge lvc-badge-ink">Short</span>
+                  <img class="work-thumb" src="img/lvc-short-2-nKOp1JvEFL8.jpg" alt="ADHD: Day-in-a-Life of a Professional Artist" loading="lazy">
+                  <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+                </div>
+                <div class="work-caption">
+                  <h3 class="work-title">ADHD: Day-in-a-Life of a Professional Artist</h3>
+                  <p class="work-meta">Short clip · Local Voice Collective</p>
+                </div>
+              </article>
+
+              <article class="work-item">
+                <div class="work-frame work-frame-short" role="button" tabindex="0" data-video-id="XOkLIsMORPk" data-start="0" aria-label="Play Short: How to Beat Imposter Syndrome and Finally Start Creating">
+                  <span class="lvc-badge lvc-badge-ink">Short</span>
+                  <img class="work-thumb" src="img/lvc-short-3-XOkLIsMORPk.jpg" alt="How to Beat Imposter Syndrome and Finally Start Creating" loading="lazy">
+                  <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+                </div>
+                <div class="work-caption">
+                  <h3 class="work-title">How to Beat Imposter Syndrome &amp; Start Creating</h3>
+                  <p class="work-meta">Short clip · Local Voice Collective</p>
+                </div>
+              </article>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -3592,7 +4035,6 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
                   <tr><td>Large room</td><td>Workshops, co-working and events, with its own hallway</td></tr>
                   <tr><td>Recording room</td><td>Fully sound-isolated. Video, podcasts, audiobooks, voiceover</td></tr>
                   <tr><td>Small room</td><td>Editing suite, meeting room</td></tr>
-                  <tr><td>Kitchen</td><td>Tea, coffee and lunch on site</td></tr>
                   <tr><td>Bathroom</td><td>On site</td></tr>
                 </tbody>
               </table>
@@ -3659,35 +4101,35 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
               <h3 class="final-tile-title">Workshops</h3>
               <p class="final-tile-desc">Make your first video in a day. Groups of 10–15.</p>
             </div>
-            <a class="btn btn-red" href="#workshops">Book a workshop <span aria-hidden="true">→</span></a>
+            <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop <span aria-hidden="true">↗</span></a>
           </div>
           <div class="final-tile">
             <div class="final-tile-top">
               <h3 class="final-tile-title">Production</h3>
               <p class="final-tile-desc">We plan, shoot and edit. You post it.</p>
             </div>
-            <a class="btn btn-ink-bordered" href="https://storytelling.group" target="_blank" rel="noopener">Get a quote <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
           </div>
           <div class="final-tile">
             <div class="final-tile-top">
               <h3 class="final-tile-title">Studio hire</h3>
               <p class="final-tile-desc">Sound-isolated room, ready to record.</p>
             </div>
-            <a class="btn btn-ink-bordered" href="#studio">Check availability</a>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
           </div>
           <div class="final-tile">
             <div class="final-tile-top">
-              <h3 class="final-tile-title">Co-working</h3>
-              <p class="final-tile-desc">Opening next month. Desks next to the studio.</p>
+              <h3 class="final-tile-title">Founders Club</h3>
+              <p class="final-tile-desc">Members-only space for founders next to the studio.</p>
             </div>
-            <a class="btn btn-ink-bordered" href="#coworking">Join the waitlist</a>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
           </div>
           <div class="final-tile">
             <div class="final-tile-top">
               <h3 class="final-tile-title">Events</h3>
               <p class="final-tile-desc">Workshops, meetups, launches and team days.</p>
             </div>
-            <a class="btn btn-ink-bordered" href="#events">Enquire</a>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
           </div>
         </div>
       </div>
@@ -3702,9 +4144,9 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
     <div class="col sec-pad tw-inset foot">
       <div class="foot-cols">
         <div><h4>Learn</h4><ul><li><a href="#workshops">Workshops</a></li><li><a href="#faq">FAQ</a></li></ul></div>
-        <div><h4>Hire</h4><ul><li><a href="#studio">Studio hire</a></li><li><a href="#events">Events</a></li><li><a href="#coworking">Co-working</a></li></ul></div>
+        <div><h4>Hire</h4><ul><li><a href="#studio">Studio hire</a></li><li><a href="#events">Events</a></li><li><a href="#coworking">Founders Club</a></li></ul></div>
         <div><h4>Work with us</h4><ul><li><a href="#production">Production</a></li><li><a href="https://storytelling.group" target="_blank" rel="noopener">storytelling.group ↗</a></li></ul></div>
-        <div><h4>Follow</h4><ul><li><a href="https://www.youtube.com/" target="_blank" rel="noopener">YouTube ↗</a></li><li><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram ↗</a></li></ul></div>
+        <div><h4>Follow</h4><ul><li><a href="https://www.youtube.com/" target="_blank" rel="noopener">YouTube ↗</a></li><li><a href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Instagram ↗</a></li></ul></div>
       </div>
       <div class="foot-bottom">
         <span>The Manor — 2B Ashburnham Road</span>
@@ -3714,62 +4156,44 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
   </div>
 </footer>
 
-<!-- STICKY SERVICE BAR (OXBLOOD GROUND, FIVE RED BUTTONS) -->
-<div class="sticky" id="sticky" aria-hidden="true">
-  <div class="sticky-in">
-    <a class="btn btn-red" href="#workshops" tabindex="-1">Book a workshop</a>
-    <a class="btn btn-red" href="https://storytelling.group" target="_blank" rel="noopener" tabindex="-1">Get a quote</a>
-    <a class="btn btn-red" href="#studio" tabindex="-1">Hire the studio</a>
-    <a class="btn btn-red" href="#coworking" tabindex="-1">Join co-working</a>
-    <a class="btn btn-red" href="#events" tabindex="-1">Host an event</a>
-  </div>
-</div>
-
 <script>
-// Carousel arrows for workshop track (#wtrack at <1280px)
-document.querySelectorAll('.icon-btn[data-for]').forEach(b => {
-  const t = document.getElementById(b.dataset.for);
-  if (!t) return;
-  b.addEventListener('click', () => {
-    const c = t.firstElementChild;
-    const gap = parseFloat(getComputedStyle(t).columnGap || getComputedStyle(t).gap) || 12;
-    t.scrollBy({ left: (c.offsetWidth + gap) * +b.dataset.dir, behavior: 'smooth' });
-  });
-});
-
-function arrowState(t) {
-  document.querySelectorAll('.icon-btn[data-for="' + t.id + '"]').forEach(b => {
-    b.disabled = b.dataset.dir < 0 ? t.scrollLeft < 4 : t.scrollLeft + t.clientWidth >= t.scrollWidth - 4;
+// Hero self-hosted MP4 unmute toggle (§1)
+const heroVideo = document.getElementById('hero-video');
+const heroUnmute = document.getElementById('hero-unmute');
+if (heroVideo && heroUnmute) {
+  heroUnmute.addEventListener('click', () => {
+    heroVideo.muted = !heroVideo.muted;
+    const unmuted = !heroVideo.muted;
+    heroUnmute.textContent = unmuted ? 'Mute' : 'Unmute';
+    heroUnmute.setAttribute('aria-pressed', unmuted ? 'true' : 'false');
+    heroUnmute.setAttribute('aria-label', unmuted ? 'Mute video' : 'Unmute video');
   });
 }
 
-document.querySelectorAll('.track').forEach(t => {
-  arrowState(t);
-  t.addEventListener('scroll', () => arrowState(t), { passive: true });
-  window.addEventListener('resize', () => arrowState(t), { passive: true });
-});
-
-// Click-to-play YouTube facade for showreel (#work, §4.4)
+// Click-to-play YouTube facade for #work and #podcast (fixes Error 153 on both HTTP/HTTPS and file:///opaque origins)
 document.querySelectorAll('.work-frame[data-video-id]').forEach(frame => {
-  const id = (frame.dataset.videoId || '').trim();
-  if (id && id !== 'VIDEO_ID') {
-    const ph = frame.querySelector('.ph');
-    if (ph) ph.remove();
-    const img = document.createElement('img');
-    img.className = 'work-thumb';
-    img.src = 'https://i.ytimg.com/vi/' + encodeURIComponent(id) + '/hqdefault.jpg';
-    img.alt = '';
-    img.loading = 'lazy';
-    frame.prepend(img);
-  }
   const playVideo = () => {
     const vid = (frame.dataset.videoId || '').trim();
+    const start = parseInt(frame.dataset.start || '0', 10) || 0;
     if (!vid || vid === 'VIDEO_ID' || frame.querySelector('iframe')) return;
     const iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0&playsinline=1';
-    iframe.title = frame.getAttribute('aria-label') || 'Showreel video';
-    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    const isOpaqueOrLocal = (window.location.protocol === 'file:' || window.origin === 'null' || !window.location.hostname);
+    if (isOpaqueOrLocal) {
+      let relayUrl = 'https://andrewg223.github.io/the-manor-pages/yt-player.html?v=' + encodeURIComponent(vid);
+      if (start > 0) relayUrl += '&start=' + start;
+      iframe.src = relayUrl;
+    } else {
+      let embedUrl = 'https://www.youtube.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0&playsinline=1';
+      if (start > 0) embedUrl += '&start=' + start;
+      iframe.src = embedUrl;
+    }
+    iframe.title = frame.getAttribute('aria-label') || 'YouTube video player';
+    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
     iframe.allowFullscreen = true;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = '0';
     frame.replaceChildren(iframe);
   };
   frame.addEventListener('click', playVideo);
@@ -3781,45 +4205,18 @@ document.querySelectorAll('.work-frame[data-video-id]').forEach(frame => {
   });
 });
 
-// Lazy-load YouTube testimonial iframes on scroll into view (§4.8)
-const ytObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const iframe = entry.target;
-    const vid = (iframe.dataset.videoId || '').trim();
-    const rawSrc = iframe.dataset.src || '';
-    if (vid && vid !== 'VIDEO_ID') {
-      iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&mute=1&cc_load_policy=1&playsinline=1&loop=1&playlist=' + encodeURIComponent(vid) + '&rel=0';
-      iframe.closest('.testi-video-frame').classList.add('is-loaded');
-    } else if (rawSrc && !rawSrc.includes('VIDEO_ID')) {
-      iframe.src = rawSrc;
-      iframe.closest('.testi-video-frame').classList.add('is-loaded');
+// Keep internal #hash anchor clicks scrolling inside the page even when <base> tag is active in Notion embed
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const hash = a.getAttribute('href');
+    if (!hash || hash === '#') return;
+    const target = document.getElementById(hash.slice(1));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
     }
-    ytObserver.unobserve(iframe);
   });
-}, { rootMargin: '120px' });
-
-document.querySelectorAll('iframe.yt-lazy').forEach(el => ytObserver.observe(el));
-
-// Sticky service bar after hero (§4.17)
-const hero = document.getElementById('hero-sec'),
-      bar = document.getElementById('sticky'),
-      end = document.getElementById('end');
-let pastHero = false, atEnd = false;
-const sync = () => {
-  const on = pastHero && !atEnd;
-  bar.classList.toggle('on', on);
-  bar.setAttribute('aria-hidden', !on);
-  bar.querySelectorAll('a').forEach(a => { a.tabIndex = on ? 0 : -1; });
-};
-new IntersectionObserver(([e]) => {
-  pastHero = !e.isIntersecting && e.boundingClientRect.top < 0;
-  sync();
-}).observe(hero);
-new IntersectionObserver(([e]) => {
-  atEnd = e.isIntersecting;
-  sync();
-}).observe(end);
+});
 </script>
 </body>
 </html>
