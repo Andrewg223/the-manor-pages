@@ -1,0 +1,4380 @@
+<!DOCTYPE html>
+<html lang="en" id="top">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>
+// When rendered inside Notion's S3 HTML embed block, resolve relative img/ and video/ assets from GitHub Pages
+if (typeof location !== 'undefined' && (location.hostname.indexOf('amazonaws.com') !== -1 || location.hostname.indexOf('notion') !== -1)) {
+  var _base = document.createElement('base');
+  _base.href = 'https://andrewg223.github.io/the-manor-pages/';
+  document.head.appendChild(_base);
+}
+</script>
+<title>The Manor — Studio Home v4.5</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* ==========================================================================
+   HOW TO EDIT THIS FILE (THE MANOR HOME PAGE — V4.5)
+   --------------------------------------------------------------------------
+   1. CHANGE GLOBAL COLORS IN ONE PLACE: Edit the 3 MASTER GLOBAL COLORS
+      (--ink, --bone, --red) in STEP 1 of :root right below. Every similar
+      shade, surface, border, diagonal stripe, dot grid, gradient overlay,
+      hard shadow, and SVG play icon across the entire website is connected
+      to those 3 colors and updates automatically.
+   2. OVERRIDE ONE SPECIFIC SHADE (OPTIONAL): Every derived shade (--ink-0,
+      --ink-2, --line, --bone-2, --bone-line, --red-2, --red-deep,
+      --red-deeper, --ash, --ink-muted) is listed in STEP 2 right under the
+      Master Colors. Replace any color-mix(...) with a #HEX code to set that
+      single shade independently.
+   3. JUMP TO ONE SECTION: Press Cmd/Ctrl+F and search any section name from
+      the CONTENTS list below.
+   ========================================================================== */
+
+/* ==========================================================================
+   CONTENTS — Cmd/Ctrl+F a name below to jump to its CSS block
+   --------------------------------------------------------------------------
+   GLOBAL COLOR PALETTE (:root)
+   TYPOGRAPHY — ARCHIVO 125 DISPLAY + ARCHIVO 100 BODY + JETBRAINS MONO
+   TAILWIND-STYLE ARCHITECTURAL GRID
+   SECTION THEMES & TEXTURES
+   BUTTONS & CONTROLS
+   0. ANNOUNCEMENT BAR
+   1. NAVIGATION
+   2. HERO + 2b. GROK SERVICE BOXES
+   3. TRUST MARQUEE
+   4. OUR WORK
+   5. WORKSHOPS
+   6. INSIDE A WORKSHOP
+   7. PRODUCTION
+   8. CLIENTS & TESTIMONIALS
+   9. STUDIO HIRE
+   10. PODCASTING
+   11. CO-WORKING
+   12. FOUNDERS
+   13. BEDFORD LOCATION
+   14. FAQ
+   15. FINAL CTA
+   16. FOOTER + STICKY BAR + MODAL
+   17. RESPONSIVE BREAKPOINTS
+   BLUE TAP-HIGHLIGHT FIX
+   ========================================================================== */
+
+/* ==========================================================================
+   WHAT YOU SEE -> WHAT IT'S CALLED (and its controlling token)
+   --------------------------------------------------------------------------
+   Dark section ground ................... .theme-ink          -> --ink
+   Deepest black section ground .......... .theme-ink-0        -> --ink-0
+   Light section ground .................. .theme-bone         -> --bone
+   Signal red section ground ............. .theme-red          -> --red
+   Oxblood section ground ................ .theme-oxblood      -> --red-deep
+   Primary CTA button .................... .btn-red            -> --red
+   Dark / Light buttons .................. .btn-ink / .btn-bone-> --ink / --bone
+   Headline red highlight block .......... .hero .h1 em, .h2 em-> --red
+   Eyebrow label + square marker ......... .eyebrow            -> --ash + --red
+   Hero 4-service boxes & final CTA tiles  .srv-box/.final-tile-> --red-2
+   Workshop cards (red/oxblood/ink/bone) . .wcard.slab-*       -> --red / --red-deep / --ink-2 / --bone
+   Bento studio grid tiles ............... .bento .tile        -> --red-deep / --red-deeper
+   Hard offset shadows (S1 / S2 / S4) .... .hero-media / .s2   -> --red / --red-deep / --shadow-s4
+   ========================================================================== */
+
+:root {
+  /* ========================================================================
+     STEP 1 — MASTER GLOBAL COLORS (Change these 3 hex codes to re-theme all)
+     Every similar color across the entire website is connected to these 3.
+     ======================================================================== */
+  --ink:  #141312; /* MASTER DARK   — main dark ground, dark cards, dark text on light sections */
+  --bone: #ECE6DC; /* MASTER LIGHT  — main light ground, primary text on dark sections, play icons */
+  --red:  #D7261E; /* MASTER ACCENT — primary CTAs, headline highlight blocks, markers, red sections */
+
+  /* ========================================================================
+     STEP 2 — CONNECTED PALETTE SHADES (Auto-derived from Step 1 Master Colors)
+     Automatically shifts when you edit --ink, --bone, or --red above.
+     To override a single shade manually, replace its color-mix(...) with #HEX.
+     ======================================================================== */
+  /* Dark family shades (connected to --ink & --bone) */
+  --ink-0:             color-mix(in srgb, var(--ink) 63.2%, #000000);      /* deepest black (#0D0C0B): Our Work & Production grounds */
+  --ink-2:             color-mix(in srgb, var(--ink) 95.5%, var(--bone));  /* elevated dark surface (#1E1C1B): dark cards, media frames, nav hover */
+  --line:              color-mix(in srgb, var(--ink) 83%, var(--bone));    /* dark hairlines (#3A3634): every 1px border & divider on dark */
+  --stripe-ink:        color-mix(in srgb, var(--ink) 89%, var(--bone));    /* diagonal hatch stripes on dark rails, nav bar & portraits (var(--stripe-ink)) */
+  --stripe-ink-subtle: color-mix(in srgb, var(--ink) 91%, var(--bone));    /* subtle diagonal hatch stripes inside hero & showreel frames (var(--stripe-ink-subtle)) */
+  --stripe-ink-0:      color-mix(in srgb, var(--ink) 93%, var(--bone));    /* diagonal hatch stripes on deepest-black rails & placeholders (var(--stripe-ink-0)) */
+
+  /* Light family shades (connected to --bone & --ink) */
+  --bone-2:            color-mix(in srgb, var(--bone) 97%, var(--ink));    /* secondary light surface (#E7E0D4): light cards & hatch fill on bone */
+  --bone-line:         color-mix(in srgb, var(--bone) 85.2%, var(--ink));  /* light hairlines (#CFC7BB): every 1px border & divider on light */
+  --stripe-bone:       color-mix(in srgb, var(--bone) 84%, var(--ink));    /* diagonal hatch stripes on light section side rails (var(--stripe-bone)) */
+
+  /* Accent family shades (connected to --red) */
+  --red-2:             color-mix(in srgb-linear, var(--red) 68.5%, #000000); /* darker accent (#B81C16): hero 4-service boxes & final 2x2 CTA tiles */
+  --red-deep:          color-mix(in srgb-linear, var(--red) 39.6%, #000000); /* oxblood (#8E1410): Studio Hire & Footer ground, S2 offset shadows */
+  --red-deeper:        color-mix(in srgb-linear, var(--red) 22.3%, #000000); /* deepest oxblood (#6D100D): darkest bento tiles & oxblood card hover */
+
+  /* Muted / secondary text shades (connected to --bone & --ink) */
+  --ash:               color-mix(in srgb, var(--bone) 60.8%, var(--ink));  /* secondary text on dark (#9A938A): eyebrows, coords, muted copy on dark */
+  --ink-muted:         color-mix(in srgb, var(--ink) 76.3%, var(--bone));  /* secondary text on light (#4A453F): eyebrows, coords, muted copy on bone */
+
+  /* ========================================================================
+     STEP 3 — CONNECTED TRANSLUCENT TINTS, OVERLAYS, DOTS & SHADOWS
+     Replaces every hardcoded rgba(...) in the stylesheet so all overlays,
+     dot grids, translucent borders, and shadows track Step 1 & Step 2.
+     ======================================================================== */
+  /* Light (--bone) translucent tints on dark sections */
+  --bone-a92: color-mix(in srgb, var(--bone) 92%, transparent); /* red workshop card description text */
+  --bone-a90: color-mix(in srgb, var(--bone) 90%, transparent); /* section lede subheadings on dark */
+  --bone-a86: color-mix(in srgb, var(--bone) 86%, transparent); /* oxblood workshop card description text */
+  --bone-a80: color-mix(in srgb, var(--bone) 80%, transparent); /* oxblood workshop card footer meta text */
+  --bone-a78: color-mix(in srgb, var(--bone) 78%, transparent); /* top navigation bar links (default state) */
+  --bone-a45: color-mix(in srgb, var(--bone) 45%, transparent); /* 3D room render thumbnail border */
+  --bone-a35: color-mix(in srgb, var(--bone) 35%, transparent); /* oxblood workshop card & vertical card border */
+  --bone-a28: color-mix(in srgb, var(--bone) 28%, transparent); /* co-working photo banner hairline */
+  --bone-a25: color-mix(in srgb, var(--bone) 25%, transparent); /* oxblood section & card inner dividers */
+  --bone-a22: color-mix(in srgb, var(--bone) 22%, transparent); /* Albers nested square subtle border */
+  --bone-a16: color-mix(in srgb, var(--bone) 16%, transparent); /* co-working photo banner rail hatch stripe */
+  --bone-a15: color-mix(in srgb, var(--bone) 15%, transparent); /* container-only dot grid on dark */
+  --bone-a14: color-mix(in srgb, var(--bone) 14%, transparent); /* 12px dot grid on ink sections & grid workshop cards */
+  --bone-a13: color-mix(in srgb, var(--bone) 13%, transparent); /* 14px dot grid on oxblood sections */
+  --bone-a12: color-mix(in srgb, var(--bone) 12%, transparent); /* diagonal hatch overlay on vertical showcase cards */
+  --bone-a11: color-mix(in srgb, var(--bone) 11%, transparent); /* 24px sparse dot grid on deepest-black production section */
+  --bone-a10: color-mix(in srgb, var(--bone) 10%, transparent); /* giant ghost background numbers on vertical showcase cards */
+  --bone-a03: color-mix(in srgb, var(--bone) 3%, transparent);  /* subtle framed panel tint on ink sections */
+
+  /* Dark (--ink & --ink-0) translucent tints, overlays & panel fills */
+  --ink-a88:   color-mix(in srgb, var(--ink) 88%, transparent);   /* dark badge fills (render caption, portrait stamp) & card gradient bottom */
+  --ink-a84:   color-mix(in srgb, var(--ink) 84%, transparent);   /* co-working banner left-to-right dark gradient start */
+  --ink-a78:   color-mix(in srgb, var(--ink) 78%, transparent);   /* framed panel background on dotted ink sections */
+  --ink-a66:   color-mix(in srgb, var(--ink) 66%, transparent);   /* co-working banner left-to-right dark gradient middle */
+  --ink-a65:   color-mix(in srgb, var(--ink) 65%, transparent);   /* framed panel background on deepest-black sections */
+  --ink-a58:   color-mix(in srgb, var(--ink) 58%, transparent);   /* video play overlay gradient bottom & client logo pill text on bone */
+  --ink-a45:   color-mix(in srgb, var(--ink) 45%, transparent);   /* cell borders inside hero service boxes & final 2x2 CTA tiles */
+  --ink-a42:   color-mix(in srgb, var(--ink) 42%, transparent);   /* section dividers & rail borders on red sections */
+  --ink-a38:   color-mix(in srgb, var(--ink) 38%, transparent);   /* rail hatch stripes on oxblood & meta divider on red workshop card */
+  --ink-a34:   color-mix(in srgb, var(--ink) 34%, transparent);   /* framed panel background on oxblood sections */
+  --ink-a28:   color-mix(in srgb, var(--ink) 28%, transparent);   /* co-working banner left-to-right dark gradient end */
+  --ink-a24:   color-mix(in srgb, var(--ink) 24%, transparent);   /* rail hatch stripes on red sections */
+  --ink-a12:   color-mix(in srgb, var(--ink) 12%, transparent);   /* framed panel background on red sections & container dot grid on bone */
+  --ink-a08:   color-mix(in srgb, var(--ink) 8%, transparent);    /* video/card gradient top & sponsor grid dot pattern on bone */
+  --ink-a04:   color-mix(in srgb, var(--ink) 4%, transparent);    /* subtle framed panel tint on bone sections */
+  --ink-0-a56: color-mix(in srgb, var(--ink-0) 56%, transparent); /* S3 framed panel dark fill */
+
+  /* Accent (--red) translucent tint & S4 hard offset shadow */
+  --red-a24:   color-mix(in srgb, var(--red) 24%, transparent);   /* radial accent dot grid on Bedford location map */
+  --shadow-s4: 4px 4px 0 color-mix(in srgb, var(--ink-0) 35%, transparent); /* S4 hard offset shadow on secondary frames & thumbnails */
+
+  /* ========================================================================
+     STEP 4 — TYPOGRAPHY, LAYOUT & ACTIVE SECTION DEFAULTS
+     ======================================================================== */
+  --sans: "Archivo", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --rail: 40px;
+  --max: 1600px;
+  --gap: 20px;
+  --inset: 48px;
+
+  --cur-line: var(--line);
+  --cur-stripe: var(--stripe-ink);
+  --cur-panel: var(--bone-a03);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  border-radius: 0 !important;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ink);
+  color: var(--bone);
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font: 400 16px/1.55 var(--sans);
+  font-variation-settings: "wdth" 100;
+  -webkit-font-smoothing: antialiased;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 50;
+  background: var(--ink);
+}
+
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+
+/* ==========================================================================
+   TYPOGRAPHY — ARCHIVO 125 DISPLAY + ARCHIVO 100 BODY + JETBRAINS MONO
+   ========================================================================== */
+.display, h1, h2, h3 {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.h1 {
+  font-size: clamp(56px, 8vw, 144px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+}
+
+.h1-mega {
+  font-size: clamp(56px, 8vw, 144px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+}
+
+.hero .h1 {
+  font-size: clamp(54px, 6.4vw, 110px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+}
+
+.h2 {
+  font-size: clamp(32px, 4.6vw, 64px);
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  max-width: 21ch;
+}
+
+.eyebrow {
+  font: 700 12px/1.2 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ash);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  flex: none;
+}
+
+.coord {
+  font: 500 11px/1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.lede {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 600;
+  font-size: clamp(19px, 1.6vw, 24px);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--bone-a90);
+  max-width: 42ch;
+}
+
+.ph {
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--ink);
+  border: 1px solid var(--line);
+  padding: 7px 10px;
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  z-index: 3;
+}
+
+.ph-red {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+
+/* ==========================================================================
+   TAILWIND-STYLE ARCHITECTURAL GRID:
+   315DEG HATCHED RAILS + SECTION DIVIDERS
+   ========================================================================== */
+.sec {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--cur-line);
+  overflow-x: clip;
+}
+
+.sub-band {
+  position: relative;
+  width: 100%;
+  border-top: 1px solid var(--cur-line);
+  overflow-x: clip;
+}
+
+.frame {
+  max-width: calc(var(--max) + 2 * var(--rail));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr) var(--rail);
+}
+
+.frame::before,
+.frame::after {
+  content: "";
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--cur-stripe) 0,
+    var(--cur-stripe) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 10px 10px;
+  border-inline: 1px solid var(--cur-line);
+}
+
+.col {
+  min-width: 0;
+  position: relative;
+}
+
+.sec-pad {
+  padding-block: 72px;
+}
+
+@media (min-width: 768px) {
+  .sec-pad {
+    padding-block: 128px;
+  }
+}
+
+/* Full-bleed horizontal hairlines (kept for locked #coworking section per §2.1 & §4.11) */
+.tw-rule {
+  position: relative;
+}
+
+.tw-rule::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: var(--cur-line);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tw-rule--b::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: var(--cur-line);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tw-inset {
+  padding-inline: var(--inset);
+  padding-block: 18px;
+}
+
+.tw-inset-lg {
+  padding-inline: var(--inset);
+  padding-block: 28px;
+}
+
+/* §2.3 Standard section header block: 7fr H2 left + 5fr subheading right at >=1024px */
+.sec-head {
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 28px;
+  margin-bottom: 48px;
+}
+
+.sec-head-main {
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .sec-head-main {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 48px;
+    align-items: end;
+  }
+}
+
+/* Tailwind-style framed panel wrapper (S3 panel tier) */
+.tw-panel {
+  padding: 16px;
+  background: var(--cur-panel);
+}
+
+.s3-panel {
+  background: var(--ink-0-a56);
+}
+
+.theme-oxblood .s3-panel {
+  background: var(--ink-a34);
+}
+
+/* MasterClass-style bottom CTA strip inside a section */
+.cta-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 22px var(--inset);
+  background: var(--cur-panel);
+  margin-top: 40px;
+}
+
+.cta-strip-copy {
+  font: 700 12px/1.4 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   SECTION THEMES & TEXTURES + §2.5 body.tex-inside EXPERIMENT
+   ========================================================================== */
+.theme-ink {
+  background-color: var(--ink);
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: var(--stripe-ink);
+  --cur-panel: var(--bone-a03);
+}
+
+.theme-ink-dots {
+  background-color: var(--ink);
+  background-image: radial-gradient(var(--bone-a14) 1px, transparent 0);
+  background-size: 12px 12px;
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: var(--stripe-ink);
+  --cur-panel: var(--ink-a78);
+}
+
+/* §4.4 Our work ground: --ink-0 plain (no texture) */
+.theme-ink-0-plain {
+  background-color: var(--ink-0);
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: var(--stripe-ink-0);
+  --cur-panel: var(--ink-a65);
+}
+
+/* §4.7 Production ground: --ink-0 deepest black with sparse 24px dot grid */
+.theme-ink-0 {
+  background-color: var(--ink-0);
+  background-image: radial-gradient(var(--bone-a11) 1px, transparent 0);
+  background-size: 24px 24px;
+  color: var(--bone);
+  --cur-line: var(--line);
+  --cur-stripe: var(--stripe-ink-0);
+  --cur-panel: var(--ink-a65);
+}
+
+.theme-red {
+  background-color: var(--red);
+  color: var(--bone);
+  --cur-line: var(--ink-a42);
+  --cur-stripe: var(--ink-a24);
+  --cur-panel: var(--ink-a12);
+}
+
+.theme-red .eyebrow,
+.theme-red .coord {
+  color: var(--ink);
+}
+
+.theme-red .eyebrow::before {
+  background: var(--ink);
+}
+
+.theme-oxblood {
+  background-color: var(--red-deep);
+  background-image: radial-gradient(var(--bone-a13) 1px, transparent 0);
+  background-size: 14px 14px;
+  color: var(--bone);
+  --cur-line: var(--bone-a25);
+  --cur-stripe: var(--ink-a38);
+  --cur-panel: var(--ink-a34);
+}
+
+.theme-oxblood .eyebrow,
+.theme-oxblood .coord {
+  color: var(--bone);
+}
+
+.theme-oxblood .eyebrow::before {
+  background: var(--bone);
+}
+
+.theme-bone {
+  background-color: var(--bone);
+  color: var(--ink);
+  --cur-line: var(--bone-line);
+  --cur-stripe: var(--stripe-bone);
+  --cur-panel: var(--ink-a04);
+}
+
+.theme-bone .eyebrow,
+.theme-bone .coord {
+  color: var(--ink-muted);
+}
+
+.theme-bone .lede {
+  color: var(--ink);
+}
+
+.tex-stripes-light {
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--bone-line) 0,
+    var(--bone-line) 1px,
+    var(--bone-2) 0,
+    var(--bone-2) 50%
+  );
+  background-size: 10px 10px;
+}
+
+/* §2.5 Texture-inside-containers experiment (activated by <body class="tex-inside">) */
+body.tex-inside .theme-ink-dots,
+body.tex-inside .theme-oxblood,
+body.tex-inside .theme-ink-0 {
+  background-image: none;
+}
+
+body.tex-inside .tw-panel,
+body.tex-inside .prod .shot:not(.s1),
+body.tex-inside .bento .tile:not(.photo):not(.stripe) {
+  background-image: radial-gradient(var(--bone-a15) 1px, transparent 0);
+  background-size: 12px 12px;
+}
+
+body.tex-inside .theme-bone .tw-panel {
+  background-image: radial-gradient(var(--ink-a12) 1px, transparent 0);
+  background-size: 12px 12px;
+}
+
+/* ==========================================================================
+   BUTTONS & CONTROLS (100% SQUARED — BORDER-RADIUS: 0)
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 16px 24px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-red {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--red);
+}
+
+.btn-red:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+
+.theme-bone .btn-red:hover {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+
+.btn-ink {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--ink);
+}
+
+.btn-ink:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn-bone {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+
+.btn-bone:hover {
+  background: var(--ink);
+  color: var(--bone);
+  border-color: var(--bone);
+}
+
+.btn-line {
+  background: transparent;
+  border-color: currentColor;
+  color: inherit;
+}
+
+.btn-line:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+}
+
+.btn-red-outline {
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--bone);
+}
+
+.btn-red-outline:hover {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--red);
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--cur-line);
+  background: var(--ink);
+  color: var(--bone);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font: 700 16px/1 var(--mono);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.icon-btn:hover:not(:disabled) {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bone);
+}
+
+.icon-btn:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.eyebrow-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Red highlight block for hero "From zero." and co-working "Co-working" / "founders" */
+.hero .h1 em,
+.h2 em {
+  font-style: normal;
+  color: var(--bone);
+  background: var(--red);
+  padding: 3px 12px 1px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   0. ANNOUNCEMENT BAR
+   ========================================================================== */
+.announce {
+  background: var(--red);
+  color: var(--bone);
+  border-bottom: 1px solid var(--ink);
+  text-align: center;
+  font: 700 12px/1.35 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.announce-tag {
+  background: var(--ink);
+  color: var(--bone);
+  padding: 3px 7px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+/* ==========================================================================
+   1. NAVIGATION (§4.1 — 76PX HEIGHT, 22PX LOGO, 14PX ARCHIVO LINKS AT >=1440PX)
+   ========================================================================== */
+.nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 30;
+  background: var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-bar {
+  border-bottom: 1px solid var(--line);
+  overflow-x: clip;
+}
+
+.nav-in {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 76px;
+  padding-inline: 24px;
+}
+
+.logo {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.logo i {
+  width: 16px;
+  height: 16px;
+  background: var(--red);
+  display: block;
+  flex: none;
+}
+
+.nav-links {
+  display: none;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.nav-links a {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bone-a78);
+  text-decoration: none;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.nav-links a:hover {
+  color: var(--bone);
+  background: var(--ink-2);
+  border-color: var(--line);
+}
+
+.nav .btn {
+  margin-left: auto;
+  padding: 12px 18px;
+  font-size: 13px;
+  white-space: nowrap;
+  flex: none;
+}
+
+.nav-stripe {
+  height: 8px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--stripe-ink) 0,
+    var(--stripe-ink) 1px,
+    var(--ink) 0,
+    var(--ink) 50%
+  );
+  background-size: 10px 10px;
+}
+
+@media (min-width: 1440px) {
+  .nav-links { display: flex; }
+  .nav .btn { margin-left: 14px; }
+}
+
+/* ==========================================================================
+   2. HERO (§4.2) + 2b. GROK SERVICE BOXES (§4.2b)
+   ========================================================================== */
+.hero-grid {
+  display: grid;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-top: 32px;
+  padding-bottom: 104px;
+}
+
+.hero-sub {
+  display: grid;
+  gap: 8px;
+  padding-block: 28px;
+}
+
+.hero-sub-rule {
+  width: 48px;
+  height: 3px;
+  background: var(--red);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.hero-sub-lead {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: clamp(24px, 1.9vw, 28px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--bone);
+}
+
+.hero-sub-follow {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: clamp(18px, 1.35vw, 20px);
+  line-height: 1.4;
+  color: var(--ash);
+}
+
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  padding-block: 24px;
+}
+
+.hero-cta-note {
+  font: 700 11px/1.3 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+.hero-right {
+  position: relative;
+  isolation: isolate;
+  padding: 36px var(--inset) 104px;
+  display: grid;
+  place-items: center;
+  background-color: var(--ink);
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--stripe-ink-subtle) 0,
+    var(--stripe-ink-subtle) 1px,
+    transparent 0,
+    transparent 50%
+  );
+  background-size: 10px 10px;
+  border-top: 1px solid var(--cur-line);
+}
+
+/* S1: Hero video ONLY — 2px bone border + 10px 10px 0 var(--red) */
+.hero-media {
+  position: relative;
+  width: min(100%, 380px);
+  aspect-ratio: 9 / 16;
+  border: 2px solid var(--bone);
+  background: var(--ink-2);
+  box-shadow: 10px 10px 0 var(--red);
+  overflow: hidden;
+}
+
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.08) saturate(0.92);
+}
+
+.play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, var(--ink-a08) 0%, var(--ink-a58) 100%);
+}
+
+.play span {
+  width: 66px;
+  height: 66px;
+  background: var(--red);
+  border: 2px solid var(--bone);
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.hero-media:hover .play span,
+.vcard:hover .play span,
+.work-frame:hover .play span {
+  background: var(--ink);
+  transform: scale(1.06);
+}
+
+@media (min-width: 960px) {
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr) clamp(340px, 28vw, 460px);
+  }
+  .hero-left {
+    padding-top: 56px;
+    padding-bottom: 112px;
+  }
+  .hero-right {
+    border-top: 0;
+    border-left: 1px solid var(--cur-line);
+    padding: 56px 40px 112px;
+  }
+}
+
+/* 2b. Service boxes — Grok layout: wider bone Workshops box + --red-2 boxes */
+.srv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.srv-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 28px 24px;
+  text-decoration: none;
+  color: var(--bone);
+  border-top: 1px solid var(--ink-a45);
+  background: var(--red-2);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  min-height: 210px;
+}
+
+.srv-box:first-child {
+  border-top: 0;
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.srv-title {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(18px, 1.42vw, 26px);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  max-width: 12ch;
+}
+
+.srv-box:first-child .srv-title {
+  font-size: clamp(26px, 2.4vw, 44px);
+  max-width: 11ch;
+}
+
+.srv-desc {
+  font: 600 16px/1.35 var(--sans);
+  max-width: 22ch;
+}
+
+.srv-arr {
+  font: 700 22px/1 var(--mono);
+}
+
+.srv-box:hover,
+.srv-box:first-child:hover {
+  background: var(--ink);
+  color: var(--bone);
+}
+
+@media (min-width: 640px) and (max-width: 1279px) {
+  .srv-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .srv-box:first-child {
+    grid-column: span 2;
+  }
+  .srv-box:nth-child(even) {
+    border-right: 1px solid var(--ink-a45);
+  }
+}
+
+@media (min-width: 1280px) {
+  .srv-grid {
+    grid-template-columns: 1.45fr repeat(4, minmax(0, 1fr));
+  }
+  .srv-box {
+    border-top: 0;
+    border-left: 1px solid var(--ink-a45);
+    min-height: 256px;
+    padding: 30px 22px;
+  }
+  .srv-box:first-child {
+    border-left: 0;
+    padding: 30px 28px;
+  }
+}
+
+/* ==========================================================================
+   3. CLIENT LOGO STRIP (FRAMED COLUMN — 3 SMALL TABS + INFINITE MARQUEE)
+   ========================================================================== */
+.trust-strip {
+  padding-block: 30px;
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 18px;
+}
+
+.trust-tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.theme-ink-0-plain .trust-tab {
+  color: var(--bone);
+  background: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.trust-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 11px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bone);
+  border: 1px solid var(--ink);
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.trust-tab::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: var(--red);
+  flex: none;
+}
+
+.logo-marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.logo-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  width: max-content;
+  animation: logo-marquee-slide 56s linear infinite;
+}
+
+.logo-marquee:hover .logo-marquee-track {
+  animation-play-state: paused;
+}
+
+.logo-pill {
+  height: 38px;
+  padding-inline: 24px;
+  border: 1px solid var(--bone-line);
+  background: var(--bone-2);
+  color: var(--ink-a58);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  filter: grayscale(1);
+}
+
+@keyframes logo-marquee-slide {
+  to { transform: translateX(calc(-50% - 16px)); }
+}
+
+/* ==========================================================================
+   4. OUR WORK (FRAMED COLUMN — 6 VIDEOS IN 2 ROWS ON PLAIN --ink-0)
+   ========================================================================== */
+.work-bottom {
+  padding-top: 40px;
+  padding-inline: var(--inset);
+}
+
+.work-row-wrap {
+  width: 100%;
+  padding-inline: var(--inset);
+}
+
+/* <640px: swipe row with scroll-snap, each card 85% wide so the next one peeks in */
+.work-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 85%;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 8px 8px 10px 0;
+}
+
+.work-grid::-webkit-scrollbar { display: none; }
+.work-grid > * { scroll-snap-align: start; min-width: 0; }
+
+@media (min-width: 640px) {
+  .work-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row;
+    grid-auto-columns: initial;
+    gap: 28px 20px;
+    overflow-x: visible;
+    padding: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .work-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.work-item {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-width: 0;
+}
+
+/* S2 frame + S5 hover lift on showreel frames */
+.work-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red-deep);
+  background-color: var(--ink-2);
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--stripe-ink-subtle) 0,
+    var(--stripe-ink-subtle) 1px,
+    var(--ink) 0,
+    var(--ink) 50%
+  );
+  background-size: 10px 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.work-frame:hover,
+.work-frame:focus-visible,
+.work-frame:focus-within {
+  transform: translate(-6px, -6px);
+  box-shadow: 14px 14px 0 var(--red-deep);
+}
+
+.work-frame img.work-thumb,
+.work-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+}
+
+.work-frame iframe {
+  z-index: 4;
+}
+
+.work-caption {
+  display: grid;
+  gap: 4px;
+}
+
+.work-title {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--bone);
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+.work-meta {
+  font: 500 11px/1.3 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+
+/* ==========================================================================
+   5. WORKSHOPS (§4.5 — SPLIT HEADING, CLAUDE V3 TAG BAR, S5 HOVER LIFT)
+   ========================================================================== */
+.track-wrap {
+  position: relative;
+}
+
+.track-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 1280px) {
+  .track-controls {
+    display: none;
+  }
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 88%;
+  gap: var(--gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 8px 8px 8px 0;
+}
+
+.track::-webkit-scrollbar { display: none; }
+.track > * { scroll-snap-align: start; min-width: 0; }
+
+@media (min-width: 640px) {
+  .track {
+    grid-auto-columns: calc((100% - var(--gap)) / 2.15);
+  }
+}
+
+@media (min-width: 960px) {
+  .track {
+    grid-auto-columns: calc((100% - 2 * var(--gap)) / 3.2);
+  }
+}
+
+@media (min-width: 1280px) {
+  #wtrack {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-flow: initial;
+    grid-auto-columns: initial;
+    overflow-x: visible;
+  }
+}
+
+/* Workshop cards — MasterClass Executive solid colour slabs + nested Albers squares + S5 lift */
+.wcard {
+  border: 1px solid var(--line);
+  background: var(--ink-2);
+  color: var(--bone);
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+  position: relative;
+  container-type: inline-size;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.wcard:hover,
+.wcard:focus-within {
+  transform: translate(-6px, -6px);
+  box-shadow: 8px 8px 0 var(--hover-sh, var(--red-deep));
+}
+
+.wcard.slab-red:hover      { background: var(--red-2); }
+.wcard.slab-ink:hover,
+.wcard.slab-grid:hover     { background-color: var(--ink); }
+.wcard.slab-oxblood:hover  { background: var(--red-deeper); --hover-sh: var(--bone); }
+.wcard.slab-bone:hover     { background: var(--bone-2); }
+
+.wcard .btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Claude v3 tag bar (§4.5): padding 13px 18px + nowrap on spans */
+.wcard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 18px;
+  border-bottom: 1px solid currentColor;
+  font: 700 11px/1 var(--mono);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.wcard-top > span {
+  white-space: nowrap;
+}
+
+@container (max-width: 268px) {
+  .wcard-top {
+    padding: 13px 12px;
+    font-size: 9.5px;
+    letter-spacing: 0.05em;
+  }
+}
+
+.wcard-num {
+  background: var(--ink);
+  color: var(--bone);
+  padding: 4px 8px;
+}
+
+.albers-sq {
+  width: 84px;
+  height: 84px;
+  position: relative;
+  background: var(--sq-1, var(--red));
+  border: 1px solid var(--bone-a22);
+  flex: none;
+}
+
+.albers-sq::before {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  background: var(--sq-2, var(--ink));
+}
+
+.albers-sq::after {
+  content: "";
+  position: absolute;
+  inset: 40%;
+  background: var(--sq-3, var(--bone));
+}
+
+.wcard.slab-red {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--bone);
+  --sq-1: var(--ink);
+  --sq-2: var(--bone);
+  --sq-3: var(--red);
+}
+
+.wcard.slab-red .wcard-top {
+  background: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.wcard.slab-red .wcard-num {
+  background: var(--red);
+  color: var(--bone);
+}
+
+.wcard.slab-red p.desc {
+  color: var(--bone-a92);
+}
+
+.wcard.slab-red .meta {
+  border-top-color: var(--ink-a38);
+  color: var(--ink);
+}
+
+.wcard.slab-red .meta b {
+  color: var(--bone);
+}
+
+.wcard.slab-ink {
+  background: var(--ink-2);
+  color: var(--bone);
+  border-color: var(--line);
+  --sq-1: var(--red);
+  --sq-2: var(--red-deep);
+  --sq-3: var(--bone);
+}
+
+.wcard.slab-ink .wcard-top {
+  border-bottom-color: var(--line);
+  background: var(--ink);
+}
+
+.wcard.slab-ink .wcard-num {
+  background: var(--red);
+}
+
+.wcard.slab-oxblood {
+  background: var(--red-deep);
+  color: var(--bone);
+  border-color: var(--bone-a35);
+  --sq-1: var(--bone);
+  --sq-2: var(--red);
+  --sq-3: var(--ink);
+}
+
+.wcard.slab-oxblood .wcard-top {
+  background: var(--ink);
+  border-bottom-color: var(--bone-a25);
+}
+
+.wcard.slab-oxblood p.desc {
+  color: var(--bone-a86);
+}
+
+.wcard.slab-oxblood .meta {
+  border-top-color: var(--bone-a25);
+  color: var(--bone-a80);
+}
+
+.wcard.slab-grid {
+  background-color: var(--ink-2);
+  background-image: radial-gradient(var(--bone-a14) 1px, transparent 0);
+  background-size: 12px 12px;
+  color: var(--bone);
+  border-color: var(--line);
+  --sq-1: var(--bone);
+  --sq-2: var(--line);
+  --sq-3: var(--red);
+}
+
+.wcard.slab-grid .wcard-top {
+  background: var(--ink);
+  border-bottom-color: var(--line);
+}
+
+.wcard.slab-bone {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--bone);
+  --sq-1: var(--ink);
+  --sq-2: var(--red);
+  --sq-3: var(--bone);
+}
+
+.wcard.slab-bone .wcard-top {
+  background: var(--ink);
+  color: var(--bone);
+  border-bottom-color: var(--ink);
+}
+
+.wcard.slab-bone .wcard-num {
+  background: var(--red);
+  color: var(--bone);
+}
+
+.wcard.slab-bone p.desc {
+  color: var(--ink-muted);
+}
+
+.wcard.slab-bone .meta {
+  border-top-color: var(--bone-line);
+  color: var(--ink-muted);
+}
+
+.wcard.slab-bone .meta b {
+  color: var(--ink);
+}
+
+.wcard-body {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+.wcard h3 {
+  font-size: clamp(19px, 1.4vw, 25px);
+  line-height: 0.95;
+}
+
+.wcard p.desc {
+  color: var(--ash);
+  font-size: 15px;
+  line-height: 1.48;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font: 700 12px/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ash);
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  margin-top: auto;
+}
+
+.meta b {
+  color: var(--bone);
+  font-weight: 700;
+}
+
+.wcard .btn {
+  width: 100%;
+}
+
+/* ==========================================================================
+   6. VLOG SECTION (§4.6 — ONE S3 PANEL WRAPPING EPISODES, RENDERS & CTA STRIP)
+   ========================================================================== */
+.vlog-panel {
+  display: grid;
+  gap: 40px;
+}
+
+.vlog-panel .cta-strip {
+  margin-top: 0;
+}
+
+.vlog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+@media (min-width: 1024px) {
+  .vlog-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.vcard {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  max-width: 100%;
+  border: 1px solid var(--bone-a35);
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  gap: 10px;
+  background-color: var(--red-deeper);
+  background-image:
+    linear-gradient(180deg, var(--ink-a08) 0%, var(--ink-a88) 100%),
+    repeating-linear-gradient(315deg, var(--bone-a12) 0, var(--bone-a12) 1px, transparent 0, transparent 50%);
+  background-size: 100% 100%, 10px 10px;
+}
+
+@media (min-width: 1280px) {
+  .vcard {
+    padding: 22px;
+  }
+}
+
+.vcard:hover {
+  border-color: var(--bone);
+}
+
+.vcard-ghost {
+  position: absolute;
+  right: 14px;
+  top: 40px;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 72px;
+  line-height: 0.8;
+  color: var(--bone-a10);
+  pointer-events: none;
+  user-select: none;
+}
+
+.vcard .ep {
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--red);
+  padding: 5px 8px;
+  align-self: flex-start;
+  z-index: 2;
+}
+
+.vcard h3 {
+  font-size: clamp(15px, 1.3vw, 22px);
+  line-height: 0.96;
+  color: var(--bone);
+  z-index: 2;
+}
+
+.vcard .play {
+  inset: 0 0 26%;
+  background: none;
+}
+
+.vcard .play span {
+  width: 56px;
+  height: 56px;
+}
+
+.render-marquee {
+  overflow: hidden;
+  padding: 0 4px 4px 0;
+}
+
+.render-thumb {
+  position: relative;
+  height: 220px;
+  width: 294px;
+  flex: none;
+  margin: 0;
+  border: 1px solid var(--bone-a45);
+  background: var(--ink);
+  box-shadow: var(--shadow-s4);
+  overflow: hidden;
+}
+
+.render-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.render-thumb-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--ink-a88);
+  border-top: 1px solid var(--line);
+  padding: 8px 12px;
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* ==========================================================================
+   7. DONE-FOR-YOU VIDEO PRODUCTION (§4.7 — COPY PANEL AT BOTTOM RIGHT)
+   ========================================================================== */
+.prod-slab {
+  display: inline-block;
+  background: var(--red);
+  color: var(--bone);
+  padding: 10px 16px;
+  font: 700 12px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--bone);
+}
+
+.prod {
+  display: grid;
+  gap: var(--gap);
+}
+
+.shot {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-s4);
+  min-height: 240px;
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--stripe-ink-0) 0,
+    var(--stripe-ink-0) 1px,
+    var(--ink-2) 0,
+    var(--ink-2) 50%
+  );
+  background-size: 10px 10px;
+}
+
+/* S2 on lead production photo: 2px bone border + 8px 8px 0 var(--red-deep) */
+.shot.s1 {
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red-deep);
+  min-height: 360px;
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+.shot-placeholder-box {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.shot-placeholder-box span {
+  font: 700 11px/1.5 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  background: var(--ink-0);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+}
+
+.prod-copy {
+  border: 1px solid var(--line);
+  padding: 32px;
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  background: var(--ink);
+}
+
+.prod-copy p {
+  color: var(--bone);
+  font-size: 16px;
+}
+
+.prod-copy ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.prod-copy li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.prod-copy li span:first-child {
+  font: 700 12px/1.5 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ash);
+}
+
+.prod-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.prod-lead { order: 1; }
+.prod-copy { order: 2; }
+.prod-a, .prod-b, .prod-c, .prod-d { order: 3; }
+
+@media (min-width: 960px) {
+  .prod {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: 260px 260px minmax(260px, auto);
+    grid-template-areas: "lead lead a" "lead lead b" "c d copy";
+  }
+  .prod-lead { grid-area: lead; order: initial; }
+  .prod-a    { grid-area: a; order: initial; }
+  .prod-b    { grid-area: b; order: initial; }
+  .prod-c    { grid-area: c; order: initial; }
+  .prod-d    { grid-area: d; order: initial; }
+  .prod-copy { grid-area: copy; order: initial; }
+}
+
+/* ==========================================================================
+   8. CLIENTS & TESTIMONIALS (§4.8 — HEADER BLOCK + ITALIC SUB-TITLE)
+   ========================================================================== */
+.tw-sponsors-wrap {
+  padding-block: 0;
+}
+
+.tw-sponsors {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 20px;
+}
+
+.tw-sponsors__cols {
+  position: absolute;
+  inset: 0;
+  display: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 36px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tw-sponsors__cols > span {
+  border-inline: 1px solid var(--bone-line);
+  background-image: radial-gradient(var(--ink-a08) 1px, transparent 0);
+  background-size: 10px 10px;
+}
+
+.tw-sponsors__cols > span:first-child { border-left: 0; }
+.tw-sponsors__cols > span:last-child { border-right: 0; }
+
+.logo-cell {
+  position: relative;
+  z-index: 2;
+  min-height: 116px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bone-2);
+}
+
+.logo-cell::before,
+.logo-cell::after {
+  content: "";
+  position: absolute;
+  left: -100vw;
+  width: 200vw;
+  height: 1px;
+  background: var(--bone-line);
+  pointer-events: none;
+}
+
+.logo-cell::before { top: 0; }
+.logo-cell::after { bottom: 0; }
+
+.logo-cell .lc-name {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--ink);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-cell .lc-name::after {
+  content: "+";
+  font: 700 13px/1 var(--mono);
+  color: var(--red);
+}
+
+@media (min-width: 768px) {
+  .tw-sponsors {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: 36px;
+    row-gap: 36px;
+  }
+  .tw-sponsors__cols {
+    display: grid;
+  }
+}
+
+.testimonials-block {
+  margin-top: 40px;
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 40px;
+}
+
+.quote-grid {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.quote-mark {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(88px, 12vw, 156px);
+  line-height: 0.72;
+  color: var(--red);
+  user-select: none;
+}
+
+.quote blockquote {
+  font-family: var(--sans);
+  font-style: italic;
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+}
+
+.testi-videos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--gap);
+}
+
+@media (min-width: 768px) {
+  .testi-videos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* S4 frame for testimonial videos: 1px border + 4px 4px 0 rgba(0,0,0,.35) */
+.testi-video-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--ink);
+  box-shadow: var(--shadow-s4);
+  background-color: var(--bone-2);
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--bone-line) 0,
+    var(--bone-line) 1px,
+    var(--bone-2) 0,
+    var(--bone-2) 50%
+  );
+  background-size: 10px 10px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.testi-video-ph {
+  font: 700 12px/1.4 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--bone);
+  border: 1px solid var(--ink);
+  padding: 12px 18px;
+  z-index: 2;
+}
+
+.testi-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: none;
+  z-index: 3;
+}
+
+.testi-video-frame.is-loaded iframe {
+  display: block;
+}
+
+/* ==========================================================================
+   9. STUDIO HIRE (§4.9 — ON OXBLOOD GROUND, --red-deeper CHECK AVAILABILITY TILE)
+   ========================================================================== */
+.bento {
+  display: grid;
+  gap: var(--gap);
+}
+
+.tile {
+  position: relative;
+  border: 1px solid var(--ink);
+  padding: 30px;
+  display: grid;
+  gap: 10px;
+  align-content: end;
+  background: var(--ink);
+  color: var(--bone);
+  min-height: 210px;
+  overflow: hidden;
+}
+
+.tile p {
+  color: var(--ash);
+  font-size: 15px;
+}
+
+.tile .eyebrow {
+  color: var(--ash);
+}
+
+.tile .eyebrow::before {
+  background: var(--red);
+}
+
+.tile h3 {
+  font-size: 28px;
+  line-height: 0.95;
+  color: var(--bone);
+}
+
+.tile.photo {
+  min-height: 340px;
+  padding: 0;
+  border-color: var(--ink);
+}
+
+.tile.photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tile.rates {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--red);
+}
+
+.tile.rates .big {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(34px, 3.8vw, 54px);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.tile.rates small {
+  display: block;
+  margin-top: 10px;
+  font: 700 12px/1.3 var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+.tile.stripe {
+  background-color: var(--bone-2);
+  border-color: var(--bone-line);
+  color: var(--ink);
+}
+
+.tile.stripe .eyebrow {
+  color: var(--ink-muted);
+}
+
+.tile.stripe p {
+  color: var(--ink-muted);
+}
+
+.tile.go {
+  background: var(--red-deeper);
+  border-color: var(--red-deeper);
+  align-content: center;
+}
+
+@media (min-width: 900px) {
+  .bento {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-auto-rows: 228px;
+  }
+  .tile.photo {
+    grid-column: span 3;
+    grid-row: span 2;
+    min-height: 0;
+  }
+  .t2 { grid-column: span 3; }
+  .t3 { grid-column: span 3; }
+  .t4 { grid-column: span 2; }
+  .t5 { grid-column: span 2; }
+  .t6 { grid-column: span 2; }
+}
+
+/* ==========================================================================
+   10. CO-WORKING (§4.11 — LOCKED TO V3)
+   ========================================================================== */
+#coworking .h2 {
+  line-height: 0.91;
+}
+
+#coworking .lede {
+  font-stretch: 100%;
+  font-variation-settings: "wdth" 100;
+  font-size: clamp(17px, 1.45vw, 20px);
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ash);
+  max-width: 56ch;
+}
+
+.split {
+  display: grid;
+  gap: 48px;
+  align-items: stretch;
+}
+
+/* S2: 2px bone border + 8px 8px 0 var(--red-deep) */
+.split-img {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red-deep);
+  min-height: 360px;
+  max-width: 100%;
+}
+
+.split-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.split-copy {
+  display: grid;
+  gap: 24px;
+  align-content: center;
+  min-width: 0;
+}
+
+.split-copy .h2 {
+  max-width: 17ch;
+}
+
+.checks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.checks li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 14px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.checks li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  margin-top: 7px;
+  flex: none;
+}
+
+@media (min-width: 900px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .split-img img {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+/* ==========================================================================
+   11. EVENTS (§4.12 — LIGHTER PHOTO & OVERLAY, ARCHIVO TAGS, NO INTERNAL LINES)
+   ========================================================================== */
+.band {
+  position: relative;
+  min-height: 720px;
+  overflow: hidden;
+  background: var(--ink);
+  --cur-line: var(--bone-a28);
+  --cur-stripe: var(--bone-a16);
+}
+
+.band-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(3px) saturate(0.75) contrast(1.1);
+  transform: scale(1.04);
+}
+
+.band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--ink-a84) 0%,
+    var(--ink-a66) 52%,
+    var(--ink-a28) 100%
+  );
+}
+
+.band .frame {
+  position: relative;
+  z-index: 2;
+  min-height: 720px;
+}
+
+.events-col {
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+
+.events-slab {
+  background: var(--red);
+  color: var(--bone);
+  padding: 10px 16px;
+  justify-self: start;
+  font: 700 12px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--bone);
+}
+
+.band .h2 {
+  font-size: clamp(38px, 6.6vw, 86px);
+  line-height: 0.88;
+  max-width: 15ch;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tags span {
+  font-family: var(--sans);
+  font-stretch: 112%;
+  font-variation-settings: "wdth" 112;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--bone);
+  background: var(--ink);
+  color: var(--bone);
+  padding: 12px 16px;
+}
+
+/* ==========================================================================
+   12. MEET JAY AND ANDREW (§4.13 — BONE GROUND, TOP H2, S2 PORTRAITS, 56PX TO STRIP)
+   ========================================================================== */
+.about-top {
+  padding-top: 72px;
+  padding-bottom: 56px;
+}
+
+.about-strip {
+  border-top: 0;
+  padding-bottom: 72px;
+}
+
+@media (min-width: 768px) {
+  .about-top {
+    padding-top: 128px;
+  }
+  .about-strip {
+    padding-bottom: 128px;
+  }
+}
+
+.about-grid {
+  padding-inline: var(--inset);
+  display: grid;
+  gap: 48px;
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.person {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+  align-content: start;
+}
+
+/* S2 on bone: 4:5 portrait with 2px ink border + 8px 8px 0 var(--ink) */
+.portrait {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 var(--ink);
+  background-color: var(--ink);
+  background-image: repeating-linear-gradient(
+    315deg,
+    var(--stripe-ink) 0,
+    var(--stripe-ink) 1px,
+    var(--ink) 0,
+    var(--ink) 50%
+  );
+  background-size: 10px 10px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+}
+
+.portrait-stamp {
+  font: 700 11px/1.4 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+  border: 1px dashed var(--line);
+  padding: 8px 12px;
+  background: var(--ink-a88);
+}
+
+.portrait-name {
+  position: absolute;
+  left: 16px;
+  bottom: -16px;
+  z-index: 4;
+  background: var(--red);
+  color: var(--bone);
+  border: 2px solid var(--ink);
+  padding: 6px 14px 4px;
+  font-size: clamp(26px, 2.2vw, 36px);
+  line-height: 0.9;
+}
+
+.person-role {
+  color: var(--ink-muted);
+  font: 500 12px/1.55 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.about-text {
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+
+.about-bullets {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--bone-line);
+}
+
+.about-bullets li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--bone-line);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.about-bullets li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  margin-top: 8px;
+  flex: none;
+}
+
+.about-bullets li strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.about-close {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+@media (min-width: 1024px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 4px;
+}
+
+.marquee-track {
+  display: flex;
+  gap: var(--gap);
+  width: max-content;
+  animation: slide 60s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.shoot-ph {
+  margin: 0;
+  position: relative;
+  width: 240px;
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--bone-line);
+  box-shadow: var(--shadow-s4);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  flex: none;
+}
+
+.shoot-ph.wide {
+  width: 340px;
+  aspect-ratio: 3 / 2;
+}
+
+@keyframes slide {
+  to { transform: translateX(calc(-50% - var(--gap) / 2)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+  .marquee { overflow-x: auto; }
+  .logo-marquee-track {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+  .logo-pill[aria-hidden="true"],
+  .render-thumb[aria-hidden="true"],
+  .shoot-ph[aria-hidden="true"] { display: none; }
+  .wcard:hover, .wcard:focus-within,
+  .work-frame:hover, .work-frame:focus-visible, .work-frame:focus-within { transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* ==========================================================================
+   13. FIND US (§4.10 — PICKS UP GLOBAL HEADER BLOCK, LINE RULE & TYPE TOKENS)
+   ========================================================================== */
+.loc {
+  display: grid;
+  gap: var(--gap);
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  background: var(--ink-2);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+th, td {
+  text-align: left;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+th {
+  font: 700 11px/1.4 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--bone);
+  background: var(--red);
+  border-bottom-color: var(--ink);
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+td:first-child {
+  white-space: nowrap;
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-right: 1px solid var(--line);
+}
+
+td:last-child {
+  color: var(--ash);
+}
+
+.map {
+  position: relative;
+  border: 1px solid var(--line);
+  min-height: 320px;
+  overflow: hidden;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 36px 36px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 36px 36px,
+    radial-gradient(var(--red-a24) 1px, transparent 0) 18px 18px / 36px 36px,
+    var(--ink-2);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.pin {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  text-align: center;
+  padding: 26px 22px;
+  background: var(--ink);
+  border: 2px solid var(--bone);
+  box-shadow: 8px 8px 0 var(--red);
+  max-width: 320px;
+}
+
+.pin i {
+  width: 14px;
+  height: 14px;
+  background: var(--red);
+  display: block;
+}
+
+.pin p {
+  font-size: 14px;
+  color: var(--ash);
+}
+
+.pin strong {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--bone);
+  display: block;
+  margin-bottom: 4px;
+}
+
+@media (min-width: 900px) {
+  .loc {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  }
+}
+
+/* ==========================================================================
+   14. FAQ (§4.14 — CLAUDE V3'S VERSION ON BONE GROUND)
+   ========================================================================== */
+.faq-wrap {
+  padding-inline: var(--inset);
+}
+
+.faq {
+  display: grid;
+  gap: 12px;
+  max-width: 960px;
+}
+
+.faq details {
+  background: var(--bone-2);
+  border: 1px solid var(--bone-line);
+  padding-inline: 26px;
+}
+
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 0;
+  font-family: var(--sans);
+  font-stretch: 115%;
+  font-variation-settings: "wdth" 115;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--ink);
+  background: var(--bone-2);
+  flex: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Plus icon; the vertical bar hides when open, leaving a minus */
+.faq-icon::before,
+.faq-icon::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.faq-icon::before { width: 14px; height: 2px; }
+.faq-icon::after { width: 2px; height: 14px; }
+
+.faq details[open] .faq-icon {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--bone);
+}
+
+.faq details[open] .faq-icon::after {
+  display: none;
+}
+
+.faq p {
+  padding: 0 0 26px;
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 65ch;
+}
+
+/* ==========================================================================
+   15. FINAL CALL TO ACTION (§4.15 — GEMINI V3'S VERSION)
+   ========================================================================== */
+.final {
+  text-align: left;
+  display: grid;
+}
+
+.final-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-top: 24px;
+}
+
+.final-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 28px 24px;
+  background: var(--red-2);
+  color: var(--bone);
+  border-top: 1px solid var(--ink-a45);
+}
+
+.final-tile:first-child {
+  border-top: 0;
+  background: var(--bone);
+  color: var(--ink);
+}
+
+.final-tile-top {
+  display: grid;
+  gap: 10px;
+}
+
+.final-tile-title {
+  font-size: clamp(18px, 1.42vw, 26px);
+  line-height: 0.92;
+}
+
+.final-tile:first-child .final-tile-title {
+  font-size: clamp(26px, 2.3vw, 42px);
+}
+
+.final-tile-desc {
+  font: 600 15px/1.4 var(--sans);
+  max-width: 24ch;
+}
+
+.final-tile .btn {
+  align-self: flex-start;
+  padding: 14px 18px;
+  font-size: 13px;
+}
+
+.btn-ink-bordered {
+  background: var(--ink);
+  color: var(--bone);
+  border: 1px solid var(--ink);
+}
+
+.btn-ink-bordered:hover {
+  background: var(--bone);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+@media (min-width: 640px) and (max-width: 1279px) {
+  .final-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .final-tile:first-child {
+    grid-column: span 2;
+  }
+  .final-tile:nth-child(even) {
+    border-right: 1px solid var(--ink-a45);
+  }
+}
+
+@media (min-width: 1280px) {
+  .final-grid {
+    grid-template-columns: 1.45fr repeat(4, minmax(0, 1fr));
+  }
+  .final-tile {
+    border-top: 0;
+    border-left: 1px solid var(--ink-a45);
+    padding: 30px 22px;
+    min-height: 240px;
+  }
+  .final-tile:first-child {
+    border-left: 0;
+    padding: 30px 28px;
+  }
+}
+
+/* ==========================================================================
+   16. FOOTER + STICKY SERVICE BAR (§4.16 & §4.17)
+   ========================================================================== */
+footer.sec {
+  padding-bottom: 92px;
+}
+
+.foot {
+  display: grid;
+  gap: 32px;
+}
+
+.foot-cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.foot h4 {
+  font: 700 11px/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--red);
+  margin-bottom: 14px;
+}
+
+.foot ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.foot a {
+  text-decoration: none;
+  font: 600 14px/1.4 var(--sans);
+  color: var(--bone);
+}
+
+.foot a:hover {
+  color: var(--red);
+}
+
+.foot-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  font: 500 12px/1.4 var(--mono);
+  color: var(--ash);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (min-width: 768px) {
+  .foot-cols {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: var(--red-deep);
+  border-top: 2px solid var(--red);
+  transform: translateY(110%);
+  transition: transform 0.25s ease;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+
+.sticky.on {
+  transform: none;
+}
+
+.sticky-in {
+  max-width: var(--max);
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.sticky .btn {
+  padding: 12px 16px;
+  font-size: 12px;
+  flex: none;
+  white-space: nowrap;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 899px) {
+  .sticky-in {
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .sticky-in::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE RAIL & INSET TUNING (DESKTOP / TABLET / MOBILE 375PX)
+   ========================================================================== */
+@media (max-width: 1023px) {
+  :root {
+    --rail: 20px;
+    --inset: 20px;
+    --gap: 12px;
+  }
+}
+
+@media (max-width: 639px) {
+  :root {
+    --rail: 0px;
+    --inset: 20px;
+    --gap: 12px;
+  }
+  .frame {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .frame::before,
+  .frame::after {
+    display: none;
+  }
+  .announce {
+    font-size: 11px;
+    padding: 8px 12px;
+    gap: 6px 8px;
+  }
+  .nav-in {
+    height: 56px;
+    padding-inline: 14px;
+    gap: 6px;
+  }
+  .logo {
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    gap: 8px;
+  }
+  .logo i {
+    width: 12px;
+    height: 12px;
+  }
+  .nav .btn {
+    padding: 9px 10px;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+  }
+  .people {
+    grid-template-columns: 1fr;
+  }
+  td:first-child {
+    white-space: normal;
+  }
+}
+
+
+/* ==========================================================================
+   V4.3 / LANDING PAGE V2 SURGICAL ADDITIONS
+   ========================================================================== */
+@media (max-width: 639px) {
+  .hero .h1 {
+    font-size: clamp(32px, 8.6vw, 48px);
+  }
+  .hero .h1 em {
+    padding: 3px 8px 1px;
+  }
+}
+
+.split-copy .h2 {
+  max-width: 20ch;
+}
+
+#coworking .h2 {
+  font-size: clamp(32px, 3.8vw, 56px);
+}
+
+#coworking .h2 em {
+  white-space: nowrap;
+}
+
+.hero-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-unmute {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  font: 700 11px/1 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+  background: var(--ink-a88);
+  border: 1px solid var(--bone);
+  padding: 9px 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.hero-unmute::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  flex: none;
+}
+
+.hero-unmute[aria-pressed="true"]::before {
+  background: var(--bone);
+}
+
+.hero-unmute:hover {
+  background: var(--red);
+  color: var(--bone);
+  border-color: var(--bone);
+}
+
+/* Client logo strip real logos */
+.logo-pill {
+  height: 60px;
+  padding: 10px 24px;
+  border: 1px solid var(--bone-line);
+  background: var(--bone-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  filter: none;
+}
+
+.logo-pill img {
+  height: 38px;
+  width: auto;
+  max-width: 156px;
+  object-fit: contain;
+  display: block;
+}
+
+.logo-pill img.logo-multiply {
+  mix-blend-mode: multiply;
+}
+
+.logo-pill img.logo-contrast {
+  filter: contrast(1.45) brightness(0.62);
+}
+
+/* Single Beginner Workshop layout: vertical card on mobile, long horizontal slab on desktop */
+#wtrack.track-single {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: initial;
+  grid-auto-columns: initial;
+  overflow-x: visible;
+  padding: 0;
+}
+
+.wcard.wcard-single {
+  min-height: 0;
+}
+
+@media (min-width: 960px) {
+  .wcard.wcard-single .wcard-body {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1.55fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 36px;
+    padding: 36px 40px;
+  }
+  .wcard.wcard-single h3 {
+    font-size: clamp(26px, 2.3vw, 38px);
+    line-height: 0.92;
+    margin-bottom: 10px;
+  }
+  .wcard.wcard-single p.desc {
+    font-size: 16px;
+    max-width: 54ch;
+  }
+  .wcard.wcard-single .meta {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    border-left: 1px solid var(--ink-a38);
+    padding-left: 28px;
+    display: grid;
+    gap: 12px;
+    justify-content: start;
+  }
+  .wcard.wcard-single .btn {
+    width: auto;
+    white-space: nowrap;
+    padding: 18px 28px;
+  }
+}
+
+/* Enlarged concept renders in #vlog so people can see spatial detail */
+.render-thumb {
+  height: 300px;
+  width: 420px;
+}
+
+@media (min-width: 768px) {
+  .render-thumb {
+    height: 400px;
+    width: 560px;
+  }
+}
+
+/* Real founder portraits & shoot strip photos */
+.portrait > img.portrait-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.shoot-ph {
+  overflow: hidden;
+  padding: 0;
+  background: var(--ink);
+}
+
+.shoot-ph > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+footer.sec {
+  padding-bottom: 0;
+}
+
+
+/* ==========================================================================
+   V4.4 SURGICAL REVISIONS
+   ========================================================================== */
+/* 1. Hero: 16:9 launch video (lpiWGuNvJfQ) so full-width lower-third graphics are never cropped */
+.hero-media {
+  max-width: 440px;
+  aspect-ratio: 16 / 9;
+}
+
+/* 2. Client logo strip (#trust): remove border and background container around each logo */
+.logo-pill {
+  height: 54px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+}
+
+/* 3. Workshop (#workshops): single title (no duplicate h3 inside card), much bigger & clearer date, location (Bedford), and group size */
+.wcard.wcard-single .wcard-top {
+  font-size: 11px;
+  padding: 12px 20px;
+}
+@media (max-width: 639px) {
+  .wcard.wcard-single .wcard-top {
+    font-size: 10px;
+    padding: 10px 14px;
+    letter-spacing: 0.1em;
+  }
+}
+.wcard.wcard-single .wcard-copy p.desc {
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.55;
+  color: var(--bone);
+  max-width: 52ch;
+}
+.wcard.wcard-single .meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ink-a38);
+}
+.wcard.wcard-single .meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wcard.wcard-single .meta-label {
+  font: 700 11px/1.1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone);
+  opacity: 0.86;
+}
+.wcard.wcard-single .meta-val {
+  font: 900 clamp(20px, 1.85vw, 28px)/1.05 var(--display);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.wcard.wcard-single .meta-sub {
+  font: 600 12px/1.25 var(--sans);
+  color: var(--bone);
+  opacity: 0.92;
+}
+@media (max-width: 639px) {
+  .wcard.wcard-single .meta {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .wcard.wcard-single .meta-val {
+    font-size: 24px;
+  }
+}
+@media (min-width: 960px) {
+  .wcard.wcard-single .wcard-body {
+    grid-template-columns: auto minmax(0, 1.15fr) minmax(0, 1.35fr) auto;
+    gap: 32px;
+    padding: 36px 40px;
+  }
+  .wcard.wcard-single .meta {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    border-left: 1px solid var(--ink-a38);
+    padding-left: 28px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+}
+
+/* 4. Done-for-you video production (#production): shoot photo strip moved here below .prod */
+.prod-strip {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--ink-line);
+}
+
+/* 5. Hire the studio (#studio): 6 concept renders moved from #vlog into #studio below .bento */
+.studio-renders-panel {
+  margin-top: 28px;
+}
+.studio-renders-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--oxblood-line);
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* 6. Events (#events): reframe background photo so Jay's head is fully visible + blur a tiny bit more */
+.band-bg {
+  object-position: 50% 58%;
+  filter: blur(5px) saturate(0.75) contrast(1.1);
+  transform: scale(1.06);
+}
+@media (max-width: 767px) {
+  .band-bg {
+    object-position: 45% 48%;
+  }
+}
+
+/* 7. Meet Jay and Andrew (#about): restore standard bottom padding now that shoot strip moved up to #production */
+#about .about-top {
+  padding-bottom: var(--pad-y);
+}
+
+/* 8. New section: Local Voice Collective podcast (#podcast) — Featured 'ADHD genius' short + long episode + 2 shorts alongside */
+.lvc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+@media (min-width: 960px) {
+  .lvc-grid {
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    gap: 36px;
+  }
+}
+.lvc-right {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+.lvc-shorts-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+@media (max-width: 520px) {
+  .lvc-shorts-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.work-frame.work-frame-short {
+  aspect-ratio: 9 / 16;
+}
+.work-frame.work-frame-featured {
+  aspect-ratio: 9 / 16;
+  box-shadow: 8px 8px 0 var(--red);
+}
+.lvc-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  font: 700 10px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  background: var(--red);
+  color: var(--bone);
+  border: 1px solid var(--bone);
+  pointer-events: none;
+}
+.lvc-badge.lvc-badge-ink {
+  background: var(--ink-a88);
+}
+
+
+/* ==========================================================================
+   V4.5 SURGICAL REVISIONS
+   ========================================================================== */
+/* 1. Hero (#hero-sec): position the video just below the title and make it large */
+#hero-sec .hero-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+#hero-sec .hero-left {
+  padding-top: 36px;
+  padding-bottom: 64px;
+}
+@media (min-width: 960px) {
+  #hero-sec .hero-left {
+    padding-top: 52px;
+    padding-bottom: 84px;
+  }
+}
+.hero-video-row {
+  padding-top: 28px;
+  padding-bottom: 28px;
+}
+#hero-sec .hero-media {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--bone);
+  box-shadow: 10px 10px 0 var(--red);
+}
+.hero-bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px 40px;
+  padding-top: 8px;
+}
+.hero-bottom-row .hero-sub {
+  padding-block: 0;
+}
+.hero-bottom-row .hero-cta-row {
+  padding-block: 0;
+}
+
+/* 2. Workshop (#workshops): call-to-action column title BOOK NOW */
+.wcard.wcard-single .wcard-copy h3 {
+  font-size: clamp(28px, 2.5vw, 40px);
+  line-height: 0.92;
+  margin-bottom: 12px;
+  color: var(--bone);
+}
+
+/* 3. Hire the studio (#studio): merge one-color sections into one unified surface + integrate the 6 "plan" images with NO extra column and NO separation */
+.studio-unified {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bone);
+  overflow: hidden;
+}
+.studio-merged-copy {
+  padding: 32px 28px 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  background: var(--ink);
+}
+@media (min-width: 900px) {
+  .studio-merged-copy {
+    padding: 40px 44px 36px;
+    gap: 22px;
+  }
+}
+.studio-merged-main {
+  display: grid;
+  gap: 12px;
+}
+.studio-merged-main .eyebrow {
+  color: var(--ash);
+}
+.studio-merged-main .eyebrow::before {
+  background: var(--red);
+}
+.studio-merged-main h3 {
+  font-size: clamp(30px, 3.2vw, 48px);
+  line-height: 0.94;
+  color: var(--bone);
+  max-width: 28ch;
+}
+.studio-merged-desc {
+  color: var(--ash);
+  font-size: clamp(16px, 1.2vw, 18px);
+  line-height: 1.55;
+  max-width: 76ch;
+}
+.studio-merged-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+  padding-top: 4px;
+}
+.studio-merged-rates {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.studio-rates-kicker {
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.studio-rates-big {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.studio-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+@media (min-width: 900px) {
+  .studio-plan-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .studio-plan-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.studio-plan-item {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ink-0);
+}
+.studio-plan-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+.studio-plan-item:hover img {
+  transform: scale(1.03);
+}
+.studio-plan-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 16px 12px;
+  background: linear-gradient(180deg, transparent 0%, var(--ink-a88) 100%);
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* 4. Meet Jay and Andrew (#about): generous bottom padding */
+#about .about-top {
+  padding-bottom: 120px;
+}
+@media (min-width: 768px) {
+  #about .about-top {
+    padding-bottom: 168px;
+  }
+}
+
+/* ===== BLUE TAP-HIGHLIGHT FIX ===== */
+* { -webkit-tap-highlight-color: transparent; }
+
+a, button, [role="button"], [tabindex], .clickable, summary {
+  -webkit-appearance: none;
+          appearance: none;
+}
+a:focus, button:focus, [role="button"]:focus, [tabindex]:focus, .clickable:focus, summary:focus {
+  outline: none;
+}
+
+a::selection,            a *::selection,
+button::selection,       button *::selection,
+[role="button"]::selection, [role="button"] *::selection,
+[tabindex]::selection,   [tabindex] *::selection,
+.clickable::selection,   .clickable *::selection,
+summary::selection,      summary *::selection {
+  background: transparent;
+}
+
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
+[tabindex]:focus-visible, .clickable:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
+}
+/* ===== END FIX ===== */
+</style>
+</head>
+<body>
+<!-- Texture experiment (§2.5): add class="tex-inside" to <body> to move dot grids from section grounds into inner panels. -->
+
+<!-- 0. ANNOUNCEMENT BAR -->
+<div class="announce">
+  <span class="announce-tag">Bedford</span>
+  <span>Next beginner workshop · Saturday 7 November 2026 · Now booking</span>
+</div>
+
+<!-- 1. NAVIGATION -->
+<header class="nav">
+  <div class="nav-bar">
+    <div class="frame">
+      <div class="col nav-in">
+        <a class="logo" href="#top"><i></i>The Manor</a>
+        <nav class="nav-links" aria-label="Main">
+          <a href="#work">Work</a>
+          <a href="#workshops">Workshops</a>
+          <a href="#production">Production</a>
+          <a href="#studio">Studio</a>
+          <a href="#coworking">Co-working</a>
+          <a href="#events">Events</a>
+          <a href="#about">About</a>
+          <a href="#podcast">How we work</a>
+          <a href="#find-us">Find us</a>
+        </nav>
+        <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-stripe" aria-hidden="true"></div>
+</header>
+
+<main>
+
+  <!-- 2. HERO (INK + DOT GRID, NO INTERNAL HAIRLINES) -->
+  <section class="sec theme-ink-dots" id="hero-sec">
+    <div class="frame">
+      <div class="col hero-grid">
+        <div class="hero-left hero">
+          <div class="tw-inset-lg">
+            <h1 class="h1 h1-mega">Content Workshops. <em>FOR BEGINNERS</em></h1>
+          </div>
+          <div class="tw-inset hero-video-row">
+            <div class="hero-media">
+              <video id="hero-video" src="video/hero.mp4" poster="img/hero-poster.jpg" data-youtube-id="lpiWGuNvJfQ" autoplay muted loop playsinline preload="metadata"></video>
+              <button type="button" class="hero-unmute" id="hero-unmute" aria-label="Unmute video" aria-pressed="false">Unmute</button>
+            </div>
+          </div>
+          <div class="tw-inset hero-bottom-row">
+            <div class="hero-sub">
+              <span class="hero-sub-rule" aria-hidden="true"></span>
+              <p class="hero-sub-lead">No experience. No gear. No audience.</p>
+              <p class="hero-sub-follow">Leave with your first finished video.</p>
+            </div>
+            <div class="hero-cta-row">
+              <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop <span aria-hidden="true">→</span></a>
+              <span class="hero-cta-note">Groups of 10–15 · All gear provided</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2b. HERO STRIP — FIVE BIG, BOLD SERVICE BOXES (GROK LAYOUT & COLOURS) -->
+    <div class="sub-band theme-red" aria-label="Services">
+      <div class="frame">
+        <div class="col srv-grid">
+          <a class="srv-box" href="#workshops">
+            <span class="srv-title">Workshops for beginners</span>
+            <span class="srv-desc">Make your first video in a day.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#studio">
+            <span class="srv-title">Studio hire</span>
+            <span class="srv-desc">Sound-isolated. Ready to record.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#production">
+            <span class="srv-title">Production</span>
+            <span class="srv-desc">We shoot it. You post it.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#coworking">
+            <span class="srv-title">Founders Club</span>
+            <span class="srv-desc">Members only.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+          <a class="srv-box" href="#events">
+            <span class="srv-title">Events</span>
+            <span class="srv-desc">One minute from the station.</span>
+            <span class="srv-arr" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CLIENT LOGO STRIP (FRAMED COLUMN ON BONE: INFINITE MARQUEE) -->
+  <section class="sec theme-bone" id="trust" aria-label="Trusted clients">
+    <div class="frame">
+      <div class="col trust-strip">
+        <div class="logo-marquee">
+          <div class="logo-marquee-track">
+            <span class="logo-pill"><img src="img/logo-01-uk-parliament.svg" alt="UK Parliament" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-02-berthas-legacy.png" alt="Bertha's Legacy" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-03-nacoa.png" alt="Nacoa" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-04-gu-desserts.png" alt="Gü Desserts" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-05-the-coconut-collaborative.png" alt="The Coconut Collaborative" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-06-tonys-chocolonely.png" alt="Tony's Chocolonely" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-07-double-dutch.png" alt="Double Dutch" class="logo-contrast" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-08-perfect-ted.png" alt="PerfectTed" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-09-bio-and-me.png" alt="Bio&Me" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-10-pip-and-nut.png" alt="Pip & Nut" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-11-edyn-care.png" alt="Edyn Care" loading="lazy"></span>
+            <span class="logo-pill"><img src="img/logo-12-god-life-ministries.png" alt="God Life Ministries" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-01-uk-parliament.svg" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-02-berthas-legacy.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-03-nacoa.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-04-gu-desserts.png" alt="" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-05-the-coconut-collaborative.png" alt="" class="logo-multiply" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-06-tonys-chocolonely.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-07-double-dutch.png" alt="" class="logo-contrast" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-08-perfect-ted.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-09-bio-and-me.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-10-pip-and-nut.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-11-edyn-care.png" alt="" loading="lazy"></span>
+            <span class="logo-pill" aria-hidden="true"><img src="img/logo-12-god-life-ministries.png" alt="" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. OUR WORK (FRAMED COLUMN SHOWREEL: 9 VIDEOS IN 3 ROWS ON PLAIN --ink-0) -->
+  <section class="sec theme-ink-0-plain" id="work">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Our work</p>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">See our work.</h2>
+            <div class="trust-tabs" aria-label="Client categories">
+              <span class="trust-tab">Influencers with 5M+ followers</span>
+              <span class="trust-tab">Global brands</span>
+              <span class="trust-tab">Leading politicians</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="work-row-wrap">
+          <div class="work-grid">
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="MHmYhFeLZTQ" data-start="0" aria-label="Play Storytelling Group — Showreel">
+                <img class="work-thumb" src="img/yt-01-MHmYhFeLZTQ.jpg" alt="Storytelling Group — Showreel" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Storytelling Group — Showreel</h3>
+                <p class="work-meta">Brand & social production · Showreel</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="WWjOoJ3SsfM" data-start="1500" aria-label="Play Scaling Success with James Averdieck">
+                <img class="work-thumb" src="img/yt-02-WWjOoJ3SsfM.jpg" alt="Scaling Success with James Averdieck" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Scaling Success with James Averdieck</h3>
+                <p class="work-meta">Video podcast · Multi-cam studio</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="HaDQJWRr7tA" data-start="3780" aria-label="Play Nacoa UK — Live Panel Production">
+                <img class="work-thumb" src="img/yt-03-HaDQJWRr7tA.jpg" alt="Nacoa UK — Live Panel Production" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Nacoa UK — Live Panel Production</h3>
+                <p class="work-meta">Live event capture · Multi-cam</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="agyV7Qf-Dnc" data-start="0" aria-label="Play Storytelling Group — Studio Production">
+                <img class="work-thumb" src="img/yt-04-agyV7Qf-Dnc.jpg" alt="Storytelling Group — Studio Production" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Storytelling Group — Studio Production</h3>
+                <p class="work-meta">Commercial shoot · Full production</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="rfS9G961Glo" data-start="0" aria-label="Play Bertha's Legacy — Podcast Series">
+                <img class="work-thumb" src="img/yt-05-rfS9G961Glo.jpg" alt="Bertha's Legacy — Podcast Series" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Bertha's Legacy — Podcast Series</h3>
+                <p class="work-meta">Podcast production · Studio set</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="gNdqQD4Cd7s" data-start="480" aria-label="Play Chanita & Josh — Studio Episode">
+                <img class="work-thumb" src="img/yt-06-gNdqQD4Cd7s.jpg" alt="Chanita & Josh — Studio Episode" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Chanita & Josh — Studio Episode</h3>
+                <p class="work-meta">Conversation series · Multi-cam</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="WXpCIGz2YfE" data-start="285" aria-label="Play Camilla Tominey — The Daily Telegraph & GB News">
+                <img class="work-thumb" src="img/yt-07-WXpCIGz2YfE.jpg" alt="Camilla Tominey — The Daily Telegraph & GB News" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Camilla Tominey — The Daily Telegraph & GB News</h3>
+                <p class="work-meta">Executive editor & broadcaster · Studio interview</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="NT4dQIsSnAw" data-start="242" aria-label="Play Calum Best — Entrepreneur & 1M+ Creator">
+                <img class="work-thumb" src="img/yt-08-NT4dQIsSnAw.jpg" alt="Calum Best — Entrepreneur & 1M+ Creator" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Calum Best — Entrepreneur & 1M+ Creator</h3>
+                <p class="work-meta">Personal brand · Studio interview</p>
+              </div>
+            </article>
+
+            <article class="work-item">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="ubzqY4wDkPc" data-start="75" aria-label="Play Maya Parker — Jungian-Oriented Psychotherapist">
+                <img class="work-thumb" src="img/yt-09-ubzqY4wDkPc.jpg" alt="Maya Parker — Jungian-Oriented Psychotherapist" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">Maya Parker — Jungian-Oriented Psychotherapist</h3>
+                <p class="work-meta">Expert interview · Studio production</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="work-bottom">
+          <a class="btn btn-line" href="https://storytelling.group" target="_blank" rel="noopener">More on storytelling.group <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WORKSHOPS (INK GROUND — SINGLE BEGINNER WORKSHOP ON 7 NOVEMBER: TITLE ONCE ONLY, BIG META, BOOK NOW) -->
+  <section class="sec theme-ink" id="workshops">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Workshops · Bedford</p>
+            <span class="coord">Saturday 7 November 2026 · 10–15 people</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Content Workshop for Beginners.</h2>
+            <p class="lede">For complete beginners. Learn by doing, in a real studio in Bedford.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel s3-panel track-wrap">
+          <div class="track track-single" id="wtrack">
+            <article class="wcard slab-red wcard-single">
+              <div class="wcard-top"><span>Beginner · 1-day intensive</span><span class="wcard-num">Sat 7 Nov 2026</span></div>
+              <div class="wcard-body">
+                <div class="albers-sq" aria-hidden="true"></div>
+                <div class="wcard-copy">
+                  <h3>Book now</h3>
+                  <p class="desc">Go from first idea to first finished video in a single day. Plan, light, shoot and edit talking-head videos, podcasts, shorts and explainers in our professional Bedford studio — all cameras, mics and lighting provided.</p>
+                </div>
+                <div class="meta" aria-label="Workshop details">
+                  <div class="meta-item">
+                    <span class="meta-label">Next date</span>
+                    <strong class="meta-val">Sat 7 Nov 2026</strong>
+                    <span class="meta-sub">Full-day intensive</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Location</span>
+                    <strong class="meta-val">Bedford</strong>
+                    <span class="meta-sub">2B Ashburnham Rd · 1 min from station</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Group size</span>
+                    <strong class="meta-val">10–15 people</strong>
+                    <span class="meta-sub">All studio gear provided</span>
+                  </div>
+                </div>
+                <a class="btn btn-ink" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book now <span aria-hidden="true">↗</span></a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. DONE-FOR-YOU VIDEO PRODUCTION (ON --ink-0 + COPY PANEL AT BOTTOM RIGHT) -->
+  <section class="sec theme-ink-0" id="production">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <span class="prod-slab">Done for you · The Storytelling Group</span>
+            <span class="coord">Full-service agency</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Done-for-you video production.</h2>
+            <p class="lede">Real shoots with real clients. No stock footage.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel">
+          <div class="prod">
+            <div class="shot s1 prod-lead">
+              <img src="img/prod-lead.jpg" alt="Multi-camera panel shoot with Andrew, four guests and cinema lighting" style="object-position: 50% 55%" loading="lazy">
+            </div>
+            <div class="prod-copy">
+              <p>Talking-head videos for personal brands, founders, coaches, authors, startups and businesses. We plan, light, shoot and edit. You focus on your message.</p>
+              <ul>
+                <li><span>Set-up</span><span>2–3 hours</span></li>
+                <li><span>Filming</span><span>Up to 8 hours</span></li>
+                <li><span>Output</span><span>Unlimited content</span></li>
+              </ul>
+              <div class="prod-btns">
+                <a class="btn btn-red" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+            <div class="shot prod-a">
+              <img src="img/prod-a.jpg" alt="Operating a Sony cinema camera on set with parabolic softbox lighting" style="object-position: 50% 0%" loading="lazy">
+            </div>
+            <div class="shot prod-b">
+              <img src="img/prod-b.jpg" alt="Two-person studio podcast conversation with broadcast microphones" style="object-position: 50% 20%" loading="lazy">
+            </div>
+            <div class="shot prod-c">
+              <img src="img/prod-c.jpg" alt="Filming a live keynote speaker at a podium with cinema camera rig" style="object-position: 50% 30%" loading="lazy">
+            </div>
+            <div class="shot prod-d">
+              <img src="img/prod-d.jpg" alt="Live audio mixing and multi-camera monitoring during a podcast shoot" style="object-position: 50% 45%" loading="lazy">
+            </div>
+          </div>
+          <div class="prod-strip">
+            <div class="marquee" aria-label="Photos from client shoots">
+        <div class="marquee-track">
+          <figure class="shoot-ph"><img src="img/shoot-01.jpg" alt="Behind the scenes of a studio interview shoot with boom mic and softbox" style="object-position: 32% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-02.jpg" alt="Cinema camera monitor in foreground filming a panel discussion" style="object-position: 50% 40%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-03.jpg" alt="Podcast guest speaking into a studio microphone" style="object-position: 55% 30%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-04.jpg" alt="Three-camera podcast production setup with twin parabolic softboxes" style="object-position: 50% 50%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-05.jpg" alt="Andrew on set at the live audio and video switching station" style="object-position: 46% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-06.jpg" alt="Andrew and guest smiling between studio softboxes on set" style="object-position: 50% 35%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-07.jpg" alt="Green-screen studio filming with two cinema cameras and lighting" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-08.jpg" alt="Two podcast guests in conversation during a studio shoot" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-09.jpg" alt="Wide studio room setup with subject seated under key light" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-10.jpg" alt="Two podcast hosts laughing into broadcast microphones" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph"><img src="img/shoot-11.jpg" alt="Overhead lantern and twin softboxes illuminating an interview set" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide"><img src="img/shoot-12.jpg" alt="Filming a live audience event and panel discussion" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-01.jpg" alt="" style="object-position: 32% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-02.jpg" alt="" style="object-position: 50% 40%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-03.jpg" alt="" style="object-position: 55% 30%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-04.jpg" alt="" style="object-position: 50% 50%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-05.jpg" alt="" style="object-position: 46% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-06.jpg" alt="" style="object-position: 50% 35%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-07.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-08.jpg" alt="" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-09.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-10.jpg" alt="" style="object-position: 50% 20%" loading="lazy"></figure>
+          <figure class="shoot-ph" aria-hidden="true"><img src="img/shoot-11.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
+          <figure class="shoot-ph wide" aria-hidden="true"><img src="img/shoot-12.jpg" alt="" style="object-position: 50% 45%" loading="lazy"></figure>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. STUDIO HIRE (OXBLOOD GROUND — GROK BENTO IN GEMINI TYPE & FRAME) -->
+  <section class="sec theme-oxblood" id="studio">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Studio hire</p>
+            <span class="coord">Acoustic isolation · Bedford</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Hire the studio.</h2>
+            <p class="lede">For podcasters, creators, voice artists, coaches and businesses who need a professional space to record.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel">
+          <div class="studio-unified">
+            <div class="studio-merged-copy">
+              <div class="studio-merged-main">
+                <p class="eyebrow">Recording room · Editing suite · Cameras &amp; lights</p>
+                <h3>Sound-isolated walls and ceiling.</h3>
+                <p class="studio-merged-desc">Video, podcasts, audiobooks and voiceover with no echo and no street noise. Acoustically treated desk and workstation, multi-camera setups, studio microphones and key lighting ready when you walk in.</p>
+              </div>
+              <div class="studio-merged-action">
+                <div class="studio-merged-rates">
+                  <span class="studio-rates-kicker">Half-day · Full-day · Multi-day</span>
+                  <strong class="studio-rates-big">Rates on request</strong>
+                </div>
+                <a class="btn btn-red" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+            <div class="studio-plan-grid" aria-label="The Manor studio plan renders">
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_44_2.jpg" alt="The plan — Sound-isolated podcast and recording room" loading="lazy"><figcaption class="studio-plan-cap">Podcast &amp; recording booth</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_19.jpg" alt="The plan — Production floor with green screen and editing suite" loading="lazy"><figcaption class="studio-plan-cap">Production floor &amp; editing suite</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_31.jpg" alt="The plan — Workshop and studio room" loading="lazy"><figcaption class="studio-plan-cap">Workshop &amp; studio room</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_18.jpg" alt="The plan — Studio and creator space in use" loading="lazy"><figcaption class="studio-plan-cap">Creator floor in use</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_44_3.jpg" alt="The plan — Window editing and creator desks" loading="lazy"><figcaption class="studio-plan-cap">Window editing desks</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_28.jpg" alt="The plan — Live studio and event configuration" loading="lazy"><figcaption class="studio-plan-cap">Live studio &amp; event set</figcaption></figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. FOUNDERS CLUB (LOCKED TO V3 LAYOUT — INK GROUND, INTERNAL LINES KEPT, REsFRAMED AS MEMBERS ONLY) -->
+  <section class="sec theme-ink" id="coworking">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="tw-rule tw-inset eyebrow-bar">
+          <p class="eyebrow">Founders Club · Members only</p>
+          <span class="coord">Around 20 founders · Bedford</span>
+        </div>
+        <div class="tw-rule tw-rule--b tw-inset-lg split">
+          <div class="split-img">
+            <span class="ph ph-red">Concept render</span>
+            <img src="img/19_47_45_18.jpg" alt="Founders working alongside each other at long wooden tables">
+          </div>
+          <div class="split-copy">
+            <h2 class="h2">Co-working <em>for creators.</em></h2>
+            <p class="lede">Imagine working every day alongside around 20 founders who are all actively making content. Ideas move faster, feedback is instant, and nobody builds alone. That's the power of the room.</p>
+            <ul class="checks">
+              <li>A members-only space, not open to the public</li>
+              <li>A small community of founders who are actively creating</li>
+              <li>Honest feedback on your ideas, scripts and cuts from people doing the same work</li>
+              <li>Collaborations, guest spots and shared shoots with other members</li>
+              <li>A recording studio and editing suite next door</li>
+              <li>Members-only workshops and meetups</li>
+              <li>One minute from Bedford station</li>
+            </ul>
+            <div><a class="btn btn-red" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. EVENTS (LIGHTER PHOTO BAND, ARCHIVO TAGS, NO INTERNAL LINES, 28PX GAP) -->
+  <section class="sec band" id="events">
+    <img class="band-bg" src="img/19_47_45_28.jpg" alt="">
+    <div class="frame">
+      <div class="col sec-pad events-col">
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+          <span class="events-slab">Event hire · Bedford</span>
+          <span class="ph" style="position: static">Concept render</span>
+        </div>
+        <h2 class="h2">Host your event with us.</h2>
+        <p class="lede" style="color: var(--bone)">Workshops, meetups, team days and celebrations, one minute from Bedford train station.</p>
+        <div class="tags">
+          <span>Workshops</span>
+          <span>Meetups</span>
+          <span>Team days</span>
+          <span>Launches</span>
+          <span>Celebrations</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. MEET JAY AND ANDREW (BONE GROUND + TOP H2 + 4:5 S2 PORTRAITS + INFINITE SHOOT STRIP) -->
+  <section class="sec theme-bone" id="about">
+    <div class="frame">
+      <div class="col about-top">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">About</p>
+            <span class="coord">Founders · Bedford</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Meet Jay and Andrew.</h2>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <div class="people">
+            <div class="person">
+              <div class="portrait">
+                <img class="portrait-img" src="img/portrait-jay.jpg" alt="Jay on set beside a cinema camera rig" style="object-position: 50% 35%" loading="lazy">
+                <h3 class="portrait-name">Jay</h3>
+              </div>
+              <p class="person-role">Co-founder · Producer &amp; educator</p>
+            </div>
+            <div class="person">
+              <div class="portrait">
+                <img class="portrait-img" src="img/portrait-andrew.jpg" alt="Andrew speaking into a studio microphone" style="object-position: 50% 35%" loading="lazy">
+                <h3 class="portrait-name">Andrew</h3>
+              </div>
+              <p class="person-role">Co-founder · Producer and director<br><a href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">@andrewgabrielofficial</a></p>
+            </div>
+          </div>
+          <div class="about-text">
+            <ul class="about-bullets">
+              <li><span>20+ years making podcasts, documentaries and social content between us</span></li>
+              <li><span>Leading media brands, including <strong>The Telegraph</strong></span></li>
+              <li><span>Influencers with up to <strong>5 million followers</strong></span></li>
+              <li><span>Politicians in the UK and abroad, including <strong>UK Parliament</strong></span></li>
+              <li><span>Multinational food brands</span></li>
+              <li><span>National and international charities</span></li>
+            </ul>
+            <p class="about-close">Now we teach what we do every day.</p>
+          </div>
+        </div>
+      </div>
+    </div>  </section>
+
+
+  <!-- 12b. LOCAL VOICE COLLECTIVE PODCAST (OXBLOOD GROUND — ANDREW & JAY ON ADHD: FEATURED 'ADHD GENIUS' SHORT + LONG EPISODE + 2 SHORTS) -->
+  <section class="sec theme-oxblood" id="podcast">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">How we work · Andrew &amp; Jay</p>
+            <span class="coord">Andrew &amp; Jay · On ADHD &amp; creativity</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">How we work.</h2>
+            <p class="lede">Andrew and Jay talk openly about ADHD, creative focus, and how they work together day-to-day in the studio.</p>
+          </div>
+        </div>
+
+        <div class="lvc-grid">
+          <!-- Featured main piece: "ADHD genius" short (ffX0TD-brpg) -->
+          <article class="work-item lvc-featured">
+            <div class="work-frame work-frame-featured" role="button" tabindex="0" data-video-id="ffX0TD-brpg" data-start="0" aria-label="Play Featured Short: ADHD Genius — A More Than Normal Life of a Professional Artist">
+              <span class="lvc-badge">Featured short · ADHD Genius</span>
+              <img class="work-thumb" src="img/lvc-short-1-ffX0TD-brpg.jpg" alt="ADHD Genius — Jay and Andrew on Local Voice Collective" loading="lazy">
+              <div class="play" aria-hidden="true"><span><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+            </div>
+            <div class="work-caption">
+              <h3 class="work-title">ADHD Genius — A More Than Normal Life of a Professional Artist</h3>
+              <p class="work-meta">Featured short · Andrew &amp; Jay · Local Voice Collective</p>
+            </div>
+          </article>
+
+          <!-- Alongside main piece: Full landscape episode (nubtWSrKcws) + 2 companion shorts (nKOp1JvEFL8, XOkLIsMORPk) -->
+          <div class="lvc-right">
+            <article class="work-item lvc-long">
+              <div class="work-frame" role="button" tabindex="0" data-video-id="nubtWSrKcws" data-start="0" aria-label="Play Full Episode: ADHD Advocate: Day in a Life of a Professional Artist">
+                <span class="lvc-badge lvc-badge-ink">Full episode</span>
+                <img class="work-thumb" src="img/lvc-long-nubtWSrKcws.jpg" alt="ADHD Advocate: Day in a Life of a Professional Artist — Full Episode" loading="lazy">
+                <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+              </div>
+              <div class="work-caption">
+                <h3 class="work-title">ADHD Advocate: Day in a Life of a Professional Artist</h3>
+                <p class="work-meta">Full landscape episode · Local Voice Collective</p>
+              </div>
+            </article>
+
+            <div class="lvc-shorts-pair">
+              <article class="work-item">
+                <div class="work-frame work-frame-short" role="button" tabindex="0" data-video-id="nKOp1JvEFL8" data-start="0" aria-label="Play Short: ADHD: Day-in-a-Life of a Professional Artist">
+                  <span class="lvc-badge lvc-badge-ink">Short</span>
+                  <img class="work-thumb" src="img/lvc-short-2-nKOp1JvEFL8.jpg" alt="ADHD: Day-in-a-Life of a Professional Artist" loading="lazy">
+                  <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+                </div>
+                <div class="work-caption">
+                  <h3 class="work-title">ADHD: Day-in-a-Life of a Professional Artist</h3>
+                  <p class="work-meta">Short clip · Local Voice Collective</p>
+                </div>
+              </article>
+
+              <article class="work-item">
+                <div class="work-frame work-frame-short" role="button" tabindex="0" data-video-id="XOkLIsMORPk" data-start="0" aria-label="Play Short: How to Beat Imposter Syndrome and Finally Start Creating">
+                  <span class="lvc-badge lvc-badge-ink">Short</span>
+                  <img class="work-thumb" src="img/lvc-short-3-XOkLIsMORPk.jpg" alt="How to Beat Imposter Syndrome and Finally Start Creating" loading="lazy">
+                  <div class="play" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="var(--bone)"/></svg></span></div>
+                </div>
+                <div class="work-caption">
+                  <h3 class="work-title">How to Beat Imposter Syndrome &amp; Start Creating</h3>
+                  <p class="work-meta">Short clip · Local Voice Collective</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. FIND US (INK GROUND — PICKS UP GLOBAL HEADER BLOCK, LINE RULE & TYPE TOKENS) -->
+  <section class="sec theme-ink" id="find-us">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">Space &amp; location</p>
+            <span class="coord">2B Ashburnham Rd · Bedford</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Find us.</h2>
+            <p class="lede">One minute from Bedford train station.</p>
+          </div>
+        </div>
+
+        <div class="tw-panel">
+          <div class="loc">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Space</th><th>Used for</th></tr></thead>
+                <tbody>
+                  <tr><td>Large room</td><td>Workshops, co-working and events, with its own hallway</td></tr>
+                  <tr><td>Recording room</td><td>Fully sound-isolated. Video, podcasts, audiobooks, voiceover</td></tr>
+                  <tr><td>Small room</td><td>Editing suite, meeting room</td></tr>
+                  <tr><td>Bathroom</td><td>On site</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="map">
+              <div class="pin">
+                <i></i>
+                <p><strong>2B Ashburnham Road, Bedford</strong>One minute from Bedford station</p>
+                <a class="btn btn-red" href="https://www.google.com/maps/search/?api=1&query=2B+Ashburnham+Road+Bedford" target="_blank" rel="noopener">Open in Maps <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. FAQ (BONE GROUND — CLAUDE V3'S VERSION) -->
+  <section class="sec theme-bone" id="faq">
+    <div class="frame">
+      <div class="col sec-pad">
+        <div class="sec-head">
+          <div class="eyebrow-bar">
+            <p class="eyebrow">FAQ</p>
+            <span class="coord">10 questions answered</span>
+          </div>
+          <div class="sec-head-main">
+            <h2 class="h2">Frequently asked questions.</h2>
+          </div>
+        </div>
+
+        <div class="faq-wrap">
+          <div class="faq">
+            <details><summary>Do I need any experience to join a workshop?<span class="faq-icon" aria-hidden="true"></span></summary><p>No. Some basic photography, camera or video knowledge makes it easier, but it isn't required.</p></details>
+            <details><summary>Do I need to bring my own camera or mic?<span class="faq-icon" aria-hidden="true"></span></summary><p>No, everything is provided. You're welcome to bring your own. If you're deciding which mic or camera to buy, we'll help you plan your setup.</p></details>
+            <details><summary>What will I leave with at the end of the day?<span class="faq-icon" aria-hidden="true"></span></summary><p>Your own finished short video: a promo, a podcast intro or any short piece you want to publish.</p></details>
+            <details><summary>How many people are in each workshop?<span class="faq-icon" aria-hidden="true"></span></summary><p>10 to 15 people.</p></details>
+            <details><summary>Can I really switch careers through content creation?<span class="faq-icon" aria-hidden="true"></span></summary><p>The workshops give you real, hands-on skills and a first finished piece of work. That's a practical first step. Where you take it next is up to you.</p></details>
+            <details><summary>What editing software do you use?<span class="faq-icon" aria-hidden="true"></span></summary><p>Answer to come.</p></details>
+            <details><summary>Can I hire the studio by the hour?<span class="faq-icon" aria-hidden="true"></span></summary><p>Answer to come.</p></details>
+            <details><summary>Do you offer done-for-you production?<span class="faq-icon" aria-hidden="true"></span></summary><p>Yes. We plan, shoot and edit for you. See storytelling.group for our work.</p></details>
+            <details><summary>When does co-working open, and how do I join?<span class="faq-icon" aria-hidden="true"></span></summary><p>Next month. Join the waitlist to get first access.</p></details>
+            <details><summary>Is there parking near the studio?<span class="faq-icon" aria-hidden="true"></span></summary><p>We're one minute from Bedford train station. Parking details to come.</p></details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. FINAL CALL TO ACTION (FULL RED GROUND + 5 SERVICE CTA TILES) -->
+  <section class="sec theme-red" id="end">
+    <div class="frame">
+      <div class="col sec-pad final">
+        <div class="tw-inset eyebrow-bar">
+          <p class="eyebrow">Next workshop is now booking</p>
+          <span class="coord">Bedford · Groups of 10–15</span>
+        </div>
+        <div class="tw-inset-lg">
+          <h2 class="h1-mega">Ready to start?</h2>
+        </div>
+        <div class="final-grid">
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Workshops</h3>
+              <p class="final-tile-desc">Make your first video in a day. Groups of 10–15.</p>
+            </div>
+            <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Production</h3>
+              <p class="final-tile-desc">We plan, shoot and edit. You post it.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Studio hire</h3>
+              <p class="final-tile-desc">Sound-isolated room, ready to record.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Founders Club</h3>
+              <p class="final-tile-desc">Members-only space for founders next to the studio.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="final-tile">
+            <div class="final-tile-top">
+              <h3 class="final-tile-title">Events</h3>
+              <p class="final-tile-desc">Workshops, meetups, launches and team days.</p>
+            </div>
+            <a class="btn btn-ink-bordered" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 16. FOOTER (INK GROUND) -->
+<footer class="sec theme-ink">
+  <div class="frame">
+    <div class="col sec-pad tw-inset foot">
+      <div class="foot-cols">
+        <div><h4>Learn</h4><ul><li><a href="#workshops">Workshops</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+        <div><h4>Hire</h4><ul><li><a href="#studio">Studio hire</a></li><li><a href="#events">Events</a></li><li><a href="#coworking">Founders Club</a></li></ul></div>
+        <div><h4>Work with us</h4><ul><li><a href="#production">Production</a></li><li><a href="https://storytelling.group" target="_blank" rel="noopener">storytelling.group ↗</a></li></ul></div>
+        <div><h4>Follow</h4><ul><li><a href="https://www.youtube.com/" target="_blank" rel="noopener">YouTube ↗</a></li><li><a href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Instagram ↗</a></li></ul></div>
+      </div>
+      <div class="foot-bottom">
+        <span>The Manor — 2B Ashburnham Road</span>
+        <span><a href="#top">Privacy</a> · <a href="#top">Terms</a></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Hero self-hosted MP4 unmute toggle (§1)
+const heroVideo = document.getElementById('hero-video');
+const heroUnmute = document.getElementById('hero-unmute');
+if (heroVideo && heroUnmute) {
+  heroUnmute.addEventListener('click', () => {
+    heroVideo.muted = !heroVideo.muted;
+    const unmuted = !heroVideo.muted;
+    heroUnmute.textContent = unmuted ? 'Mute' : 'Unmute';
+    heroUnmute.setAttribute('aria-pressed', unmuted ? 'true' : 'false');
+    heroUnmute.setAttribute('aria-label', unmuted ? 'Mute video' : 'Unmute video');
+  });
+}
+
+// Click-to-play YouTube facade for #work and #podcast (fixes Error 153 on both HTTP/HTTPS and file:///opaque origins)
+document.querySelectorAll('.work-frame[data-video-id]').forEach(frame => {
+  const playVideo = () => {
+    const vid = (frame.dataset.videoId || '').trim();
+    const start = parseInt(frame.dataset.start || '0', 10) || 0;
+    if (!vid || vid === 'VIDEO_ID' || frame.querySelector('iframe')) return;
+    const iframe = document.createElement('iframe');
+    const isOpaqueOrLocal = (window.location.protocol === 'file:' || window.origin === 'null' || !window.location.hostname);
+    if (isOpaqueOrLocal) {
+      let relayUrl = 'https://andrewg223.github.io/the-manor-pages/yt-player.html?v=' + encodeURIComponent(vid);
+      if (start > 0) relayUrl += '&start=' + start;
+      iframe.src = relayUrl;
+    } else {
+      let embedUrl = 'https://www.youtube.com/embed/' + encodeURIComponent(vid) + '?autoplay=1&rel=0&playsinline=1';
+      if (start > 0) embedUrl += '&start=' + start;
+      iframe.src = embedUrl;
+    }
+    iframe.title = frame.getAttribute('aria-label') || 'YouTube video player';
+    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen';
+    iframe.allowFullscreen = true;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = '0';
+    frame.replaceChildren(iframe);
+  };
+  frame.addEventListener('click', playVideo);
+  frame.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      playVideo();
+    }
+  });
+});
+
+// Keep internal #hash anchor clicks scrolling inside the page even when <base> tag is active in Notion embed
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const hash = a.getAttribute('href');
+    if (!hash || hash === '#') return;
+    const target = document.getElementById(hash.slice(1));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>

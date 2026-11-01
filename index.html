@@ -12,14 +12,14 @@ if (typeof location !== 'undefined' && (location.hostname.indexOf('amazonaws.com
   document.head.appendChild(_base);
 }
 </script>
-<title>The Manor — Studio Home v4.4</title>
+<title>The Manor — Studio Home v4.5</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
 /* ==========================================================================
-   HOW TO EDIT THIS FILE (THE MANOR HOME PAGE — V4.4)
+   HOW TO EDIT THIS FILE (THE MANOR HOME PAGE — V4.5)
    --------------------------------------------------------------------------
    1. CHANGE GLOBAL COLORS IN ONE PLACE: Edit the 3 MASTER GLOBAL COLORS
       (--ink, --bone, --red) in STEP 1 of :root right below. Every similar
@@ -3351,6 +3351,184 @@ footer.sec {
   background: var(--ink-a88);
 }
 
+
+/* ==========================================================================
+   V4.5 SURGICAL REVISIONS
+   ========================================================================== */
+/* 1. Hero (#hero-sec): position the video just below the title and make it large */
+#hero-sec .hero-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+#hero-sec .hero-left {
+  padding-top: 36px;
+  padding-bottom: 64px;
+}
+@media (min-width: 960px) {
+  #hero-sec .hero-left {
+    padding-top: 52px;
+    padding-bottom: 84px;
+  }
+}
+.hero-video-row {
+  padding-top: 28px;
+  padding-bottom: 28px;
+}
+#hero-sec .hero-media {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 2px solid var(--bone);
+  box-shadow: 10px 10px 0 var(--red);
+}
+.hero-bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px 40px;
+  padding-top: 8px;
+}
+.hero-bottom-row .hero-sub {
+  padding-block: 0;
+}
+.hero-bottom-row .hero-cta-row {
+  padding-block: 0;
+}
+
+/* 2. Workshop (#workshops): call-to-action column title BOOK NOW */
+.wcard.wcard-single .wcard-copy h3 {
+  font-size: clamp(28px, 2.5vw, 40px);
+  line-height: 0.92;
+  margin-bottom: 12px;
+  color: var(--bone);
+}
+
+/* 3. Hire the studio (#studio): merge one-color sections into one unified surface + integrate the 6 "plan" images with NO extra column and NO separation */
+.studio-unified {
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bone);
+  overflow: hidden;
+}
+.studio-merged-copy {
+  padding: 32px 28px 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  background: var(--ink);
+}
+@media (min-width: 900px) {
+  .studio-merged-copy {
+    padding: 40px 44px 36px;
+    gap: 22px;
+  }
+}
+.studio-merged-main {
+  display: grid;
+  gap: 12px;
+}
+.studio-merged-main .eyebrow {
+  color: var(--ash);
+}
+.studio-merged-main .eyebrow::before {
+  background: var(--red);
+}
+.studio-merged-main h3 {
+  font-size: clamp(30px, 3.2vw, 48px);
+  line-height: 0.94;
+  color: var(--bone);
+  max-width: 28ch;
+}
+.studio-merged-desc {
+  color: var(--ash);
+  font-size: clamp(16px, 1.2vw, 18px);
+  line-height: 1.55;
+  max-width: 76ch;
+}
+.studio-merged-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+  padding-top: 4px;
+}
+.studio-merged-rates {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.studio-rates-kicker {
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ash);
+}
+.studio-rates-big {
+  font-family: var(--sans);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 900;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.studio-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+@media (min-width: 900px) {
+  .studio-plan-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .studio-plan-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.studio-plan-item {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ink-0);
+}
+.studio-plan-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+.studio-plan-item:hover img {
+  transform: scale(1.03);
+}
+.studio-plan-cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 16px 12px;
+  background: linear-gradient(180deg, transparent 0%, var(--ink-a88) 100%);
+  font: 700 11px/1.2 var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* 4. Meet Jay and Andrew (#about): generous bottom padding */
+#about .about-top {
+  padding-bottom: 120px;
+}
+@media (min-width: 768px) {
+  #about .about-top {
+    padding-bottom: 168px;
+  }
+}
+
 /* ===== BLUE TAP-HIGHLIGHT FIX ===== */
 * { -webkit-tap-highlight-color: transparent; }
 
@@ -3402,7 +3580,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
           <a href="#coworking">Co-working</a>
           <a href="#events">Events</a>
           <a href="#about">About</a>
-          <a href="#podcast">Podcast</a>
+          <a href="#podcast">How we work</a>
           <a href="#find-us">Find us</a>
         </nav>
         <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop</a>
@@ -3422,20 +3600,22 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
           <div class="tw-inset-lg">
             <h1 class="h1 h1-mega">Content Workshops. <em>FOR BEGINNERS</em></h1>
           </div>
-          <div class="tw-inset hero-sub">
-            <span class="hero-sub-rule" aria-hidden="true"></span>
-            <p class="hero-sub-lead">No experience. No gear. No audience.</p>
-            <p class="hero-sub-follow">Leave with your first finished video.</p>
+          <div class="tw-inset hero-video-row">
+            <div class="hero-media">
+              <video id="hero-video" src="video/hero.mp4" poster="img/hero-poster.jpg" data-youtube-id="lpiWGuNvJfQ" autoplay muted loop playsinline preload="metadata"></video>
+              <button type="button" class="hero-unmute" id="hero-unmute" aria-label="Unmute video" aria-pressed="false">Unmute</button>
+            </div>
           </div>
-          <div class="tw-inset hero-cta-row">
-            <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop <span aria-hidden="true">→</span></a>
-            <span class="hero-cta-note">Groups of 10–15 · All gear provided</span>
-          </div>
-        </div>
-        <div class="hero-right">
-          <div class="hero-media">
-            <video id="hero-video" src="video/hero.mp4" poster="img/hero-poster.jpg" data-youtube-id="lpiWGuNvJfQ" autoplay muted loop playsinline preload="metadata"></video>
-            <button type="button" class="hero-unmute" id="hero-unmute" aria-label="Unmute video" aria-pressed="false">Unmute</button>
+          <div class="tw-inset hero-bottom-row">
+            <div class="hero-sub">
+              <span class="hero-sub-rule" aria-hidden="true"></span>
+              <p class="hero-sub-lead">No experience. No gear. No audience.</p>
+              <p class="hero-sub-follow">Leave with your first finished video.</p>
+            </div>
+            <div class="hero-cta-row">
+              <a class="btn btn-red" href="https://www.eventbrite.co.uk/e/content-creation-workshop-tickets-2003470763987" target="_blank" rel="noopener">Book a workshop <span aria-hidden="true">→</span></a>
+              <span class="hero-cta-note">Groups of 10–15 · All gear provided</span>
+            </div>
           </div>
         </div>
       </div>
@@ -3661,6 +3841,7 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
               <div class="wcard-body">
                 <div class="albers-sq" aria-hidden="true"></div>
                 <div class="wcard-copy">
+                  <h3>Book now</h3>
                   <p class="desc">Go from first idea to first finished video in a single day. Plan, light, shoot and edit talking-head videos, podcasts, shorts and explainers in our professional Bedford studio — all cameras, mics and lighting provided.</p>
                 </div>
                 <div class="meta" aria-label="Workshop details">
@@ -3784,53 +3965,28 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
         </div>
 
         <div class="tw-panel">
-          <div class="bento">
-            <div class="tile photo">
-              <span class="ph ph-red">Concept render</span>
-              <img src="img/19_47_44_2.jpg" alt="The sound-isolated recording room">
+          <div class="studio-unified">
+            <div class="studio-merged-copy">
+              <div class="studio-merged-main">
+                <p class="eyebrow">Recording room · Editing suite · Cameras &amp; lights</p>
+                <h3>Sound-isolated walls and ceiling.</h3>
+                <p class="studio-merged-desc">Video, podcasts, audiobooks and voiceover with no echo and no street noise. Acoustically treated desk and workstation, multi-camera setups, studio microphones and key lighting ready when you walk in.</p>
+              </div>
+              <div class="studio-merged-action">
+                <div class="studio-merged-rates">
+                  <span class="studio-rates-kicker">Half-day · Full-day · Multi-day</span>
+                  <strong class="studio-rates-big">Rates on request</strong>
+                </div>
+                <a class="btn btn-red" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener">Get in touch <span aria-hidden="true">↗</span></a>
+              </div>
             </div>
-            <div class="tile t2">
-              <p class="eyebrow">Recording room</p>
-              <h3>Sound-isolated walls and ceiling.</h3>
-              <p>Video, podcasts, audiobooks and voiceover with no echo and no street noise.</p>
-            </div>
-            <div class="tile t3 rates">
-              <p class="big">Rates on request</p>
-              <small>Hourly and day hire to confirm</small>
-            </div>
-            <div class="tile t4 stripe tex-stripes-light">
-              <p class="eyebrow">Editing suite</p>
-              <p>A quiet room to cut your footage after the shoot.</p>
-            </div>
-            <div class="tile t5">
-              <p class="eyebrow">Cameras and lights</p>
-              <p>Pro cameras, lighting and teleprompter on site.</p>
-            </div>
-            <div class="tile t6 go">
-              <a class="btn btn-ink" href="https://www.instagram.com/andrewgabrielofficial/" target="_blank" rel="noopener" style="justify-self: start">Get in touch <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </div>
-
-        <div class="tw-panel s3-panel vlog-panel studio-renders-panel">
-          <div class="studio-renders-head">
-            <span>The Manor · 06 studio &amp; space concept renders</span>
-            <span>2B Ashburnham Road · Bedford</span>
-          </div>
-          <div class="render-marquee marquee" aria-label="Studio concept renders">
-            <div class="marquee-track">
-              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_2.jpg" alt="Concept render of the sound-isolated podcast booth"><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_19.jpg" alt="Concept render of the production floor with green screen and editing desk"><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_31.jpg" alt="Concept render of the Founders Club and workshop room"><figcaption class="render-thumb-cap">Founders Club &amp; workshop room</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_18.jpg" alt="Concept render of the Founders Club space busy with members"><figcaption class="render-thumb-cap">Founders Club in use</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_3.jpg" alt="Concept render of the corridor with window desks"><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
-              <figure class="render-thumb"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_28.jpg" alt="Concept render of an evening talk and event night"><figcaption class="render-thumb-cap">Event night</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_2.jpg" alt=""><figcaption class="render-thumb-cap">Podcast booth</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_19.jpg" alt=""><figcaption class="render-thumb-cap">Production floor</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_31.jpg" alt=""><figcaption class="render-thumb-cap">Founders Club &amp; workshop room</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_18.jpg" alt=""><figcaption class="render-thumb-cap">Founders Club in use</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_44_3.jpg" alt=""><figcaption class="render-thumb-cap">Window desks</figcaption></figure>
-              <figure class="render-thumb" aria-hidden="true"><span class="ph ph-red">Concept render</span><img src="img/19_47_45_28.jpg" alt=""><figcaption class="render-thumb-cap">Event night</figcaption></figure>
+            <div class="studio-plan-grid" aria-label="The Manor studio plan renders">
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_44_2.jpg" alt="The plan — Sound-isolated podcast and recording room" loading="lazy"><figcaption class="studio-plan-cap">Podcast &amp; recording booth</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_19.jpg" alt="The plan — Production floor with green screen and editing suite" loading="lazy"><figcaption class="studio-plan-cap">Production floor &amp; editing suite</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_31.jpg" alt="The plan — Workshop and studio room" loading="lazy"><figcaption class="studio-plan-cap">Workshop &amp; studio room</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_18.jpg" alt="The plan — Studio and creator space in use" loading="lazy"><figcaption class="studio-plan-cap">Creator floor in use</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_44_3.jpg" alt="The plan — Window editing and creator desks" loading="lazy"><figcaption class="studio-plan-cap">Window editing desks</figcaption></figure>
+              <figure class="studio-plan-item"><span class="ph ph-red">The plan</span><img src="img/19_47_45_28.jpg" alt="The plan — Live studio and event configuration" loading="lazy"><figcaption class="studio-plan-cap">Live studio &amp; event set</figcaption></figure>
             </div>
           </div>
         </div>
@@ -3945,12 +4101,12 @@ a:focus-visible, button:focus-visible, [role="button"]:focus-visible,
       <div class="col sec-pad">
         <div class="sec-head">
           <div class="eyebrow-bar">
-            <p class="eyebrow">Podcast · Local Voice Collective</p>
+            <p class="eyebrow">How we work · Andrew &amp; Jay</p>
             <span class="coord">Andrew &amp; Jay · On ADHD &amp; creativity</span>
           </div>
           <div class="sec-head-main">
-            <h2 class="h2">Local Voice Collective.</h2>
-            <p class="lede">Andrew and Jay talk openly about ADHD, creative focus, and the day-to-day reality of working as a professional artist.</p>
+            <h2 class="h2">How we work.</h2>
+            <p class="lede">Andrew and Jay talk openly about ADHD, creative focus, and how they work together day-to-day in the studio.</p>
           </div>
         </div>
 
